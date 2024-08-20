@@ -1,0 +1,46 @@
+services:
+  BackEnd:
+    container_name: BackEnd
+    build:
+      context: ./srcs/BackEnd # Can fail, replace srcs by correct path *
+    depends_on:
+      - DataBase
+    env_file:
+      - .env
+    ports:
+      - "3001:3001" # Access API BackEnd
+    restart: unless-stopped
+    networks: ft_transcendence
+
+  DataBase:
+    container_name: DataBase
+    image: postgres:latest
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: unless-stopped
+    network: ft_transcendence
+
+  FrontEnd:
+    container_name: FrontEnd
+    build:
+      context: ./srcs/FrontEnd # --- *
+    depends_on:
+      - BackEnd
+      - DataBase
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks: ft_transcendence
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  ft_transcendence:
+    driver: bridge
+
