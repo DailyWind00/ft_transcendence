@@ -2,7 +2,7 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./srcs/BackEnd # Can fail, replace srcs by correct path *
+      context: ./Docker/BackEnd # Can fail, replace srcs by correct path *
     depends_on:
       - database
     env_file:
@@ -27,7 +27,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ./srcs/FrontEnd # --- *
+      context: ./Docker/FrontEnd # --- *
     depends_on:
       - backend
       - database
