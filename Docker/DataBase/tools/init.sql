@@ -1,10 +1,9 @@
 -- TODO
-
 -- Create the database
-CREATE DATABASE database;
+CREATE DATABASE ft_transcendence;
 
 -- Connect to the database
-\c database
+\c ft_transcendence
 
 -- Create a sample table
 CREATE TABLE IF NOT EXISTS users (
@@ -16,5 +15,5 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- Insert initial data
 INSERT INTO users (username, email) VALUES
-('admin', 'admin@example.com'),
-('user1', 'user1@example.com');
+('${ADMIN_USERNAME}', '${ADMIN_EMAIL}'),
+('${USER1_USERNAME}', '${USER1_EMAIL}');
