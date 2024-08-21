@@ -8,16 +8,16 @@ RUN		apt update -y
 RUN		apt upgrade -y
 RUN		apt install pip -y
 
-COPY	pythonlib.txt /app/
+COPY	tools/pythonlib.txt /app/
 
 RUN		pip install --no-cache-dir -r pythonlib.txt # install libs dependencies
 # ---
 
 COPY 	. /app/
 
-# Python params
-ENV		PYTHONBUFFERED 1
-ENV		PYTHONDONTWRITEBYTECODE 1
+# Python params (less memory usage)
+ENV		PYTHONBUFFERED=1
+ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	3001
 
