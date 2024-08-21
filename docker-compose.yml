@@ -57,7 +57,7 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:3002"
+      - "3002:3002"
     restart: unless-stopped
     networks:
       - ft_transcendence
