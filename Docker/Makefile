@@ -8,8 +8,18 @@ down:
 	@docker compose -f ./docker-compose.yml down
 
 fclean:
-	@docker rm -f $$(docker ps -qa); \
-	docker volume rm -f $$(docker volume ls -q); \
-	docker network rm -f $$(docker network ls -q); #
+	@containers=$$(docker ps -qa); \
+	if [ -n "$$containers" ]; then \
+		docker rm -f $$containers; \
+	fi; \
+	volumes=$$(docker volume ls -q); \
+	if [ -n "$$volumes" ]; then \
+		docker volume rm -f $$volumes; \
+	fi; \
+	for network in $$(docker network ls --format "{{.Name}}"); do \
+		if [ "$$network" != "bridge" ] && [ "$$network" != "host" ] && [ "$$network" != "none" ]; then \
+			docker network rm $$network; \
+		fi; \
+	done
 
 re: fclean all
