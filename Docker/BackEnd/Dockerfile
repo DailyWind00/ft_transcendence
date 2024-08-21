@@ -3,17 +3,23 @@ FROM	python:3.10
 RUN		mkdir -p /app
 WORKDIR	/app
 
-# Python installation
+# Python & django installation
 RUN		apt update -y
 RUN		apt upgrade -y
-RUN		apt install pip -y
+RUN		apt install python3-pip -y
+RUN		apt install python3-venv -y
+RUN		python3 -m venv venv
+RUN		. venv/bin/activate
+RUN		pip install django
+RUN		pip install djangorestframework
+RUN 	django-admin --version
 
 COPY	tools/pythonlib.txt /app/
 
 RUN		pip install --no-cache-dir -r pythonlib.txt # install libs dependencies
 # ---
 
-COPY 	. /app/
+COPY 	tools/ /app/
 
 # Python params (less memory usage)
 ENV		PYTHONBUFFERED=1
