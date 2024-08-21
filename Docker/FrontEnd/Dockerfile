@@ -16,7 +16,6 @@ RUN     wget https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js
 RUN     apt-get install -y npm
 RUN     npm install -g npm@latest
 
-# Expose port
 EXPOSE	3000
 
 CMD ["nginx", "-g", "daemon off;"]
