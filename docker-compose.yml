@@ -4,7 +4,8 @@ services:
     build:
       context: ./Docker/BackEnd # Can fail, replace srcs by correct path *
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     env_file:
       - .env
     ports:
@@ -12,6 +13,10 @@ services:
     restart: unless-stopped
     networks:
       - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3001/health || exit 1"]
+      timeout: 30s
+      retries: 10
 
   database:
     container_name: database
@@ -23,14 +28,22 @@ services:
     restart: unless-stopped
     networks:
       - ft_transcendence
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      timeout: 30s
+      retries: 10
 
   frontend:
     container_name: frontend
     build:
       context: ./Docker/FrontEnd # --- *
     depends_on:
-      - backend
-      - database
+      backend:
+        condition: service_healthy
+      database:
+        condition: service_healthy
     env_file:
       - .env
     ports:

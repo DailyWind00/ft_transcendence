@@ -3,6 +3,8 @@ FROM	python:3.10
 RUN		mkdir -p /app
 WORKDIR	/app
 
+COPY	requirements.txt /app/
+
 # Python & django installation
 RUN		apt update -y
 RUN		apt upgrade -y
@@ -14,12 +16,10 @@ RUN		pip install django
 RUN		pip install djangorestframework
 RUN 	django-admin --version
 
-COPY	tools/pythonlib.txt /app/
-
-RUN		pip install --no-cache-dir -r pythonlib.txt # install libs dependencies
+RUN		pip install --no-cache-dir -r requirements.txt
 # ---
 
-COPY 	tools/ /app/
+COPY 	. /app/
 
 # Python params (less memory usage)
 ENV		PYTHONBUFFERED=1
