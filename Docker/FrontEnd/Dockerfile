@@ -1,4 +1,9 @@
-FROM    nginx:latest
+FROM    owasp/modsecurity:nginx
+
+# Copy files
+COPY    tools/nginx.conf /etc/nginx/nginx.conf
+COPY    tools/modsecurity.conf /etc/modsecurity/modsecurity.conf
+COPY    tools/crs-setup.conf /etc/modsecurity/crs-setup.conf
 
 WORKDIR /usr/share/nginx/html
 
