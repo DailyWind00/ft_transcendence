@@ -8,6 +8,12 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     ports:
       - "3000:3001" # Access API BackEnd
     restart: unless-stopped
@@ -15,6 +21,7 @@ services:
       - ft_transcendence
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:3001/health || exit 1"]
+      interval: 2s
       timeout: 30s
       retries: 10
 
@@ -22,16 +29,20 @@ services:
     container_name: database
     image: postgres:latest
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
     networks:
       - ft_transcendence
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"] # don't work for now
       interval: 2s
       timeout: 30s
       retries: 10
@@ -54,7 +65,7 @@ services:
       - ft_transcendence
 
 volumes:
-  postgres:
+  postgres_data:
     driver: local
 
 networks:
