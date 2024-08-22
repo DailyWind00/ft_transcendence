@@ -79,9 +79,9 @@ from decouple import config
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB'),
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'NAME': config('POSTGRES_DB', 'transcendance'),
+        'USER': config('POSTGRES_USER', 'transcendance'),
+        'PASSWORD': config('POSTGRES_PASSWORD', 'transcendance'),
         'HOST': config('POSTGRES_HOST', 'database'),
 		'PORT': config('POSTGRES_PORT', '5432'),
     }

@@ -5,8 +5,6 @@ WORKDIR	/app
 
 COPY	requirements.txt /app/
 
-ENV     ../../.env
-
 # Python & django installation
 RUN		apt update -y
 RUN		apt upgrade -y
