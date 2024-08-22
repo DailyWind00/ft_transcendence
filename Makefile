@@ -21,13 +21,15 @@ fclean:
 re: fclean all
 
 venv-setup:
-	@if ! command -v python3 >/dev/null 2>&1 ; then \
+	@read -p "Do you want to install/update Python3? (y/n): " answer; \
+	if [ "$$answer" != "y" ]; then \
+		echo "Python3 installation skipped"; \
+	else \
 		sudo apt update -y; \
 		sudo apt upgrade -y; \
 		sudo apt install python3-pip -y; \
 		sudo apt install python3-venv -y; \
 	fi
-	@echo "Python3 is installed";
 	@if [ -d "venv" ]; then rm -rf venv; fi;
 	@python3 -m venv venv
 	@. venv/bin/activate && \
