@@ -16,6 +16,7 @@ RUN		pip install django
 RUN		pip install djangorestframework
 RUN 	django-admin --version
 RUN		pip install psycopg2
+RUN 	pip install gunicorn
 
 RUN		pip install --no-cache-dir -r requirements.txt
 # ---
@@ -30,5 +31,5 @@ EXPOSE	3000
 
 RUN     python3 manage.py makemigrations
 
-CMD		["python", "manage.py", "runserver", "0.0.0.0:3000"]
-#CMD		["gunicorn", "--bind", "0.0.0.0:3000", "app.wsgi:application"]
+#CMD		["python", "manage.py", "runserver", "0.0.0.0:3000"]
+CMD		["gunicorn", "--bind", "0.0.0.0:3000", "backend.wsgi:application"]
