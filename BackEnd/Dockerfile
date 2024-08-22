@@ -5,6 +5,8 @@ WORKDIR	/app
 
 COPY	requirements.txt /app/
 
+ENV     ../../.env
+
 # Python & django installation
 RUN		apt update -y
 RUN		apt upgrade -y
@@ -27,6 +29,8 @@ ENV		PYTHONBUFFERED=1
 ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	3000
+
+RUN     python3 manage.py makemigrations
 
 CMD		["python", "manage.py", "runserver", "0.0.0.0:3000"]
 #CMD		["gunicorn", "--bind", "0.0.0.0:3000", "app.wsgi:application"]
