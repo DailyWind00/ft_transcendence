@@ -21,6 +21,14 @@ fclean:
 re: fclean all
 
 venv-setup:
+	@if ! command -v python3 >/dev/null 2>&1 ; then \
+		sudo apt update -y; \
+		sudo apt upgrade -y; \
+		sudo apt install python3-pip -y; \
+		sudo apt install python3-venv -y; \
+	fi
+	@echo "Python3 is installed";
+	@if [ -d "venv" ]; then rm -rf venv; fi;
 	@python3 -m venv venv
 	@. venv/bin/activate && \
 	pip install -r BackEnd/requirements.txt
