@@ -1,6 +1,7 @@
 services:
   backend:
     container_name: backend
+    hostname: backend
     build:
       context: ./BackEnd
     depends_on:
@@ -25,9 +26,11 @@ services:
 
   database:
     container_name: database
+    hostname: database
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./DataBase/tools/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - .env
     environment:
@@ -47,6 +50,7 @@ services:
 
   frontend:
     container_name: frontend
+    hostname: frontend
     build:
       context: ./FrontEnd
     depends_on:

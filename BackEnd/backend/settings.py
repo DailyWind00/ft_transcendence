@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'backend',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +76,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 from decouple import config
 
-SECRET_KEY = config('SECRET_KEY')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB'),
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'NAME': config('POSTGRES_DB', 'database'),
+        'USER': config('POSTGRES_USER', 'ft_transcendence'),
+        'PASSWORD': config('POSTGRES_PASSWORD', 'ft_transcendence'),
         'HOST': config('POSTGRES_HOST', 'database'),
-		'PORT': config('POSTGRES_PORT', '5432'),
+        'PORT': config('POSTGRES_PORT', '5432'),
     }
 }
 
