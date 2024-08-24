@@ -14,7 +14,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "3000:3001" # Access API BackEnd
+      - "3000:3000" # Access API BackEnd
     restart: unless-stopped
     networks:
       - ft_transcendence
@@ -33,10 +33,6 @@ services:
       - ./DataBase/tools/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
     networks:
       - ft_transcendence

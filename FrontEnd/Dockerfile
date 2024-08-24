@@ -1,6 +1,7 @@
 FROM    owasp/modsecurity-crs:nginx
 
 USER    root
+
 # Copy files
 COPY    tools/nginx.conf /etc/nginx/nginx.conf
 COPY    tools/modsecurity.conf /etc/modsecurity/modsecurity.conf
@@ -24,4 +25,4 @@ RUN     npm install -g npm@latest
 
 EXPOSE	3002
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
