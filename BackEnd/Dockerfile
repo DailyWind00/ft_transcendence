@@ -23,7 +23,6 @@ ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	3000
 
-CMD 	["python3", "manage.py", "makemigrations"]
+CMD 	["python3", "manage.py", "makemigrations", "&&", "python3", "manage.py", "migrate"]
 
-#CMD		["python", "manage.py", "runserver", "0.0.0.0:3000"]
 ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:3000", "backend.wsgi:application"]

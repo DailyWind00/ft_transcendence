@@ -25,6 +25,9 @@ RUN mkdir -p /usr/local/modsecurity-crs && \
 # Download Three.js
 RUN     wget https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js
 
+# Download vue
+RUN     wget https://cdn.jsdelivr.net/npm/vue/dist/vue.js
+
 EXPOSE	80
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
