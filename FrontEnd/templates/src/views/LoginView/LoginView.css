@@ -1,0 +1,90 @@
+.login-page {
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+	margin-top: 10%;
+	padding: 20px;
+  }
+  
+  .card-body {
+	padding-bottom: none;
+  }
+  
+  .b_form_input::placeholder {
+	color: white;
+	font-style: italic;
+  }
+  
+  h1 {
+	white-space: nowrap;
+	margin-left: 6vw;
+	margin-right: 6vw;
+	color: white;
+	font-size: 2.5em;
+	text-align: center;
+  }
+  
+  .b_form_input {
+	text-align: center;
+	margin-top: 3vh;
+	margin-bottom: 3vh;
+	border: none;
+	background: linear-gradient(to right, transparent 10%, rgb(255, 255, 255) 10%, rgb(255, 255, 255) 90%, transparent 90%);
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	background-size: 100% 2px;
+	padding: 10px;
+	background-color: rgba(0, 0, 0, 0);
+	color: rgb(255, 255, 255);
+	transition: background-size 0.1s ease;
+  }
+  
+  .b_form_input:focus {
+	box-shadow: none;
+  }
+  
+  .btn_login {
+	margin-top: 30px;
+	padding: 10px 2vw;
+	border-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	background-color: #800080;
+	color: white;
+	font-size: large;
+  }
+  
+  .btn_register {
+	margin-top: 4vh;
+	color: rgba(255, 255, 255, 0.575);
+	font-size: large;
+  }
+  
+  .btn_login:hover {
+	background-color: rgba(83, 83, 83, 0);
+  }
+  .group::placeholder{
+	color:transparent;
+  }
+  @media (max-width: 768px) {
+	h1 {
+	  font-size: 2em;
+	  margin-left: 5vw;
+	  margin-right: 5vw;
+	  white-space: nowrap;
+	}
+  
+	.b_form_input {
+	  font-size: 1em;
+	  margin-top: 2vh;
+	  margin-bottom: 2vh;
+	}
+  
+	.btn_login {
+	  font-size: medium;
+	  padding: 8px 1.5vw;
+	}
+  
+	.btn_register {
+	  font-size: medium;
+	}
+  }
+  
