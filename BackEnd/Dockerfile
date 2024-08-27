@@ -25,4 +25,4 @@ EXPOSE	3000
 
 CMD 	["python3", "manage.py", "makemigrations", "&&", "python3", "manage.py", "migrate"]
 
-ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:3000", "backend.wsgi:application"]
+ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:2000", "backend.wsgi:application"]

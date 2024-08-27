@@ -1,11 +1,13 @@
 ## Vue deployment
-FROM    node:latest AS build-stage
+FROM    node:16.10.0-alpine3.13 AS build-stage
 
-COPY    templates/package.json /
+WORKDIR /app
 
-RUN     npm install
-COPY    templates/ app/
-# RUN     npm run build
+# Install Vue
+COPY    templates/ .
+RUN     npm install 
+
+RUN     npm run build
 
 # ---------------------------- #
 
@@ -17,7 +19,7 @@ RUN    	apt update -y
 RUN    	apt upgrade -y
 RUN   	apt install -y wget
 
-# COPY    --from=build-stage /app/dist /app
+COPY    --from=build-stage /app/dist /usr/share/nginx/html
 
 # Copy files
 COPY    tools/nginx.conf /etc/nginx/nginx.conf
@@ -38,8 +40,6 @@ RUN     wget https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js
 
 # Download vue
 RUN     wget https://cdn.jsdelivr.net/npm/vue/dist/vue.js
-
-USER   nginx
 
 EXPOSE	80
 
