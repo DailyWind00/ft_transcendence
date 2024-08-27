@@ -5,7 +5,7 @@ USER   	root
 # Copy files
 COPY    tools/nginx.conf /etc/nginx/nginx.conf
 COPY    tools/modsecurity.conf /etc/nginx/modsecurity/modsecurity.conf
-COPY    tools/crs-setup.conf /etc/nginx/modsecurity/crs-setup.conf
+COPY    tools/crs-setup.conf /etc/nginx/modsecurity-crs/crs-setup.conf
 COPY	templates/* /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html
