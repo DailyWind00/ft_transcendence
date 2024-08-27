@@ -2,3 +2,6 @@ Django>=3.2,<4.0
 djangorestframework>=3.12,<4.0
 python-decouple>=3.5,<4.0
 psycopg2-binary>=2.8,<3.0
+websockets>=9.1,<10.0
+asyncio>=3.4,<4.0
+gunicorn>=20.1,<21.0

@@ -12,12 +12,6 @@ RUN		apt install python3-pip -y
 RUN		apt install python3-venv -y
 RUN		python3 -m venv venv
 RUN		. venv/bin/activate
-RUN		pip install django
-RUN		pip install djangorestframework
-RUN 	django-admin --version
-RUN		pip install psycopg2
-RUN 	pip install gunicorn
-
 RUN		pip install --no-cache-dir -r requirements.txt
 # ---
 
@@ -29,7 +23,6 @@ ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	3000
 
-RUN     python3 manage.py makemigrations
+CMD 	["python3", "manage.py", "makemigrations", "&&", "python3", "manage.py", "migrate"]
 
-#CMD		["python", "manage.py", "runserver", "0.0.0.0:3000"]
-CMD		["gunicorn", "--bind", "0.0.0.0:3000", "backend.wsgi:application"]
+ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:3000", "backend.wsgi:application"]
