@@ -21,7 +21,7 @@ COPY 	. /app/
 ENV		PYTHONBUFFERED=1
 ENV		PYTHONDONTWRITEBYTECODE=1
 
-EXPOSE	3000
+EXPOSE	2000
 
 CMD 	["python3", "manage.py", "makemigrations", "&&", "python3", "manage.py", "migrate"]
 
