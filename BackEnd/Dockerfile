@@ -25,4 +25,4 @@ EXPOSE	2000
 
 CMD 	["sh", "tools/db_setup.sh"]
 
-ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:2000", "backend.wsgi:application"]
+ENTRYPOINT		["gunicorn", "--workers=8", "--bind", "0.0.0.0:2000", "backend.wsgi:application"]
