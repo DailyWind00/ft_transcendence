@@ -23,6 +23,4 @@ ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	2000
 
-CMD 	["sh", "tools/db_setup.sh"]
-
-ENTRYPOINT		["gunicorn", "--workers=8", "--bind", "0.0.0.0:2000", "backend.wsgi:application"]
+ENTRYPOINT		["sh", "tools/setup.sh"]
