@@ -10,8 +10,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-    # ports:
-    #   - "2000:2000" # Backend port, only for https proof
+    ports:
+      - "2000:2000" # Backend port, only for https proof
     networks:
       - ft_transcendence
     healthcheck:
