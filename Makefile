@@ -37,7 +37,7 @@ venv-setup:
 	@if [ -d "venv" ]; then rm -rf venv; fi;
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-		pip install -r BackEnd/requirements.txt
+		pip install -r BackEnd/tools/requirements.txt
 # -------------------------------------------------
 
-.PHONY: all up down fclean re venv-setup docker-download
+.PHONY: all up down fclean re venv-setup

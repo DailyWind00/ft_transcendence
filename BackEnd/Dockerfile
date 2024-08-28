@@ -3,7 +3,7 @@ FROM	python:3.10
 RUN		mkdir -p /app
 WORKDIR	/app
 
-COPY	requirements.txt /app/
+COPY	tools/requirements.txt /app/
 
 # Python & django installation
 RUN		apt update -y
@@ -23,6 +23,6 @@ ENV		PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE	2000
 
-CMD 	["python3", "manage.py", "makemigrations", "&&", "python3", "manage.py", "migrate"]
+CMD 	["sh", "tools/db_setup.sh"]
 
 ENTRYPOINT		["gunicorn", "--bind", "0.0.0.0:2000", "backend.wsgi:application"]
