@@ -26,7 +26,6 @@ services:
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./DataBase/tools/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - .env
     restart: unless-stopped
