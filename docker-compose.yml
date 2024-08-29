@@ -10,8 +10,10 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    # to remove before correction
     ports:
       - "2000:2000" # Backend port, only for https proof
+    # ---
     networks:
       - ft_transcendence
     healthcheck:
@@ -29,6 +31,10 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    # to remove before correction
+    ports:
+      - "5432:5432" # database port
+    # ---
     networks:
       - ft_transcendence
     healthcheck:

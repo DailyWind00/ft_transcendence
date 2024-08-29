@@ -34,6 +34,8 @@ DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 
 ALLOWED_HOSTS = [os.environ['DJANGO_ALLOWED_HOSTS']]
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Application definition
 
@@ -44,6 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'rest_framework',
+	'rest_framework.authtoken',
+	'manage_user',
+	'dj_rest_auth',
 ]
 
 MIDDLEWARE = [
