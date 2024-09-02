@@ -19,8 +19,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import health_check
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
-]
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

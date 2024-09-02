@@ -10,12 +10,14 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    # to remove before correction
     ports:
       - "2000:2000" # Backend port, only for https proof
+    # ---
     networks:
       - ft_transcendence
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:2000/health || exit 1"]
+      test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
@@ -29,6 +31,10 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    # to remove before correction
+    ports:
+      - "5432:5432" # database port
+    # ---
     networks:
       - ft_transcendence
     healthcheck:
@@ -51,6 +57,7 @@ services:
       - .env
     ports:
       - "80:80"
+      - "443:443"
     restart: unless-stopped
     networks:
       - ft_transcendence
