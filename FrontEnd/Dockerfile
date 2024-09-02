@@ -28,6 +28,8 @@ COPY    tools/crs-setup.conf /etc/nginx/modsecurity-crs/crs-setup.conf
 COPY 	tools/backend.crt /etc/nginx/certs/
 COPY 	tools/backend.key /etc/nginx/certs/
 
+COPY    static/ /usr/share/nginx/html/static
+
 WORKDIR /usr/share/nginx/html
 
 # Download and extract OWASP CRS rules
