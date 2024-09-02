@@ -17,7 +17,7 @@ services:
     networks:
       - ft_transcendence
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:2000/health || exit 1"]
+      test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
@@ -57,6 +57,7 @@ services:
       - .env
     ports:
       - "80:80"
+      - "443:443"
     restart: unless-stopped
     networks:
       - ft_transcendence
