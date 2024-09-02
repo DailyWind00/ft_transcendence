@@ -5,3 +5,4 @@ websockets>=9.1,<10.0
 asyncio>=3.4,<4.0
 gunicorn>=20.1,<21.0
 dj_rest_auth>=2.1,<3.0
+djangorestframework-authtoken
