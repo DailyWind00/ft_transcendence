@@ -52,7 +52,6 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'rest_framework.authtoken',
 	'manage_user',
-	'dj_rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +103,11 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 
 # Password validation
