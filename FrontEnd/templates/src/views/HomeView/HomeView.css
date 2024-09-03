@@ -2,13 +2,27 @@
 	font-family: myFirstFont;
 	src: url('./../../assets/Mekon-Gradient.ttf') format('truetype');
   }
-  
+.purple .button::before {
+  background-color: #800080;
+}
+
+body, html {
+  overflow: hidden;
+}
+
+.green .button::before {
+  background-color: #094d09;
+}
+
+.yellow .button::before {
+  background-color: #d35e11;
+}
   .container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-	height: 100vh;
+	height: 100%;
 	padding: 2em;
 	box-sizing: border-box;
   }
@@ -16,7 +30,7 @@
   filter: drop-shadow(10px 10px 10px #000000);
 }
 img {
-	width: 100%;
+	width: 60vw;
 	height: auto;
 	display: flex;
 	justify-content: center;
@@ -27,9 +41,10 @@ img {
 	display: flex;
 	justify-content: center;
 	width: 100%;
+  height: auto;
   }
   
-  #main_button {
+  /* #main_button {
 	text-decoration: none;
 	margin-top: 27vh;
 	padding: 5vw 5vh;
@@ -40,7 +55,7 @@ img {
 	color: white;
 	font-size: large;
 	transition: background-color 0.3s ease;
-  }
+  } */
   
 
 .button {
@@ -74,17 +89,40 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--color);
   z-index: -1;
   transform: scale(0);
   transition: 0.5s;
 }
 
-.button:hover::before {
+.yellow .button:hover::before {
   transform: scale(1);
   transition-delay: 0.5s;
   border-radius: 100px;
-  box-shadow: 0 0 10px var(--color),
-    0 0 30px var(--color),
-    0 0 60px var(--color);
+  box-shadow: 0 0 10px #d35e11,
+    0 0 30px #d35e11,
+    0 0 60px #d35e11;
+}
+
+.purple .button:hover::before {
+  transform: scale(1);
+  transition-delay: 0.5s;
+  border-radius: 100px;
+  box-shadow: 0 0 10px #800080,
+    0 0 30px #800080,
+    0 0 60px #800080;
+}
+
+.green .button:hover::before {
+  transform: scale(1);
+  transition-delay: 0.5s;
+  border-radius: 100px;
+  box-shadow: 0 0 10px #094d09,
+    0 0 30px #094d09,
+    0 0 60px #094d09;
+}
+@media (max-height: 500px) {
+   .button-container{
+    align-items: center;
+    border: 2px solid white;
+  }
 }

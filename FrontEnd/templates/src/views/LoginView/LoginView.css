@@ -1,3 +1,39 @@
+.small *{
+	font-size: 0.8em;
+  }
+  
+  .medium *{
+	font-size: 1.05em;
+  }
+  
+  .large *{
+	font-size: 1.3em;
+  }
+
+  .small h1{
+	font-size: 1em;
+  }
+  
+  .medium h1{
+	font-size: 2.4em;
+  }
+  
+  .large h1{
+	font-size: 2.5em;
+  }
+  .purple .btn_login{
+	background-color: #800080;
+  }
+  
+  .green .btn_login{
+	background-color: #094d09;
+  }
+  
+  .yellow .btn_login{
+	background-color: #d35e11;
+  }
+
+
 .login-page {
 	background-color: rgba(0, 0, 0, 0.76);
 	border-radius: 20px;
@@ -53,7 +89,7 @@
   }
   
   .btn_register {
-	margin-top: 4vh;
+	margin-top: 1vh;
 	color: rgba(255, 255, 255, 0.575);
 	font-size: large;
   }
@@ -87,4 +123,12 @@
 	  font-size: medium;
 	}
   }
+
+  @media (max-height: 500px) {
+	.d-flex {
+	  width: 100%;
+	  height: 100%;
+	  overflow-y: auto;
+	}
+	}
   
