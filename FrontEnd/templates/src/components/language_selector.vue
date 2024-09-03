@@ -22,7 +22,8 @@ export default {
       isOpen: false,
       flags: {
         'fr': require('@/assets/fr.png'),
-        'en': require('@/assets/en.png')
+        'en': require('@/assets/en.png'),
+        'es': require('@/assets/es.png'),
       }
     };
   },
