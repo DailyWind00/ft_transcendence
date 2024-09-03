@@ -1,5 +1,5 @@
-<template>
-<div id="app">
+<template id="test">
+<div id="app" :class="[my_font_size, my_BG_color]">
   <div class="picture_info">
     <img id= "profile_picture" src="./../../assets/pong.png" alt="player picture" />
     <div id="info"><h1>Player Name</h1>
@@ -32,4 +32,22 @@ Suspendisse posuere porttitor mauris non dignissim. Praesent tempor blandit odio
 </div>
 </template>
 
+<!-- <script src="./../../global.js" ></script> -->
 <style src="./Player_info.css" scoped></style> 
+<script>
+import GlobalJS from './../../global.js';
+
+export default {
+  components: {
+    GlobalJS
+  },
+  data() {
+    return {
+      ...GlobalJS.data.call(this),
+    };
+  },
+  methods: {
+    ...GlobalJS.methods,
+  },
+}
+</script>

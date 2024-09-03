@@ -15,6 +15,7 @@ const messages = {
 	enter_passwordx2: 'Enter your password again',
 	create_account: 'Create an account',
 	game_choose: 'Choose a game',
+	forgot_password: 'Forgot your password ?',
   },
   fr: {
     welcome: 'FT_TRANSCENDENCE',
@@ -27,7 +28,22 @@ const messages = {
 	enter_passwordx2: 'Entrez votre mot de passe à nouveau',
 	create_account: 'Créer un compte',
 	game_choose: 'Choisissez un jeu',
+	forgot_password: 'Mot de passe oublié ?',
   },
+  es: {
+	welcome: 'FT_TRANSCENDENCE',
+	home: 'Bonvenon',
+	about: 'pri',
+	login: 'ensalutu',
+	sign_up: 'Aliĝu',
+	enter_username: 'Enigu vian uzantonomon',
+	enter_password: 'Enigu vian pasvorton',
+	enter_passwordx2: 'Enigu vian pasvorton denove',
+	create_account: 'Kreu konton',
+	game_choose: 'Elektu ludon',
+	forgot_password: 'Ĉu vi forgesis vian pasvorton ?',
+	
+  }
 };
 
 const i18n = new VueI18n({

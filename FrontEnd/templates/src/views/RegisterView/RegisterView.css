@@ -1,5 +1,41 @@
 
+.small *{
+	font-size: 0.8em;
+  }
+  
+  .medium *{
+	font-size: 1.05em;
+  }
+  
+  .large *{
+	font-size: 1.3em;
+  }
+
+  .small h1{
+	font-size: 1em;
+  }
+  
+  .medium h1{
+	font-size: 2.4em;
+  }
+  
+  .large h1{
+	font-size: 2.5em;
+  }
+  .purple .btn_login{
+	background-color: #800080;
+  }
+  
+  .green .btn_login{
+	background-color: #094d09;
+  }
+  
+  .yellow .btn_login{
+	background-color: #d35e11;
+  }
+
 div.login-page{
+	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.76);
 	border-radius: 20px;
 
@@ -25,7 +61,6 @@ h1{
 	font-size: 2.5em;
 }
 .b_form_input {
-	
 	text-align: center;
     margin-top: 3vh;
 	margin-bottom: 3vh;
@@ -43,7 +78,6 @@ h1{
     box-shadow:  none;
 }
 
-
 .btn_login {
 	margin-top: 30px;
 	padding: 10px;
@@ -51,7 +85,6 @@ h1{
 	padding-right: 2vw;
 	border-color:rgb(255, 255, 255);
 	border-radius: 10px;
-	background-color: #800080;
 	color : white;
 	font-size:large;
 }
