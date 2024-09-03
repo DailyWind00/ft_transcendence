@@ -2,11 +2,11 @@
 	<div class="language-selector-container">
 	  <div class="custom-select" @click="toggleDropdown">
 		<div class="selected-option">
-		  <img :src="flags[selectedLanguage]" class="flag-icon" alt="naguage_selection" />
+		  <img :src="flags[selectedLanguage]" class="flag-icon" alt="language_selection" />
 		</div>
 		<div v-if="isOpen" class="options">
 		  <div v-for="(flag, lang) in flags" :key="lang" class="option" @click="selectLanguage(lang), toggleDropdown()">
-			<img :src="flag" class="flag-icon" alt="languageNames[lang]" />
+			<img :src="flag" class="flag-icon" :alt="lang" />
 		  </div>
 		</div>
 	  </div>
