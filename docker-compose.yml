@@ -49,7 +49,7 @@ services:
       - .env
     ports:
       - "80:80"
-      - "443:443" # Only for backend
+      # - "443:443" # Only for backend
     restart: unless-stopped
     networks:
       - ft_transcendence
@@ -67,4 +67,3 @@ networks:
   ft_transcendence:
     name: ft_transcendence
     driver: bridge
-
