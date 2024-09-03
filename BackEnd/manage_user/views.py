@@ -1,8 +1,8 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
@@ -26,3 +26,11 @@ class LoginView(APIView):
             return Response({"token": token.key})
         else:
             return Response({"error": "Invalid Credentials"}, status=400)
+
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs)
+        user = request.user
+        user.delete()
+        return Response({"message": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
