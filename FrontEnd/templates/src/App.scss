@@ -5,6 +5,17 @@ body, html {
   padding: 0;
   margin: 0;
 }
+.purple #right {
+  background-color: #800080;
+}
+
+.green #right {
+  background-color: #094d09;
+}
+
+.yellow #right {
+  background-color: #d35e11;
+}
 
 .background {
   z-index: -10;
@@ -71,7 +82,6 @@ nav {
     padding: 7px;
     border: 1px solid white;
     border-radius: 10px;
-    background-color: #800080;
     font-size: large;
   }
 
@@ -138,4 +148,11 @@ nav {
   transition: ease all 0.3s;
   color: #747474; /* Highlight color on hover */
 }
+
+@media (max-height: 800px) {
+  html {
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+  }
 

@@ -5,7 +5,7 @@
     <!-- Image de fond -->
     <b-card class="login-page" text-variant="dark">
       <h1>{{$t('login')}}</h1>
-      <b-form @submit.prevent="handleSubmit">
+      <b-form @submit.prevent="sendJSON">
         <div>
           <b-form-input
             id="username-input"
@@ -31,25 +31,80 @@
         <div class="btn_register">
           <router-link class="btn_register" to="/register">{{$t('create_account')}}</router-link>
         </div>
+        <div class="btn_register">
+          <router-link class="btn_register" to="/register">{{$t('forgot_password')}}</router-link>
+        </div>
       </b-form>
     </b-card>
   </b-container>
 </template>
 
+
+
 <script>
+import sendJSON from './../../send_JSON.js';
+
 export default {
+  components: {
+    sendJSON
+  },
   data() {
     return {
-      username: '',
-      password: ''
+      ...sendJSON.data.call(this),
     };
   },
   methods: {
-    handleSubmit() {
-      alert(`Nom d'utilisateur: ${this.username}\nMot de passe: ${this.password}`);
-    }
+  ...sendJSON.methods,
+  sendJSON() {
+    const data = JSON.stringify({
+      "username": this.username,
+      "password": this.password
+    });
+    this.sendRequest(data);
   }
 }
+}
 </script>
+<!-- <script>
+export default {
+	data() {
+	  return {
+		username: '',
+		password: '',
+		responseMessage: '' // Ajout d'une variable pour afficher la réponse
+	  };
+	},
+	methods: {
+  sendJSON() {
+    // Ensure the values are correctly extracted
+    const data = JSON.stringify({ 
+      "username": this.username, 
+      "password": this.password 
+    });
+    
+    // Debugging with a properly formatted alert
+    alert(`bite, username: ${this.username}, password: ${this.password}`);
+    
+    let xhr = new XMLHttpRequest();
+    let url = "dj-rest-auth/login"; // Ensure this URL is correct
+  
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+  
+    // Using an arrow function to retain the `this` context
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          this.responseMessage = xhr.responseText; // Storing the response
+        } else {
+          this.responseMessage = `Erreur: ${xhr.status}`;
+        }
+      }
+    };
+    
+    xhr.send(data);
+  }
+}
+  };</script> -->
 
 <style scoped src="./LoginView.css"></style>

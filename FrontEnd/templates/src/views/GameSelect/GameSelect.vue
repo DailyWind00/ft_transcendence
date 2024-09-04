@@ -10,7 +10,7 @@
         </div>
         <div>
           
-          <b-button class="button"><h2>TICTACTOE</h2><img src="./../../assets/tictactoe.png" alt="tictactoe logo"></b-button>
+          <b-button class="button"><h2>{{$t('tictactoe')}}</h2><img src="./../../assets/tictactoe.png" alt="tictactoe logo"></b-button>
         </div>
       </div>
     </b-container>
