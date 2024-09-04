@@ -1,6 +1,7 @@
 all:
 	@if [ -f oui ];                                                                     \
 	then                                                                                 \
+		sudo chmod -R 777 /var/lib/docker/volumes/ft_transcendence_vault-volume/_data;    \
 		docker compose -f ./docker-compose.yml up -d --build;                             \
 		echo "\033[1;35m> You can go to the website : \033[1;33mhttp://localhost\033[0m";  \
 	else           		                      	 	                                        \

@@ -59,8 +59,45 @@ services:
       timeout: 30s
       retries: 10
 
+  vault:
+    image: vault:1.12.7
+    container_name: vault
+    user: root
+    restart: on-failure:10
+    ports:
+      - "8201:8201"
+    environment:
+      VAULT_ADDR: 'http://0.0.0.0:8201'
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8201",
+              "tls_disable": "1"
+            }
+          }],
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "storage": {
+            "file": {
+              "path": "/data/vault-data"
+            }
+          },
+          "ui": true
+        }
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault-volume:/data
+    healthcheck:
+      retries: 5
+    networks:
+      - ft_transcendence
+
 volumes:
   postgres_data:
+    driver: local
+  vault-volume:
     driver: local
 
 networks:
