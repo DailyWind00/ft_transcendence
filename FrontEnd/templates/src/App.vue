@@ -4,10 +4,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap" rel="stylesheet">
-    <!-- <div class="background">
+    <div class="background">
       <TestThreeJS></TestThreeJS>
     </div>
-         -->
+        
     <LanguageSelector></LanguageSelector>
     <nav id="a">
       <button :class="{'nav-toggle': true, 'is-active': isMenuActive}" @click="toggleMenu">
