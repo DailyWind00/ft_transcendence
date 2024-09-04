@@ -5,11 +5,17 @@ services:
     build:
       context: ./BackEnd
     depends_on:
+      vault:
+        condition: service_healthy
       database:
         condition: service_healthy
-    env_file:
-      - .env
+    environnement:
+      - VAULT_ADDR=${VAULT_INIT_ADDR}
     restart: unless-stopped
+    volumes:
+      - ./volume/vault-data:/vault/file/
+      - ./ssl/certs:/etc/ssl/certs
+      - ./ssl/private:/etc/ssl/private
     networks:
       - ft_transcendence
     healthcheck:
@@ -37,7 +43,7 @@ services:
 
   frontend:
     container_name: frontend
-    hostname: frontend
+    hostname: frontend //
     build:
       context: ./FrontEnd
     depends_on:
@@ -45,14 +51,21 @@ services:
         condition: service_healthy
       database:
         condition: service_healthy
-    env_file:
-      - .env
+      vault:
+        condition: service_healthy
+    environnement:
+      - VAULT_ADDR=${VAULT_INIT_ADDR}
     ports:
       - "80:80"
-      # - "443:443" # Only for backend
+      # - "8000:8000" // for testing
     restart: unless-stopped
     networks:
       - ft_transcendence
+    volumes:
+      - /var/www/html
+      - ./volume/vault-data:/vault/file/
+      - ./ssl/certs:/etc/ssl/certs
+      - ./ssl/private:/etc/ssl/private
     healthcheck:
       test: ["CMD-SHELL", "curl -f https://localhost/health/ || exit 1"]
       interval: 2s
@@ -60,47 +73,60 @@ services:
       retries: 10
 
   vault:
-    image: vault:1.12.7
+    image: hashicorp/vault:1.16
     container_name: vault
-    user: root
-    restart: on-failure:10
-    ports:
-      - "8201:8201"
     environment:
-      VAULT_ADDR: 'http://0.0.0.0:8201'
-      VAULT_LOCAL_CONFIG: |
-        {
-          "listener": [{
-            "tcp": {
-              "address": "0.0.0.0:8201",
-              "tls_disable": "1"
-            }
-          }],
-          "default_lease_ttl": "168h",
-          "max_lease_ttl": "720h",
-          "storage": {
-            "file": {
-              "path": "/data/vault-data"
-            }
-          },
-          "ui": true
-        }
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - vault-volume:/data
-    healthcheck:
-      retries: 5
+      - VAULT_ADDR=${VAULT_ADDR}
+      - VAULT_CACERT=${VAULT_CACERT}
+    ports:
+      - 8200:8200
+    restart: always
     networks:
       - ft_transcendence
+    volumes:
+      - ./images/vault/vault-config.hcl:/vault/config/config.hcl
+      - ./volume/vault-data:/vault/file/
+      - ./images/vault/start-vault.sh:/./start-vault.sh
+      - ./ssl/certs:/etc/vault/certs
+      - ./ssl/private:/etc/vault/private
+    cap_add:
+      - IPC_LOCK
+    entrypoint: ["/bin/sh", "-c", "/start-vault.sh"]
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  vault-init:
+    image: hashicorp/vault:1.16
+    container_name: vault-init
+    restart: on-failure
+    networks:
+      - ft_transcendence
+    env_file: .env
+    environment:
+      - VAULT_ADDR=${VAULT_INIT_ADDR}
+      - MY_VAULT_TOKEN=${MY_VAULT_TOKEN}
+      - VAULT_CACERT=${VAULT_CACERT}
+    volumes:
+      - ./images/vault/vault-init.sh:/usr/local/bin/vault-init.sh
+      - ./volume/vault-data:/vault/file/
+      - ./ssl/certs:/etc/vault/certs
+      - ./ssl/private:/etc/vault/private
+    command: /usr/local/bin/vault-init.sh
+    depends_on:
+      - vault
+
 
 volumes:
   postgres_data:
     driver: local
-  vault-volume:
+  vault-data:
     driver: local
 
 networks:
   ft_transcendence:
     name: ft_transcendence
     driver: bridge
+
