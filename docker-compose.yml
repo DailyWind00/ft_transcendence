@@ -9,15 +9,11 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
     networks:
       - ft_transcendence
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+      test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
@@ -28,7 +24,6 @@ services:
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./DataBase/tools/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - .env
     restart: unless-stopped
@@ -53,10 +48,16 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:80"
+      - "443:443"
+      - "2000:2000" # Backend access
     restart: unless-stopped
     networks:
       - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
+      interval: 2s
+      timeout: 30s
+      retries: 10
 
 volumes:
   postgres_data:
@@ -66,4 +67,3 @@ networks:
   ft_transcendence:
     name: ft_transcendence
     driver: bridge
-

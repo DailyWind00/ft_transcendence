@@ -1,0 +1,16 @@
+**/node_modules
+**/dist
+
+# Ignore logs
+*.log
+
+# Ignore Dockerfile and docker-compose.yml
+Dockerfile
+docker-compose.yml
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore environment files
+.env
