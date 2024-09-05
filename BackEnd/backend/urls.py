@@ -27,4 +27,5 @@ urlpatterns = [
     path('health/', health_check, name='health_check'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('api/accounts/', include('manage_user.urls')),
+	path('pong/', include('pong.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

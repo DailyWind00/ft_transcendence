@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 	'rest_framework.authtoken',
 	'manage_user',
     'corsheaders',
+    'pong',
 ]
 
 MIDDLEWARE = [
