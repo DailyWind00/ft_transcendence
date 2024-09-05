@@ -48,13 +48,13 @@ services:
     env_file:
       - .env
     ports:
-      - "80:80"
-      # - "443:443" # Only for backend
+      - "443:443"
+      - "2000:2000" # Backend access
     restart: unless-stopped
     networks:
       - ft_transcendence
     healthcheck:
-      test: ["CMD-SHELL", "curl -f https://localhost/health/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10

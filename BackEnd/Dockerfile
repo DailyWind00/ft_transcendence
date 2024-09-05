@@ -17,8 +17,7 @@ RUN		pip install --no-cache-dir -r requirements.txt
 # ---
 
 COPY 	. /app/
-COPY 	tools/backend.crt /app/
-COPY 	tools/backend.key /app/
+COPY 	tools/ssl/ /app/
 
 # Python params (less memory usage)
 ENV		PYTHONBUFFERED=1

@@ -2,7 +2,7 @@ export default {
 	methods: {
 	  sendRequest(data) {
 		let xhr = new XMLHttpRequest();
-		let url = "https://localhost/api/accounts/register/";
+		let url = "https://localhost:2000/api/accounts/register/";
   
 		alert("data: " + data);
 		xhr.open("POST", url, true);
