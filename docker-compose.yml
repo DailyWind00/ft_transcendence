@@ -84,11 +84,12 @@ services:
     networks:
       - ft_transcendence
     volumes:
-      - ./Vault/vault-config.hcl:/vault/config/config.hcl
+      - ./Vault/config.hcl:/vault/config/config.hcl
       - ./volume/vault-data:/vault/file/
       - ./Vault/start-vault.sh:/./start-vault.sh
       - ./ssl/certs:/etc/vault/certs
       - ./ssl/private:/etc/vault/private
+      - ./ssl:/ssl
     cap_add:
       - IPC_LOCK
     #entrypoint: ["/bin/sh", "-c", "/start-vault.sh"]
@@ -99,22 +100,25 @@ services:
       retries: 3
 
   vault-init:
-    image: hashicorp/vault:1.13.3
+    #image: hashicorp/vault:1.13.3
     container_name: vault-init
+    build: 
+      context: ./vault-init
     restart: on-failure
     networks:
       - ft_transcendence
     env_file: .env
     environment:
       - VAULT_ADDR=${VAULT_INIT_ADDR}
-      - MY_VAULT_TOKEN=${MY_VAULT_TOKEN}
+      #- MY_VAULT_TOKEN=${MY_VAULT_TOKEN}
       - VAULT_CACERT=${VAULT_CACERT}
     volumes:
-      - ./Vault/vault-init.sh:/usr/local/bin/vault-init.sh
+      - ./vault/vault-init.sh:/usr/local/bin/vault-init.sh
       - ./volume/vault-data:/vault/file/
       - ./ssl/certs:/etc/vault/certs
       - ./ssl/private:/etc/vault/private
-    command: /Vault/vault-init.sh
+      - ./ssl:/ssl
+    #command: /Vault/vault-init.sh
     depends_on:
       - vault
 
