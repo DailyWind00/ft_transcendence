@@ -1,12 +1,12 @@
-FROM vault:1.12.7
+FROM hashicorp/vault:1.13.3
 
-RUN apk update && apk add --no-cache curl jq
 
-faire en https dans un autre dossier le certificat ssl
-faire un script  pour recupere les secret et les injecter dans les variables d'environnement
-une fais les secrets injecter dans les variables d'environnement on peut lancer le serveur django
-faire un script pour lancer le serveur django en mode production et dans le front end on peut recuperer les variables d'environnement
-rules django
-rules vuejs
+COPY vault-config.hcl /vault/config/config.hcl
+COPY start_vault.sh /start_vault.sh
 
-dabord vault depend de vault init 
+
+RUN chmod +x /start_vault.sh
+
+EXPOSE 8200
+
+ENTRYPOINT ["/bin/sh", "/start_vault.sh"]
