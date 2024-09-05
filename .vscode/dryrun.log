@@ -1,0 +1,9 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+'\\wsl.localhost\Ubuntu\home\aurelfrt76\ft_transcendence'
+CMD.EXE a �t� d�marr� avec le chemin d'acc�s comme r�pertoire en
+cours. Les chemins d'acc�s UNC ne sont pas prise en charge. Utilisation
+du r�pertoire Windows par d�faut.
+
+'make.exe' n'est pas reconnu en tant que commande interne
+ou externe, un programme ex�cutable ou un fichier de commandes.
+

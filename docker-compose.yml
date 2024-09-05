@@ -86,41 +86,13 @@ services:
     volumes:
       - ./Vault/config.hcl:/vault/config/config.hcl
       - ./volume/vault-data:/vault/file/
-      - ./Vault/start-vault.sh:/./start-vault.sh
+      - ./Vault/start-vault.sh:/start-vault.sh
       - ./ssl/certs:/etc/vault/certs
       - ./ssl/private:/etc/vault/private
       - ./ssl:/ssl
     cap_add:
       - IPC_LOCK
     #entrypoint: ["/bin/sh", "-c", "/start-vault.sh"]
-    healthcheck:
-      test: ["CMD", "vault status"]
-      interval: 2s
-      timeout: 10s
-      retries: 3
-
-  vault-init:
-    #image: hashicorp/vault:1.13.3
-    container_name: vault-init
-    build: 
-      context: ./vault-init
-    restart: on-failure
-    networks:
-      - ft_transcendence
-    env_file: .env
-    environment:
-      - VAULT_ADDR=${VAULT_INIT_ADDR}
-      #- MY_VAULT_TOKEN=${MY_VAULT_TOKEN}
-      - VAULT_CACERT=${VAULT_CACERT}
-    volumes:
-      - ./vault/vault-init.sh:/usr/local/bin/vault-init.sh
-      - ./volume/vault-data:/vault/file/
-      - ./ssl/certs:/etc/vault/certs
-      - ./ssl/private:/etc/vault/private
-      - ./ssl:/ssl
-    #command: /Vault/vault-init.sh
-    depends_on:
-      - vault
 
 
 volumes:

@@ -7,6 +7,4 @@ COPY start_vault.sh /start_vault.sh
 
 RUN chmod +x /start_vault.sh
 
-EXPOSE 8200
-
-ENTRYPOINT ["/bin/sh", "/start_vault.sh"]
+ENTRYPOINT ["/start_vault.sh"]
