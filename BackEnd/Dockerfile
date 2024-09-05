@@ -23,6 +23,10 @@ COPY 	tools/ssl/ /app/
 ENV		PYTHONBUFFERED=1
 ENV		PYTHONDONTWRITEBYTECODE=1
 
+# Django
 EXPOSE	2000
+
+# Pong Websocket
+EXPOSE	2500
 
 ENTRYPOINT		["sh", "tools/setup.sh"]

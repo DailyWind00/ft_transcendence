@@ -1,4 +1,4 @@
-from websockets.asyncio.server import serve
+from websockets.server import serve
 import asyncio
 import math
 
@@ -107,7 +107,7 @@ class Game:
 
 	async def listen(self):
 		#listening for pending connection
-		async with serve(self.socketHandler, "0.0.0.0", 8001):
+		async with serve(self.socketHandler, "0.0.0.0", 2500):
 			await asyncio.get_running_loop().create_future()
 
 	def composeStartMessage(self):
@@ -244,6 +244,8 @@ class Game:
 
 			#send up-to-date info to both clients
 			await self.sendGameInfo()
+	
+	
 
 if __name__ == "__main__":
 	game = Game()
