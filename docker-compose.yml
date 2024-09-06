@@ -66,6 +66,9 @@ services:
   vault:
     container_name: vault
     hostname: vault
+    volumes:
+      - ./vault/config/vault.hcl:/vault/config/vault.hcl
+      - ./vault/data:/vault/data
     build:
       context: ./Vault
     env_file:
@@ -78,6 +81,8 @@ services:
       interval: 2s
       timeout: 30s
       retries: 10
+    cap_add:
+      - IPC_LOCK
 
 volumes:
   postgres_data:
