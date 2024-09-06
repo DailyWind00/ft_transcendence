@@ -7,6 +7,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      vault:
+        condition: service_healthy
     env_file:
       - .env
     restart: unless-stopped
@@ -45,6 +47,8 @@ services:
         condition: service_healthy
       database:
         condition: service_healthy
+      vault:
+        condition: service_healthy
     env_file:
       - .env
     ports:
@@ -55,6 +59,22 @@ services:
       - ft_transcendence
     healthcheck:
       test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
+      interval: 2s
+      timeout: 30s
+      retries: 10
+
+  vault:
+    container_name: vault
+    hostname: vault
+    build:
+      context: ./Vault
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
