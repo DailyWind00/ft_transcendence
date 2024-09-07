@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import hvac
+
+client = hvac.Client(url=os.getenv('VAULT_ADDR'))
+client.token = os.getenv('VAULT_TOKEN')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,12 +34,13 @@ SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET']
+secret = client.secrets.kv.v2.read_secret_version(path='django')
+SECRET_KEY = secret['data']['data']['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 
-ALLOWED_HOSTS = [os.environ['DJANGO_ALLOWED_HOSTS']]
+ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -94,13 +99,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 import os
 
+db_secret = client.secrets.kv.read_secret_version(path='database')
+POSTGRES_USER = db_secret['data']['data']['POSTGRES_USER']
+POSTGRES_PASSWORD = db_secret['data']['data']['POSTGRES_PASSWORD']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.environ['POSTGRES_HOST'],
         'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
         'PORT': os.environ['POSTGRES_PORT'],
     }
 }

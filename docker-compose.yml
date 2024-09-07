@@ -26,6 +26,9 @@ services:
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    depends_on:
+      vault:
+        condition: service_healthy
     env_file:
       - .env
     restart: unless-stopped
@@ -42,6 +45,9 @@ services:
     hostname: frontend
     build:
       context: ./FrontEnd
+    # volumes:
+    #   - ./FrontEnd/tools/nginx.conf:/etc/nginx/nginx.conf
+    #   - ./FrontEnd/tools/ssl:/etc/nginx/ssl
     depends_on:
       backend:
         condition: service_healthy
@@ -66,9 +72,10 @@ services:
   vault:
     container_name: vault
     hostname: vault
-    volumes:
-      - ./vault/config/vault.hcl:/vault/config/vault.hcl
-      - ./vault/data:/vault/data
+    image: vault:latest
+    # volumes:
+    #   - ./Vault/config/vault.hcl:/vault/config/vault.hcl
+    #   - ./Vault/data:/vault/data
     build:
       context: ./Vault
     env_file:
@@ -76,13 +83,13 @@ services:
     restart: unless-stopped
     networks:
       - ft_transcendence
+    cap_add:
+      - IPC_LOCK
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
-    cap_add:
-      - IPC_LOCK
 
 volumes:
   postgres_data:

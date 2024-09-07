@@ -11,4 +11,4 @@ RUN 	apk add --no-cache curl
 
 EXPOSE 	8200
 
-ENTRYPOINT ["/bin/sh", "start_vault.sh"]
+ENTRYPOINT ["sh", "start_vault.sh"]

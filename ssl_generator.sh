@@ -24,5 +24,6 @@ cp "${BACKEND}/backend.key" "${FRONTEND}/backend.key"
 # Vault
 if [ ! -f "${VAULT}/vault.crt" ]; then
     openssl req -new -x509 -days 3650 -keyout "${VAULT}/vault.key" -out "${VAULT}/vault.crt" -nodes \
-        -subj "/C=FR/O=42LeHavre/CN=transcendance-vault" >/dev/null 2>&1
+        -subj "/C=FR/O=42LeHavre/CN=transcendance-vault" \
+        -addext "subjectAltName=DNS:vault" >/dev/null 2>&1
 fi
