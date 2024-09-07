@@ -26,8 +26,9 @@
           ></b-form-input>
           <b-form-input
             v-size-placeholder
+            v-model="password_2"
             class="b_form_input"
-            id="password-input"
+            id="password-input_2"
             type="password"
             :placeholder="$t('enter_passwordx2')"
             required
@@ -70,12 +71,110 @@ export default {
     ...sendJSON.methods,
     ...GlobalJS.methods,
     sendJSON() {
+    if (this.password !== this.password_2) {
+      this.$toast.error(this.$t('password_mismatch'), {
+      position: "top-center",
+      timeout: 2990,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: false,
+      draggable: false,
+      draggablePercent: 2,
+      showCloseButtonOnHover: false,
+      hideProgressBar: true,
+      closeButton: "button",
+      icon: true,
+      rtl: false
+    });
+    }
+    else {
     const data = JSON.stringify({
       "username": this.username,
       "password": this.password
     });
-    this.sendRequest(data);
+    this.sendRequestRegister(data);
+    this.$toast.success(this.$t('login_success'), {
+    position: "top-center",
+    timeout: 2990,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: false,
+    draggable: false,
+    draggablePercent: 2,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+});
+    this.$router.push('home');
+    }
   }
   },
 }
+</script>
+
+<script>
+import GlobalJS from './../../global.js';
+import sendJSON from './../../send_JSON.js';
+
+export default {
+  mixins: [GlobalJS, sendJSON], // Use mixins instead of components
+  directives: {
+    sizePlaceholder: {
+      inserted(el) {
+        const input = el.querySelector('input');
+        if (input && input.placeholder) {
+          input.setAttribute('size', input.placeholder.length);
+        }
+      }
+    }
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+    sendJSON() {
+      if (this.password !== this.password_2) {
+      this.$toast.error(this.$t('password_mismatch'), {
+      position: "top-center",
+      timeout: 2990,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: false,
+      draggable: false,
+      draggablePercent: 2,
+      showCloseButtonOnHover: false,
+      hideProgressBar: true,
+      closeButton: "button",
+      icon: true,
+      rtl: false
+    });
+    }
+    else {
+      const data = JSON.stringify({
+        username: this.username,
+        password: this.password
+      });
+      this.sendRequestRegister(data);
+      this.$toast.success(this.$t('login_success'), {
+        position: "top-center",
+        timeout: 2990,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: false,
+        draggable: false,
+        draggablePercent: 2,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+      });
+      this.$router.push('home');
+    }
+  }
+  }
+};
 </script>

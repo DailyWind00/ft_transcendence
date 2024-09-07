@@ -10,11 +10,24 @@
         </div>
         <div>
           
-          <b-button class="button"><h2>TICTACTOE</h2><img src="./../../assets/tictactoe.png" alt="tictactoe logo"></b-button>
+          <b-button class="button" @click="launchgame()"><h2>{{$t('tictactoe')}}</h2><img src="./../../assets/tictactoe.png" alt="tictactoe logo"></b-button>
         </div>
       </div>
     </b-container>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+    }
+  },
+  methods: {
+    launchgame() {
+      this.$router.push('/tictactoe/launch');
+    }
+  }
+}
+</script>
 <style src="./GameSelect.css" scoped></style>

@@ -5,6 +5,17 @@ body, html {
   padding: 0;
   margin: 0;
 }
+
+.d *{
+  filter: url('./assets/filters.svg#deuteranopia');
+}
+.t *{
+  filter: url('./assets/filters.svg#tritanopia');
+}
+
+.p *{
+  filter: url('./assets/filters.svg#protanopia');
+}
 .purple #right {
   background-color: #800080;
 }

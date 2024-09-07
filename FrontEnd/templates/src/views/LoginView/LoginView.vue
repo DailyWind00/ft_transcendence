@@ -42,28 +42,50 @@
 
 
 <script>
+import GlobalJS from './../../global.js';
 import sendJSON from './../../send_JSON.js';
 
 export default {
-  components: {
-    sendJSON
+  mixins: [GlobalJS, sendJSON],
+  directives: {
+    sizePlaceholder: {
+      inserted(el) {
+        const input = el.querySelector('input');
+        if (input && input.placeholder) {
+          input.setAttribute('size', input.placeholder.length);
+        }
+      }
+    }
   },
   data() {
     return {
-      ...sendJSON.data.call(this),
     };
   },
   methods: {
-  ...sendJSON.methods,
-  sendJSON() {
-    const data = JSON.stringify({
-      "username": this.username,
-      "password": this.password
-    });
-    this.sendRequest(data);
+    sendJSON() {
+      const data = JSON.stringify({
+        username: this.username,
+        password: this.password
+      });
+      this.sendRequestLogin(data);
+      this.$toast.success(this.$t('login_success'), {
+        position: "top-center",
+        timeout: 2990,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: false,
+        draggable: false,
+        draggablePercent: 2,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+      });
+      this.$router.push('home');
+    }
   }
-}
-}
+};
 </script>
 <!-- <script>
 export default {

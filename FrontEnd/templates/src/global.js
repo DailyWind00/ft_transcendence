@@ -2,7 +2,8 @@ export default {
     data() {
       return {
         my_font_size: localStorage.getItem('my_font_size') || 'medium',
-        my_BG_color: localStorage.getItem('my_BG_color') || 'purple'
+        my_BG_color: localStorage.getItem('my_BG_color') || 'purple' ,
+        my_daltonism: localStorage.getItem('my_daltonism') || 'without'
       };
     },
     methods: {
@@ -23,6 +24,15 @@ export default {
       },
       get_BG_color() {
         return this.my_BG_color;
-      }
+      },
+      set_daltonism(daltonism) {
+        alert("daltonism set to " + daltonism);
+        this.my_daltonism = `${daltonism}`;
+        localStorage.setItem('my_daltonism', this.my_daltonism);
+        window.location.reload();
+      },
+      get_daltonism() {
+        return this.my_daltonism;
+      },
     }
   };

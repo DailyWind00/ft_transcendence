@@ -1,0 +1,34 @@
+@font-face {
+	font-family: Crang;
+	src: url('./../../../assets/Crang.ttf') format('truetype');
+  }
+
+#app {
+	font-family: Crang;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+
+	margin:5vh 30%;
+	max-height: 80vh;
+	padding: 1vh 1vw;
+	flex-direction: column;	
+}
+
+table{
+	border: 1px solid white;
+	border-radius: 3px;
+	margin-bottom: 5vh;
+	margin-top: 5vh;
+}
+
+th, td{
+	border: 1px solid white;
+	padding: 10px;
+	border-radius: 3px;
+	margin-bottom: 1vh;
+}

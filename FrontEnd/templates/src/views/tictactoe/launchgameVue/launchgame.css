@@ -1,0 +1,61 @@
+.app{
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+
+	margin:5vh 30%;
+	max-height: 80vh;
+	padding: 1vh 1vw;
+}
+
+.purple .btn_login{
+	background-color: #800080;
+  }
+  
+  .green .btn_login{
+	background-color: #094d09;
+  }
+  
+  .yellow .btn_login{
+	background-color: #d35e11;
+  }
+
+.input {
+	text-align: center;
+    margin-top: 6vh;
+	margin-bottom: 6vh;
+    border: none;
+    background: linear-gradient(to right, transparent 10%, rgb(255, 255, 255) 10%, rgb(255, 255, 255) 90%, transparent 90%);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+	padding: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    transition: background-size 0.1s ease;
+}
+
+#right {
+	background-color: transparent;
+	margin-top: 3vh;
+}
+.input:focus {
+	color:white;
+    box-shadow:  none;
+	background-color: transparent;
+}
+
+.input::placeholder{
+	
+	color:white;
+	font-style: italic;
+}
+
+.button {
+	padding: 10px;
+	padding-left: 2vw;
+	padding-right: 2vw;
+	margin: 0 1vw;
+	border-color:rgb(255, 255, 255);
+	border-radius: 10px;
+	color : white;
+}

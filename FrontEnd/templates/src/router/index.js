@@ -50,6 +50,21 @@ const routes = [
     component: () => import('../views/SettingView/SettingView.vue')
 
   },
+  {
+    path: '/tictactoe/game',
+    name: 'tictactoe_game',
+    component: () => import('../views/tictactoe/gamevue/gameVue.vue')
+  },
+  {
+    path: '/tictactoe/launch',
+    name: 'tictactoe_launch',
+    component: () => import('../views/tictactoe/launchgameVue/launchgame.vue')
+  },
+  {
+    path: '/tictactoe/history',
+    name: 'tictactoe_history',
+    component: () => import('../views/tictactoe/historyview/historyVue.vue')
+  },
 ]
 
 const router = new VueRouter({

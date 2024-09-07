@@ -1,0 +1,12 @@
+@font-face {
+	font-family: Crang;
+	src: url('./../../assets/Crang.ttf') format('truetype');
+  }
+
+h1{
+	font-family: Crang;
+	position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+	top: 10%;
+}
