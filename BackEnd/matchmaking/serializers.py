@@ -17,7 +17,6 @@ class RoomSerializer(serializers.ModelSerializer):
         player1_data = validated_data.pop('player1')
         player2_data = validated_data.pop('player2')
         
-        # Assuming you have User objects available
         player1 = User.objects.get(id=player1_data['id'])
         player2 = User.objects.get(id=player2_data['id'])
         
