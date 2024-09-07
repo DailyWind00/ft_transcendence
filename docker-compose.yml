@@ -13,6 +13,7 @@ services:
     networks:
       - ft_transcendence
     ports:
+      - "2000:2000"
       - "2500:2500" # Websocket access
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]
@@ -51,7 +52,7 @@ services:
       - .env
     ports:
       - "443:443"
-      - "2000:2000" # Backend access, to remove
+      #- "2000:2000" # Backend access, to remove
     restart: unless-stopped
     networks:
       - ft_transcendence
