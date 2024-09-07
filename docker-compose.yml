@@ -5,6 +5,8 @@ services:
     build:
       context: ./BackEnd
     depends_on:
+      redis:
+        condition: service_healthy
       database:
         condition: service_healthy
     env_file:
@@ -55,6 +57,19 @@ services:
       - ft_transcendence
     healthcheck:
       test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
+      interval: 2s
+      timeout: 30s
+      retries: 10
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
       interval: 2s
       timeout: 30s
       retries: 10
