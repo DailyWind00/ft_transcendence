@@ -9,6 +9,8 @@ services:
         condition: service_healthy
       vault:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     env_file:
       - .env
     restart: unless-stopped
@@ -84,6 +86,19 @@ services:
       - IPC_LOCK
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
+      interval: 2s
+      timeout: 30s
+      retries: 10
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
       interval: 2s
       timeout: 30s
       retries: 10
