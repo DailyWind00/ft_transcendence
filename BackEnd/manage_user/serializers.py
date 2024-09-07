@@ -22,11 +22,24 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
-    #api login ???
     def to_representation(self, instance):
-        # Si l'utilisateur est anonymisé, ajustez la réponse
         ret = super().to_representation(instance)
         if instance.is_anonymous:
             ret['username'] = "anonymous"
         return ret
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+    
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("This username is already taken.")
+        return value
+
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.save()
+        return instance

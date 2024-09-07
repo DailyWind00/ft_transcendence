@@ -34,3 +34,11 @@ class DeleteAccountView(APIView):
         user = request.user
         user.delete()
         return Response({"message": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 	'manage_user',
     'matchmaking',
     'corsheaders',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -158,3 +159,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Si tu veux aussi utiliser Redis pour stocker les résultats des tâches
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'anonymize_users_every_day': {
+        'task': 'your_app.tasks.anonymize_old_users',
+        'schedule': 86400.0,  # Exécuter la tâche une fois par jour (en secondes)
+    },
+}
+
+# Ajouter Celery Beat Scheduler
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
