@@ -12,6 +12,7 @@ vault operator unseal $UNSEAL_KEY
 # Get Root Token
 ROOT_TOKEN=$(grep 'Initial Root Token:' /vault/config/init-keys.txt | awk '{print $NF}')
 export VAULT_TOKEN=$ROOT_TOKEN
+echo $VAULT_TOKEN > /shared_data/vault_token.txt
 
 # Create secrets
 vault secrets enable -path=secret kv

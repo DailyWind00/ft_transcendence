@@ -1,5 +1,5 @@
 .env
 venv/
-BackEnd/tools/ssl/
-FrontEnd/tools/ssl/
-Vault/tools/ssl/
+BackEnd/tools/ssl/*
+FrontEnd/tools/ssl/*
+Vault/tools/ssl/*

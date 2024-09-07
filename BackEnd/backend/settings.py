@@ -14,8 +14,11 @@ from pathlib import Path
 import os
 import hvac
 
-client = hvac.Client(url=os.getenv('VAULT_ADDR'))
-client.token = os.getenv('VAULT_TOKEN')
+client = hvac.Client(
+    url=os.getenv('VAULT_ADDR'),
+    token=os.getenv('VAULT_TOKEN'),
+    cert=(os.getenv('VAULT_CACERT'), os.getenv('VAULT_CACERT'))
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +37,7 @@ SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-secret = client.secrets.kv.v2.read_secret_version(path='django')
+secret = client.secrets.kv.v2.read_secret_version(path='secret/django')
 SECRET_KEY = secret['data']['data']['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -99,7 +102,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 import os
 
-db_secret = client.secrets.kv.read_secret_version(path='database')
+db_secret = client.secrets.kv.read_secret_version(path='secret/database')
 POSTGRES_USER = db_secret['data']['data']['POSTGRES_USER']
 POSTGRES_PASSWORD = db_secret['data']['data']['POSTGRES_PASSWORD']
 

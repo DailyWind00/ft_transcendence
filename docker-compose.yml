@@ -2,6 +2,8 @@ services:
   backend:
     container_name: backend
     hostname: backend
+    volumes:
+      - shared_data:/shared_data
     build:
       context: ./BackEnd
     depends_on:
@@ -44,9 +46,6 @@ services:
     hostname: frontend
     build:
       context: ./FrontEnd
-    # volumes:
-    #   - ./FrontEnd/tools/nginx.conf:/etc/nginx/nginx.conf
-    #   - ./FrontEnd/tools/ssl:/etc/nginx/ssl
     depends_on:
       backend:
         condition: service_healthy
@@ -72,9 +71,8 @@ services:
     container_name: vault
     hostname: vault
     image: vault:latest
-    # volumes:
-    #   - ./Vault/config/vault.hcl:/vault/config/vault.hcl
-    #   - ./Vault/data:/vault/data
+    volumes:
+      - shared_data:/shared_data
     build:
       context: ./Vault
     env_file:
@@ -105,6 +103,8 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  shared_data:
     driver: local
 
 networks:

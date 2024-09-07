@@ -5,7 +5,7 @@ FRONTEND="./FrontEnd/tools/ssl"
 BACKEND="./BackEnd/tools/ssl"
 VAULT="./Vault/tools/ssl"
 
-mkdir -p "$FRONTEND" "$BACKEND"
+mkdir -p "$FRONTEND" "$BACKEND" "$VAULT"
 
 # Frontend
 if [ ! -f "${FRONTEND}/frontend.crt" ]; then
