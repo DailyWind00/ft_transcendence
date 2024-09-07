@@ -1,8 +1,8 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
-from .views import MatchmakingViewSet
+from .views import MatchmakingViewSet, MatchCreateView
 
-router = DefaultRouter()
-router.register(r'matchmaking', MatchmakingViewSet, basename='matchmaking')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('join_queue/', MatchmakingViewSet.as_view({'post': 'join_queue'}), name='join_queue'),
+    path('active_room/', MatchmakingViewSet.as_view({'get': 'get_active_room'}), name='active_room'),
+    path('match/', MatchCreateView.as_view(), name='match-create'),
+]

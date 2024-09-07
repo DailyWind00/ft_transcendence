@@ -14,6 +14,7 @@ services:
       - ft_transcendence
     ports:
       - "2000:2000"
+      - "2000:2000"
       - "2500:2500" # Websocket access
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]
@@ -52,7 +53,7 @@ services:
       - .env
     ports:
       - "443:443"
-      # - "2000:2000" # Backend access, to remove
+      - "2000:2000" # Backend access, to remove
     restart: unless-stopped
     networks:
       - ft_transcendence
@@ -62,6 +63,14 @@ services:
       timeout: 30s
       retries: 10
 
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+  
 volumes:
   postgres_data:
     driver: local
