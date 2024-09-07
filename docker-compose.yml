@@ -62,6 +62,14 @@ services:
       timeout: 30s
       retries: 10
 
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+  
 volumes:
   postgres_data:
     driver: local

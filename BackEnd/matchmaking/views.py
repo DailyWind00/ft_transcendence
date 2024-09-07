@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, generics
 from django.contrib.auth.models import User
 from .models import Room, Match
 from .serializers import RoomSerializer, MatchSerializer
@@ -7,6 +7,10 @@ import redis
 from django.http import JsonResponse
 
 r = redis.Redis()
+
+class MatchCreateView(generics.CreateAPIView):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
 
 class MatchmakingViewSet(viewsets.ViewSet):
     def join_queue(self, request):
