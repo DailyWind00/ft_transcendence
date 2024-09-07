@@ -3,11 +3,15 @@
 # Start Vault
 vault server -config=/vault/config/config.hcl &
 sleep 5
-vault operator init -key-shares=1 -key-threshold=1 > /vault/config/init-keys.txt # Save keys to file
+vault operator init -key-shares=1 -key-threshold=1 > /vault/config/init-keys.txt
 
 # Unseal Vault
 UNSEAL_KEY=$(grep 'Unseal Key 1:' /vault/config/init-keys.txt | awk '{print $NF}')
 vault operator unseal $UNSEAL_KEY
+
+# Get Root Token
+ROOT_TOKEN=$(grep 'Initial Root Token:' /vault/config/init-keys.txt | awk '{print $NF}')
+export VAULT_TOKEN=$ROOT_TOKEN
 
 # Create secrets
 vault secrets enable -path=secret kv
@@ -21,11 +25,10 @@ vault kv put secret/django                                             \
 vault kv put secret/Postgres                                           \
 	POSTGRES_PASSWORD=ft_transcendence
 
-
-# Policies
+# Create Policies
 echo 'path "secret/django/*" {
   capabilities = ["read"]
-}' vault policy write django-policy -
+}' | vault policy write django-policy -
 
 echo 'path "secret/Postgres/*" {
   capabilities = ["read"]
