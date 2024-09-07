@@ -23,7 +23,7 @@ vault kv put secret/django                                             \
 	DJANGO_SUPERUSER_PASSWORD="trans123"
 
 # - Postgres
-vault kv put secret/Postgres                                           \
+vault kv put secret/postgres                                           \
 	POSTGRES_PASSWORD=ft_transcendence
 
 # Create Policies

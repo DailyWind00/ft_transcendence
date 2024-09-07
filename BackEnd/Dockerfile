@@ -18,8 +18,6 @@ RUN		pip install --no-cache-dir -r requirements.txt
 
 COPY 	. /app/
 COPY 	tools/ssl/ /app/
-COPY 	tools/ssl/vault.crt /etc/vault/certs/vault.crt
-COPY 	tools/ssl/vault.key /etc/vault/certs/vault.key
 
 # Python params (less memory usage)
 ENV		PYTHONBUFFERED=1

@@ -17,7 +17,7 @@ import hvac
 client = hvac.Client(
     url=os.getenv('VAULT_ADDR'),
     token=os.getenv('VAULT_TOKEN'),
-    cert=(os.getenv('VAULT_CACERT'), os.getenv('VAULT_CACERT'))
+    cert=("vault.crt", "vault.key"),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 import os
 
-db_secret = client.secrets.kv.read_secret_version(path='secret/database')
+db_secret = client.secrets.kv.read_secret_version(path='secret/postgres')
 POSTGRES_USER = db_secret['data']['data']['POSTGRES_USER']
 POSTGRES_PASSWORD = db_secret['data']['data']['POSTGRES_PASSWORD']
 
