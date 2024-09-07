@@ -1,25 +1,50 @@
 export default {
 	methods: {
-	  sendRequestRegister(data) {
-		let xhr = new XMLHttpRequest();
-		let url = "https://localhost:2000/api/accounts/register/";
-  
-		alert("data: " + data);
-		xhr.open("POST", url, true);
-		xhr.setRequestHeader("Content-Type", "application/json");
-  
-		xhr.onreadystatechange = () => {
-		  if (xhr.readyState === 4) {
-			if (xhr.status === 200) {
-			  this.responseMessage = xhr.responseText;
-			} else {
-			  this.responseMessage = `Erreur: ${xhr.status}`;
-			}
-		  }
-		};
-  
-		xhr.send(data);
-	  },
+		sendRequestRegister(data) {
+			let xhr = new XMLHttpRequest();
+			let url = "https://localhost:2000/api/accounts/register/";
+		
+			alert("data: " + JSON.stringify(data));
+		
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-Type", "application/json");
+		
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200 || xhr.status === 201) {
+						let responseJson = JSON.parse(xhr.responseText);
+						let idNumber = responseJson.id;
+
+						localStorage.setItem('idNumber', idNumber);
+						this.sendRequestLogin(data);
+						// this.responseMessage = response.message;
+						// this.$toast.success(this.$t('login_sucess'), {
+						// 	position: "top-center",
+						// 	timeout: 2990,
+						// 	closeOnClick: true,
+						// 	pauseOnFocusLoss: true,
+						// 	pauseOnHover: false,
+						// 	draggable: false,
+						// 	draggablePercent: 2,
+						// 	showCloseButtonOnHover: false,
+						// 	hideProgressBar: true,
+						// 	closeButton: "button",
+						// 	icon: true,
+						// 	rtl: false
+						// });
+						// this.$router.push('home');
+					} else {
+						let errorResponse = JSON.parse(xhr.responseText);
+						let final = errorResponse.error + errorResponse.username + errorResponse.email + errorResponse.password;
+						this.$toast.error(`Erreur: ${xhr.status} - ${final}`, {
+							position: "top-center",
+							timeout: 2990
+						});
+					}
+				}
+			};		
+			xhr.send(data);
+		},
 	  sendRequestLogin(data) {
 		let xhr = new XMLHttpRequest();
 		let url = "https://localhost:2000/api/accounts/login/";
@@ -29,44 +54,38 @@ export default {
 	
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
+				if (xhr.status === 200 || xhr.status === 201) {
 					let responseJson = JSON.parse(xhr.responseText);
 					let token = responseJson.token;
-	
-					this.responseMessage = `Jeton récupéré: ${token}`;
-	
+					
 					localStorage.setItem('authToken', token);
-	
-					this.makeAuthenticatedRequest(token);
+					this.$router.push('/gameselect');
+					this.$toast.success(this.$t('login_success'), {
+						position: "top-center",
+						timeout: 2990,
+						closeOnClick: true,
+						pauseOnFocusLoss: true,
+						pauseOnHover: false,
+						draggable: false,
+						draggablePercent: 2,
+						showCloseButtonOnHover: false,
+						hideProgressBar: true,
+						closeButton: "button",
+						icon: true,
+						rtl: false
+					});
+					
 				} else {
-					this.responseMessage = `Erreur: ${xhr.status}`;
+					let errorResponse = JSON.parse(xhr.responseText);
+					this.$toast.error((this.$t('login_success') ,` ${xhr.status} - ${errorResponse.error}`), {
+						position: "top-center",
+						timeout: 2990
+					});
 				}
 			}
 		};
 		
 		xhr.send(data);
-		alert("response:" , xhr.responseText);
 	},
-	makeAuthenticatedRequest(token) {
-		let xhr = new XMLHttpRequest();
-		let url = "https://localhost/api/protected/resource";
-	
-		xhr.open("GET", url, true);
-		xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-		xhr.setRequestHeader("Content-Type", "application/json");
-	
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					let responseJson = JSON.parse(xhr.responseText);
-					this.responseMessage = `Réponse du serveur: ${JSON.stringify(responseJson)}`;
-				} else {
-					this.responseMessage = `Erreur lors de la requête authentifiée: ${xhr.status}`;
-				}
-			}
-		};
-	
-		xhr.send();
-	}
-	}
-  };
+  }
+}

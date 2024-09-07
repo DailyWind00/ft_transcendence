@@ -38,6 +38,7 @@
         <div class="btn_register"><router-link class="btn_register" to="/login">{{$t('login')}}</router-link></div>
       </b-form>
     </b-card>
+    <button @click="test()">test</button>
   </b-container>
 </template>
 
@@ -93,25 +94,15 @@ export default {
       "password": this.password
     });
     this.sendRequestRegister(data);
-    this.$toast.success(this.$t('login_success'), {
-    position: "top-center",
-    timeout: 2990,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: false,
-    draggable: false,
-    draggablePercent: 2,
-    showCloseButtonOnHover: false,
-    hideProgressBar: true,
-    closeButton: "button",
-    icon: true,
-    rtl: false
-});
-    this.$router.push('home');
+    
     }
-  }
+  },
+  test() {
+    console.log('test');
+    this.$router.push('/gameselect');
   },
 }
+};
 </script>
 
 <script>
@@ -158,21 +149,6 @@ export default {
         password: this.password
       });
       this.sendRequestRegister(data);
-      this.$toast.success(this.$t('login_success'), {
-        position: "top-center",
-        timeout: 2990,
-        closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: false,
-        draggable: false,
-        draggablePercent: 2,
-        showCloseButtonOnHover: false,
-        hideProgressBar: true,
-        closeButton: "button",
-        icon: true,
-        rtl: false
-      });
-      this.$router.push('home');
     }
   }
   }

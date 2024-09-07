@@ -68,21 +68,6 @@ export default {
         password: this.password
       });
       this.sendRequestLogin(data);
-      this.$toast.success(this.$t('login_success'), {
-        position: "top-center",
-        timeout: 2990,
-        closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: false,
-        draggable: false,
-        draggablePercent: 2,
-        showCloseButtonOnHover: false,
-        hideProgressBar: true,
-        closeButton: "button",
-        icon: true,
-        rtl: false
-      });
-      this.$router.push('home');
     }
   }
 };

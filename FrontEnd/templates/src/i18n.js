@@ -38,6 +38,9 @@ const messages = {
 	tritanopia: 'Tritanopia',
 	daltonism: 'Daltonism',
 	without: 'Without',
+	error: 'Error',
+	launch_tictactoe: 'Launch Tic Tac Toe',
+	player_names: 'Insert player names',
   },
   fr: {
     welcome: 'FT_TRANSCENDENCE',
@@ -73,6 +76,9 @@ const messages = {
 	tritanopia: 'Tritanopie',
 	daltonism: 'Daltonisme',
 	without: 'Sans',
+	error: 'Erreur',
+	launch_tictactoe: 'Lancer Morpion',
+	player_names: 'Insérer les noms des joueurs',
   },
   es: {
 	welcome: 'FT_TRANSCENDENCE',
@@ -108,6 +114,9 @@ const messages = {
 	tritanopia: 'Tritanopia',
 	daltonism: 'Daltonismo',
 	without: 'Sen',
+	error: 'Eraro',
+	launch_tictactoe: 'Ekzecu Tic Tac Toe',
+	player_names: 'Enmetu ludantonomojn',
   }
 };
 
