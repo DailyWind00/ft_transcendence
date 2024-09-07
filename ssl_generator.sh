@@ -27,3 +27,5 @@ if [ ! -f "${VAULT}/vault.crt" ]; then
         -subj "/C=FR/O=42LeHavre/CN=transcendance-vault" \
         -addext "subjectAltName=DNS:vault" >/dev/null 2>&1
 fi
+cp "${VAULT}/vault.crt" "${BACKEND}/vault.crt"
+cp "${VAULT}/vault.key" "${BACKEND}/vault.key"
