@@ -8,6 +8,7 @@ COPY	tools/requirements.txt /app/
 # Python & django installation
 RUN		apt update -y
 RUN		apt upgrade -y
+RUN		apt install jq -y
 RUN		apt install python3-pip -y
 RUN		apt install python3-venv -y
 RUN		python3 -m venv venv

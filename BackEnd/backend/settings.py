@@ -50,7 +50,7 @@ SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 secret = client.secrets.kv.read_secret_version(path='django')
-SECRET_KEY = secret['data']['data']['DJANGO_SECRET']
+SECRET_KEY = secret['data']['DJANGO_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
@@ -111,14 +111,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 db_secret = client.secrets.kv.read_secret_version(path='postgres')
-POSTGRES_USER = db_secret['data']['data']['POSTGRES_USER']
-POSTGRES_PASSWORD = db_secret['data']['data']['POSTGRES_PASSWORD']
+# POSTGRES_USER = db_secret['data']['POSTGRES_USER']
+POSTGRES_PASSWORD = db_secret['data']['POSTGRES_PASSWORD']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB'),
-        'USER': POSTGRES_USER,
+        'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': POSTGRES_PASSWORD,
         'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': os.getenv('POSTGRES_PORT'),
