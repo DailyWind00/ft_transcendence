@@ -1,6 +1,8 @@
 from websockets.server import serve
 import asyncio
 import math
+import ssl
+import pathlib
 
 #Timing related constants
 SERVER_TICK_DELAY      = 0.016	#in milliseconds
@@ -93,11 +95,12 @@ class Ball:
 		self.speed = Point(0.2, 0)
 
 class Game:
-	def __init__(self):
+	def __init__(self, ssl_context):
 		self.connectionNumber = 0
 		self.players = list()
 		self.ball = Ball(0, 0, 0.5)
 		self.timer = Timer(1)
+		self.ssl_context = ssl_context
 
 	def getPlayerFromSocket(self, webSocket):
 		for player in self.players:
@@ -107,7 +110,8 @@ class Game:
 
 	async def listen(self):
 		#listening for pending connection
-		async with serve(self.socketHandler, "localhost", 2500):
+		print("starting to listen")
+		async with serve(self.socketHandler, "0.0.0.0", 2500):
 			await asyncio.get_running_loop().create_future()
 
 	def composeStartMessage(self):
@@ -196,6 +200,8 @@ class Game:
 		await self.players[1].send(message[1])
 
 	async def socketHandler(self, webSocket):
+		print("connection caught")
+
 		#Update number of connection and add player to list
 		self.connectionNumber += 1
 		self.players.append(Player(webSocket, self.connectionNumber))
@@ -244,10 +250,16 @@ class Game:
 
 			#send up-to-date info to both clients
 			await self.sendGameInfo()
-	
-	
 
 if __name__ == "__main__":
-	game = Game()
+	ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+	localhost_crt = pathlib.Path(__file__).with_name("localhost.pem")
+	print(localhost_crt)
+	#localhost_key = pathlib.PurePath("./tools/ssl/backend.key")
+	ssl_context.load_cert_chain(localhost_crt)
+
+	game = Game(ssl_context)
+	
+	print("Pong serv Successfully started")
 
 	asyncio.run(game.listen())
