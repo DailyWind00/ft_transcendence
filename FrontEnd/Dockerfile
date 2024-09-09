@@ -44,6 +44,6 @@ RUN     wget https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js
 # Download vue
 RUN     wget https://cdn.jsdelivr.net/npm/vue/dist/vue.js
 
-EXPOSE	80
+EXPOSE	443                     
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
