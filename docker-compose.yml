@@ -2,12 +2,18 @@ services:
   backend:
     container_name: backend
     hostname: backend
+    volumes:
+      - shared_data:/shared_data
     build:
       context: ./BackEnd
     depends_on:
       redis:
         condition: service_healthy
       database:
+        condition: service_healthy
+      vault:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     env_file:
       - .env
@@ -47,6 +53,8 @@ services:
         condition: service_healthy
       database:
         condition: service_healthy
+      vault:
+        condition: service_healthy
     env_file:
       - .env
     ports:
@@ -58,6 +66,28 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
       interval: 2s
+      timeout: 30s
+      retries: 10
+
+  vault:
+    container_name: vault
+    hostname: vault
+    image: vault:latest
+    volumes:
+      - shared_data:/shared_data
+    build:
+      context: ./Vault
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - ft_transcendence
+    cap_add:
+      - IPC_LOCK
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
+      interval: 2s
+      start_period: 5s
       timeout: 30s
       retries: 10
 
@@ -76,6 +106,8 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  shared_data:
     driver: local
 
 networks:
