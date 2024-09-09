@@ -7,6 +7,8 @@ services:
     build:
       context: ./BackEnd
     depends_on:
+      redis:
+        condition: service_healthy
       database:
         condition: service_healthy
       vault:
