@@ -2,9 +2,7 @@
 
 # Start Vault
 vault server -config=/vault/config/config.hcl &
-until vault status 2>/dev/null | grep -q 'Initialized'; do
-    sleep 1
-done
+sleep 5
 
 # Initialize Vault
 vault operator init -key-shares=1 -key-threshold=1 > /vault/config/init-keys.txt
@@ -20,13 +18,13 @@ export VAULT_TOKEN=$(grep 'Initial Root Token:' /vault/config/init-keys.txt | aw
 vault secrets enable -path=secret kv
 
 # - Django
-vault kv put secret/data/django                                             \
-	DJANGO_SECRET="cenkuaop=l+w7c!n4)s&cp_juh!mf4cil9z=pxft==ea64wki*" \
-	DJANGO_SUPERUSER_PASSWORD="trans123"
+vault kv put secret/data/django                          \
+	DJANGO_SECRET="$DJANGO_SECRET"                         \
+	DJANGO_SUPERUSER_PASSWORD="$DJANGO_SUPERUSER_PASSWORD" \
 
 # - Postgres
-vault kv put secret/data/postgres                                           \
-	POSTGRES_PASSWORD=ft_transcendence
+vault kv put secret/data/postgres        \
+	POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
 
 # Create Policies
 echo 'path "secret/data/django/*" {
