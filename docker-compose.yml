@@ -13,8 +13,6 @@ services:
     networks:
       - ft_transcendence
     ports:
-      - "2000:2000"
-      - "2000:2000"
       - "2500:2500" # Websocket access
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:2000/health/ || exit 1"]

@@ -107,7 +107,7 @@ class Game:
 
 	async def listen(self):
 		#listening for pending connection
-		async with serve(self.socketHandler, "0.0.0.0", 2500):
+		async with serve(self.socketHandler, "localhost", 2500):
 			await asyncio.get_running_loop().create_future()
 
 	def composeStartMessage(self):
