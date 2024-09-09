@@ -1,43 +1,33 @@
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status, viewsets, generics
 from django.contrib.auth.models import User
-from .models import Room, Match
-from .serializers import RoomSerializer, MatchSerializer
+from .models import Match
 import redis
-from django.http import JsonResponse
 
-r = redis.Redis()
+redis_instance = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-class MatchCreateView(generics.CreateAPIView):
-    queryset = Match.objects.all()
-    serializer_class = MatchSerializer
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def join_matchmaking(request):
+    player = request.user
 
-class MatchmakingViewSet(viewsets.ViewSet):
-    def join_queue(self, request):
-        player = request.user
-        r.lpush('matchmaking_queue', player.id)
-        return Response({"message": "You are in the queue."}, status=status.HTTP_200_OK)
+    redis_instance.rpush('matchmaking_queue', player.id)
 
-    def create_room(self):
-        if r.llen('matchmaking_queue') >= 2:
-            player1_id = r.rpop('matchmaking_queue')
-            player2_id = r.rpop('matchmaking_queue')
-            player1 = User.objects.get(id=player1_id)
-            player2 = User.objects.get(id=player2_id)
-            
-            match = Match.objects.create(player1=player1, player2=player2, start_time=timezone.now())
-            room = Room.objects.create(player1=player1, player2=player2, match=match)
+    if redis_instance.llen('matchmaking_queue') >= 2:
+        player1_id = redis_instance.lpop('matchmaking_queue').decode('utf-8')
+        player2_id = redis_instance.lpop('matchmaking_queue').decode('utf-8')
 
-            return room
-        return None
+        player1 = User.objects.get(id=player1_id)
+        player2 = User.objects.get(id=player2_id)
 
-    def get_active_room(self, request):
-        player = request.user
-        room = Room.objects.filter(is_active=True).filter(player1=player).first() or \
-               Room.objects.filter(is_active=True).filter(player2=player).first()
-        
-        if room:
-            serializer = RoomSerializer(room)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "No active room found"}, status=status.HTTP_404_NOT_FOUND)
+        match = Match.objects.create(player1=player1, player2=player2, status='in_progress')
+
+        return Response({
+            'match_id': match.id,
+            'player1': player1.username,
+            'player2': player2.username,
+            'status': match.status
+        })
+
+    return Response({'status': 'waiting'})

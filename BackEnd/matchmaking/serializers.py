@@ -1,17 +1,13 @@
 from rest_framework import serializers
-from .models import Match, Room
+from .models import Match
 
 class MatchSerializer(serializers.ModelSerializer):
+    player1 = serializers.StringRelatedField()
+    player2 = serializers.StringRelatedField()
+
     class Meta:
         model = Match
-        fields = ['player1', 'player2', 'player1_score', 'player2_score', 'start_time', 'end_time', 'winner']
-
-class RoomSerializer(serializers.ModelSerializer):
-    match = MatchSerializer()
-
-    class Meta:
-        model = Room
-        fields = ['player1', 'player2', 'match', 'is_active']
+        fields = ['id', 'player1', 'player2', 'status', 'created_at']
 
     def create(self, validated_data):
         player1_data = validated_data.pop('player1')
