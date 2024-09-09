@@ -253,10 +253,10 @@ class Game:
 
 if __name__ == "__main__":
 	ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-	localhost_crt = pathlib.Path(__file__).with_name("localhost.pem")
+	localhost_crt = pathlib.PurePath("./tools/ssl/backend.crt")
 	print(localhost_crt)
-	#localhost_key = pathlib.PurePath("./tools/ssl/backend.key")
-	ssl_context.load_cert_chain(localhost_crt)
+	localhost_key = pathlib.PurePath("./tools/ssl/backend.key")
+	ssl_context.load_cert_chain(certfile=localhost_crt, keyfile=localhost_key)
 
 	game = Game(ssl_context)
 	
