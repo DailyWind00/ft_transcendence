@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
+from .serializers import UserProfileSerializer
 
 User = get_user_model()
 

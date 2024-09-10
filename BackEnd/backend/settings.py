@@ -179,15 +179,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Si tu veux aussi utiliser Redis pour stocker les résultats des tâches
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 CELERY_BEAT_SCHEDULE = {
     'anonymize_users_every_day': {
         'task': 'your_app.tasks.anonymize_old_users',
-        'schedule': 86400.0,  # Exécuter la tâche une fois par jour (en secondes)
+        'schedule': 86400.0, # 1 day
     },
 }
 

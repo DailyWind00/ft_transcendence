@@ -11,8 +11,6 @@ RUN		apt upgrade -y
 RUN		apt install jq -y
 RUN		apt install python3-pip -y
 RUN		apt install python3-venv -y
-RUN		python3 -m venv venv
-RUN		. venv/bin/activate
 RUN 	pip install --upgrade pip
 RUN		pip install --no-cache-dir -r requirements.txt
 # ---
@@ -25,6 +23,9 @@ COPY 	tools/ssl/vault.key /etc/vault/certs/
 # Python params (less memory usage)
 ENV		PYTHONBUFFERED=1
 ENV		PYTHONDONTWRITEBYTECODE=1
+
+# Change user to non-root for celery
+RUN useradd -ms /bin/bash celeryuser
 
 EXPOSE	2000
 

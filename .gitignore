@@ -3,3 +3,4 @@ venv/
 BackEnd/tools/ssl/*
 FrontEnd/tools/ssl/*
 Vault/tools/ssl/*
+.vscode/
