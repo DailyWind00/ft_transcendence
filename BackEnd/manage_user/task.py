@@ -13,6 +13,6 @@ def anonymiser_utilisateurs():
 
     # Parcourir et anonymiser les utilisateurs
     for utilisateur in utilisateurs_a_anonymiser:
-        utilisateur.nom = 'Anonyme'
+        utilisateur.username = 'Anonyme'
         utilisateur.email = f'anonyme_{utilisateur.id}@example.com'
         utilisateur.save()
