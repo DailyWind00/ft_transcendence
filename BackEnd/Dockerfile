@@ -12,7 +12,7 @@ RUN		apt install jq -y
 RUN		apt install python3-pip -y
 RUN		apt install python3-venv -y
 RUN 	pip install --upgrade pip
-RUN		pip install --no-cache-dir -r requirements.txt
+RUN		pip install -U --no-cache-dir -r requirements.txt
 # ---
 
 COPY 	. /app/
