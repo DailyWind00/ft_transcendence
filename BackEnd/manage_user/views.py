@@ -43,3 +43,18 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class AnonymizeAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        user.username = 'Anonyme'
+        user.email = f"anonyme{user.id}@exemple.com"
+        user.first_name = 'Anonyme'
+        user.last_name = ''
+        user.save()
+
+        return Response({'message': 'Compte anonymisé avec succès'})
