@@ -1,0 +1,64 @@
+@font-face {
+	font-family: Crang;
+	src: url('./../../../assets/Crang.ttf') format('truetype');
+  }
+
+#app {
+	font-family: Crang;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+
+	margin:5vh 30%;
+	max-height: 80vh;
+	min-height: 50vh;
+	padding: 1vh 1vw;
+	flex-direction: column;	
+}
+
+table{
+	border: 1px solid white;
+	border-radius: 3px;
+	margin-bottom: 5vh;
+	margin-top: 5vh;
+}
+
+th, td{
+	border: 1px solid white;
+	padding: 10px;
+	border-radius: 3px;
+	margin-bottom: 1vh;
+}
+
+@media (max-width: 768px) {
+	#app {
+	  margin: 5vh 5%;
+	  padding: 2vh 2vw;
+	}
+	
+	table, th, td {
+	  font-size: 12px; /* Reduce font size for smaller screens */
+	}
+  
+	table {
+	  display: block; /* Makes the table scroll horizontally */
+	  overflow-x: auto;
+	  white-space: nowrap; /* Prevents wrapping of table content */
+	}
+  }
+  
+  @media (max-width: 480px) {
+	#app {
+	  margin: 5vh 2%;
+	  padding: 2vh 1vw;
+	}
+  
+	th, td {
+	  font-size: 10px; /* Further reduce font size for very small screens */
+	  padding: 8px; /* Adjust padding */
+	}
+  }

@@ -1,9 +1,20 @@
 
 body, html {
   overflow: hidden;
-  // background-image: url("./assets/background_retro.jpg");
+  background-image: url("./assets/background_retro.jpg");
   padding: 0;
   margin: 0;
+}
+
+.d *{
+  filter: url('./assets/filters.svg#deuteranopia');
+}
+.t *{
+  filter: url('./assets/filters.svg#tritanopia');
+}
+
+.p *{
+  filter: url('./assets/filters.svg#protanopia');
 }
 .purple #right {
   background-color: #800080;

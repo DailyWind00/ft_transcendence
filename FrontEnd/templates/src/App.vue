@@ -1,12 +1,12 @@
 
 <template>
-  <div id="app" :class="[my_font_size, bgColor]">
+  <div id="app" :class="[my_font_size, bgColor, my_daltonism]">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap" rel="stylesheet">
-    <div class="background">
+    <!-- <div class="background">
       <TestThreeJS></TestThreeJS>
-    </div>
+    </div> -->
         
     <LanguageSelector></LanguageSelector>
     <nav id="a">
@@ -14,6 +14,8 @@
          ☰
       </button>
       <div id="test" :class="{'nav-menu': true, 'is-active': isMenuActive}" >
+        <router-link id="right" to="/tournament" @click.native="closeMenu">A RETIRER</router-link>
+        <router-link id="right" to="/tictactoe/game" @click.native="closeMenu">A RETIRER</router-link>
         <router-link id="right" to="/home" @click.native="closeMenu">{{ $t('home') }}</router-link>
         <router-link id="right" to="/gameselect" @click.native="closeMenu">{{ $t('game_choose') }}</router-link>
         <router-link id="right" to="/login" @click.native="closeMenu">{{$t('login')}}</router-link>
@@ -21,6 +23,7 @@
         <router-link id="right" to="/player_info" @click.native="closeMenu">{{ $t('player_info') }}</router-link>
         <router-link id="right" to="/about" @click.native="closeMenu">{{$t('about')}}</router-link>
         <router-link id="right" to="/settings" @click.native="closeMenu">{{$t('settings')}}</router-link>
+        
       </div>
     </nav>
     <transition name="fade" mode="out-in">
@@ -38,6 +41,7 @@
 import LanguageSelector from './components/language_selector.vue';
 import TestThreeJS from './components/ThreeJS/three.vue';
 import GlobalJS from './global.js';
+import router from './router';
 export default {
   components: {
     LanguageSelector,
@@ -48,7 +52,7 @@ export default {
     return {
       isMenuActive: false,
       ...GlobalJS.data.call(this),
-      bgColor: localStorage.getItem('my_BG_color')
+      bgColor: localStorage.getItem('my_BG_color') || 'purple',
     };
   },
   methods: {

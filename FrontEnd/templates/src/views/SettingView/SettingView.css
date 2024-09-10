@@ -1,5 +1,5 @@
-.app{
-}
+/* .app{
+} */
 
 .small *{
 	font-size: 1em;
@@ -35,6 +35,22 @@
   .yellow .button{
 	background-color: #d35e11;
   }
+
+  .medium .daltonism {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 0 2vw;
+}
+#Deuteranopia{
+	filter: url('./../../assets/filters.svg#deuteranopia');
+}
+#Protanopia{
+	filter: url('./../../assets/filters.svg#protanopia');
+}
+#Tritanopia{
+	filter: url('./../../assets/filters.svg#tritanopia');
+}
 .settings{
 	background-color: rgba(0, 0, 0, 0.76);
 	border-radius: 20px;
@@ -118,6 +134,9 @@ h2{
 	background-color: white;
 }
 
+.button:hover {
+	background-color: rgba(83, 83, 83, 0);
+  }
 @media (max-width: 768px) {
 	.settings {
 		flex-direction: column;

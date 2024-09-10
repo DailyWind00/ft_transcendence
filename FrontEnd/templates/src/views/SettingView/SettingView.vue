@@ -17,6 +17,13 @@
 			<b-button id="green" class="button"@click="set_BG_color('green')">{{ $t('green') }}</b-button>
 			<b-button id="yellow" class="button"@click="set_BG_color('yellow')">{{ $t('orange') }}</b-button>
 		</div>
+		<div id="selector" class="daltonism">
+			<h2>{{$t('daltonism')}} :</h2>
+			<b-button id="Daltonisme" class="button" @click="set_daltonism('without')">{{ $t('without') }}</b-button>
+			<b-button id="Deuteranopia" class="button" @click="set_daltonism('d')">{{ $t('deuteranopia') }}</b-button>
+			<b-button id="Protanopia" class="button" @click="set_daltonism('p')">{{ $t('protanopia') }}</b-button>
+			<b-button id="Tritanopia" class="button" @click="set_daltonism('t')">{{ $t('tritanopie') }}</b-button>
+		</div>
 		<div id="selector">
 			<h2>{{$t('data_options')}} :</h2>
 			<b-button id="delete" class="button" @click="delete_data">{{ $t('delete_account') }}</b-button>

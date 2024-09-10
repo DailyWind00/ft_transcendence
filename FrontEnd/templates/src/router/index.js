@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'default',
-    redirect: '/home' // Redirige vers la route 'home'
+    redirect: '/home'
   },
   {
     path: '/home',
@@ -18,9 +18,6 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/AboutView/AboutView.vue')
     
   },
@@ -49,6 +46,31 @@ const routes = [
     name: 'settings',
     component: () => import('../views/SettingView/SettingView.vue')
 
+  },
+  {
+    path: '/tictactoe/game',
+    name: 'tictactoe_game',
+    component: () => import('../views/tictactoe/gamevue/gameVue.vue')
+  },
+  {
+    path: '/tictactoe/launch',
+    name: 'tictactoe_launch',
+    component: () => import('../views/tictactoe/launchgameVue/launchgame.vue')
+  },
+  {
+    path: '/tictactoe/history',
+    name: 'tictactoe_history',
+    component: () => import('../views/tictactoe/historyview/historyVue.vue')
+  },
+  {
+    path: '/tournament',
+    name: 'tournament',
+    component: () => import('../views/TournamentView/TournamentView.vue')
+  },
+  {
+    path: '/Pong_mode_choose',
+    name: 'Pong_mode_choose',
+    component: () => import('../views/PongModeChooseView/PongModeChooseView.vue')
   },
 ]
 
