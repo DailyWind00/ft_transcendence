@@ -5,9 +5,11 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 echo $DJANGO_SUPERUSER_PASSWORD | python3 manage.py createsuperuser --noinput --username="admin" --email="DailyWind1@gmail.com"
 
-# Set up redis
-celery -A backend worker --loglevel=info --uid=celeryuser -E &
-celery -A backend beat --loglevel=info --uid=celeryuser &
+# Set up RabbitMQ
+service rabbitmq-server start
+celery -A backend worker --loglevel=info &
+celery -A backend beat --loglevel=info &
+
 
 # Get Vault token
 while [ ! -f /shared_data/vault_token.json ]; do

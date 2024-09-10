@@ -9,6 +9,7 @@ COPY	tools/requirements.txt /app/
 RUN		apt update -y
 RUN		apt upgrade -y
 RUN		apt install jq -y
+RUN		apt install rabbitmq-server -y
 RUN		apt install python3-pip -y
 RUN		apt install python3-venv -y
 RUN 	pip install --upgrade pip
@@ -27,6 +28,7 @@ ENV		PYTHONDONTWRITEBYTECODE=1
 # Change user to non-root for celery
 RUN useradd -ms /bin/bash celeryuser
 
+EXPOSE	5672
 EXPOSE	2000
 
 ENTRYPOINT		["sh", "tools/setup.sh"]

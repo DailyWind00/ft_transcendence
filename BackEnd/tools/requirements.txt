@@ -11,4 +11,4 @@ celery
 django-celery-beat
 hvac
 channels-redis
-redis
+pika
