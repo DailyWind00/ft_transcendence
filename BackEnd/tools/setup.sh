@@ -10,6 +10,9 @@ celery -A backend worker --loglevel=info --uid=celeryuser &
 celery -A backend beat --loglevel=info --uid=celeryuser &
 
 # Get Vault token
+while [ ! -f /shared_data/vault_token.json ]; do
+	sleep 1
+done
 export VAULT_TOKEN=$(cat /shared_data/vault_token.json | jq -r '.auth.client_token')
 
 # Start server
