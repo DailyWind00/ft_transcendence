@@ -12,6 +12,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import hvac
+import json
+
+# Read the token from the JSON file
+try:
+    with open('/shared_data/vault_token.json') as f:
+        token_data = json.load(f)
+        vault_token = token_data['auth']['client_token']
+except Exception as e:
+    raise Exception(f"Error reading Vault token: {e}")
+
+# Set the token as an environment variable
+os.environ['VAULT_TOKEN'] = vault_token
+
+client = hvac.Client(
+    url=os.getenv('VAULT_ADDR'),
+    token=os.getenv('VAULT_TOKEN'),
+    cert=("/app/vault.crt", "/app/vault.key"),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,12 +49,13 @@ SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET']
+secret = client.secrets.kv.read_secret_version(path='django')
+SECRET_KEY = secret['data']['DJANGO_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 
-ALLOWED_HOSTS = [os.environ['DJANGO_ALLOWED_HOSTS']]
+ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -93,18 +113,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# BackEnd/backend/settings.py
-
-import os
+db_secret = client.secrets.kv.read_secret_version(path='postgres')
+# POSTGRES_USER = db_secret['data']['POSTGRES_USER']
+POSTGRES_PASSWORD = db_secret['data']['POSTGRES_PASSWORD']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ['POSTGRES_HOST'],
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'PORT': os.environ['POSTGRES_PORT'],
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 

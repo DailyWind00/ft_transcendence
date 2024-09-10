@@ -2,22 +2,20 @@ services:
   backend:
     container_name: backend
     hostname: backend
+    volumes:
+      - shared_data:/shared_data
     build:
       context: ./BackEnd
     depends_on:
-      vault:
+      redis:
         condition: service_healthy
       database:
         condition: service_healthy
-    environment:
-      - VAULT_ADDR=${VAULT_INIT_ADDR}
-    ports:
-      - "2000:2000"
-      - "2500:2500" # Websocket access
+      vault:
+        condition: service_healthy
+    env_file:
+      - .env
     restart: unless-stopped
-    volumes:
-      - ./volume/vault-data:/vault/file/
-      - ./ssl/private:/etc/ssl/private
     networks:
       - ft_transcendence
     healthcheck:
@@ -55,57 +53,64 @@ services:
         condition: service_healthy
       vault:
         condition: service_healthy
-    environment:
-      - VAULT_ADDR=${VAULT_INIT_ADDR}
+    env_file:
+      - .env
     ports:
-      - "80:80"
-      # - "8000:8000" // for testing
+      - "443:443"
+      - "2000:2000" # Backend access
     restart: unless-stopped
     networks:
       - ft_transcendence
-    volumes:
-      - /var/www/html
-      - ./volume/vault-data:/vault/file/
-      - ./ssl/certs:/etc/ssl/certs
     healthcheck:
-      test: ["CMD-SHELL", "curl -f https://localhost/health/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
 
   vault:
-    #image: hashicorp/vault:1.13.3
     container_name: vault
-    build: 
+    hostname: vault
+    image: vault:latest
+    volumes:
+      - shared_data:/shared_data
+    build:
       context: ./Vault
-    environment:
-      - VAULT_ADDR=${VAULT_ADDR}
-      - VAULT_CACERT=${VAULT_CACERT}
-    ports:
-      - 8200:8200
-    restart: always
+    env_file:
+      - .env
+    restart: unless-stopped
     networks:
       - ft_transcendence
-    volumes:
-      - ./Vault/config.hcl:/vault/config/config.hcl
-      - ./volume/vault-data:/vault/file/
-      - ./Vault/start-vault.sh:/start-vault.sh
-      - ./ssl/certs:/etc/vault/certs
-      - ./ssl/private:/etc/vault/private
-      - ./ssl:/ssl
     cap_add:
       - IPC_LOCK
-    #entrypoint: ["/bin/sh", "-c", "/start-vault.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
+      interval: 2s
+      start_period: 5s
+      timeout: 30s
+      retries: 10
 
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    restart: unless-stopped
+    expose:
+      - "6379"
+    networks:
+      - ft_transcendence
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 2s
+      timeout: 30s
+      retries: 10
 
 volumes:
   postgres_data:
     driver: local
-  vault-data:
+  shared_data:
     driver: local
 
 networks:
   ft_transcendence:
     name: ft_transcendence
     driver: bridge
-

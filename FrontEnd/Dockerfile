@@ -25,8 +25,7 @@ COPY    --from=build-stage /app/dist /usr/share/nginx/html
 COPY    tools/nginx.conf /etc/nginx/nginx.conf
 COPY    tools/modsecurity.conf /etc/nginx/modsecurity/modsecurity.conf
 COPY    tools/crs-setup.conf /etc/nginx/modsecurity-crs/crs-setup.conf
-COPY 	tools/backend.crt /etc/nginx/certs/
-COPY 	tools/backend.key /etc/nginx/certs/
+COPY 	tools/ssl/ /etc/nginx/certs/
 
 COPY    static/ /usr/share/nginx/html/static
 
