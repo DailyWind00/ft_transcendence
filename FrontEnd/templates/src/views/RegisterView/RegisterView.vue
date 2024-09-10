@@ -38,7 +38,6 @@
         <div class="btn_register"><router-link class="btn_register" to="/login">{{$t('login')}}</router-link></div>
       </b-form>
     </b-card>
-    <button @click="test()">test</button>
   </b-container>
 </template>
 

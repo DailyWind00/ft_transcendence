@@ -3,7 +3,7 @@
 <div id="global">
 		<!-- <winningvue id ="marche_fdp" class="WinningVue" hidden></winningvue> -->
 		<div class="app">
-	  <h1>morpion</h1>
+	  <h1>{{$t('tictactoe')}}</h1>
 	  
 	  <div id="grid">
 		<div id="c1" class="case"></div>
@@ -17,15 +17,16 @@
 		<div id="c9" class="case"></div>
 	  </div>
 	  <div id="score">
-		<p>tour de <span id="player">{{ player1 }}</span></p>
-		<p>score joueur 1 : <span id="score1">0</span></p>
-		<p>score joueur 2 : <span id="score2">0</span></p>
-		<p>score nul : <span id="score3">0</span></p>
-		<button @click="showWnningVue()">test</button>
+		<p>{{$t('tour')}} <span id="player">{{ player1 }}</span></p>
+		<p>score {{ player1 }}: <span id="score1">0</span></p>
+		<p>score {{ player2 }}: <span id="score2">0</span></p>
+		<p>{{$t('equality')}} : <span id="score3">0</span></p>
 	  </div>
 	  
 	</div>
+	<button id="button_hidden" @click="change_route()" hidden>test</button>
 </div>
+	
   </template>
 
 <style src="./gameVue.css" scoped></style>
@@ -55,6 +56,9 @@ export default {
 	  this.player1 = 'player 1';
 	  this.player2 = 'player 2';
 	},
+	change_route() {
+		this.$router.push('/gameselect');
+	}
 }
 }
 </script>

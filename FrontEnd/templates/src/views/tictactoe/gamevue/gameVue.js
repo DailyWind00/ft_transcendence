@@ -4,7 +4,8 @@ let score1 = document.getElementById("score1");
 let score2 = document.getElementById("score2");
 let scoreNul = document.getElementById("score3");
 let player = document.getElementById("player");
-let fdp = document.getElementById("global");
+let fdp = document.getElementById("button_hidden");
+let button_hidden = document.getElementById("button_hidden");
 
 
 let state = {
@@ -56,17 +57,28 @@ function show_winner() {
   newDiv.style.color = 'white';
 
   const winner_name = localStorage.getItem('winner_name');
-  const left_score = 10;
-  const right_score = 20;
+  const win_msg = "{{$t('winner')}}";
+    // <h1>${win_msg} : ${winner_name}</h1>
+    // <h2>oui</h2>
+    // <h3>${state.scoreJ1} : ${state.scoreJ2}</h3>
+    // <button class="btn" onclick="goToHome()">{{$t('test')}}</button>
+
 
   newDiv.innerHTML = `
-    <h1>${winner_name} </h1>
-    <h2>oui</h2>
-    <h3>${state.scoreJ1} : ${state.scoreJ2}</h3>
-    <button class="btn" onclick="goToHome()">{{$t('test')}}</button>
+    <div class="oui" style="background-color: rgba(0, 0, 0, 0.76);
+    margin-left: 30vw;
+    border-radius: 20px;
+    margin-right: 30vw;
+    padding: 2vh 2vw;
+    font-family: Crang;">
+    <h1 style="margin: 5vh 5vw;">winner : ${winner_name}</h1>
+    <h2 style="margin: 4vh 5vw;">score :</h2>
+    <h3 style="font-style: none;
+	font-size: 6em;">${state.scoreJ1} : ${state.scoreJ2}</h3>
+    </div>
   `;
 
-  fdp.appendChild(newDiv);
+  fdp.before(newDiv);
 
 }
 
@@ -95,7 +107,7 @@ function show (elements, specifiedDisplay) {
         state.scoreJ2++;
         score2.innerHTML = state.scoreJ2;
       }
-      if (state.scoreJ1 === 3 || state.scoreJ2 === 3) {
+      if (state.scoreJ1 === 0 || state.scoreJ2 === 0) {
         hide(document.querySelectorAll('.app'));
         localStorage.setItem('left_score', state.scoreJ1);
         localStorage.setItem('right_score', state.scoreJ2);
@@ -103,7 +115,7 @@ function show (elements, specifiedDisplay) {
         // let fdp = document.getElementById("marche_fdp");
         // fdp.hidden = false;
         show_winner();
-
+        button_hidden.hidden = false;
         let games = JSON.parse(localStorage.getItem('games')) || [];
         let newGame = {
           "players": [

@@ -24,6 +24,17 @@
 	/* overflow:scroll; */
 }
 
+#button_hidden{
+  background-color:#800080;
+  padding: 10px;
+	padding-left: 2vw;
+	padding-right: 2vw;
+	margin: 5vh 1vw;
+	border-color:rgb(255, 255, 255);
+	border-radius: 10px;
+	color : white;
+}
+
 #marche_fdp{
 	font-family: Crang;
 	display: flex;
@@ -241,6 +252,10 @@ p {
 		margin:2vh 10%;
 		max-height: 90vh;
 		}
+  .oui{
+    margin:2vh 10%;
+		max-height: 90vh;
+  }
 	#grid{
 		margin: 1rem;
 		display: grid;

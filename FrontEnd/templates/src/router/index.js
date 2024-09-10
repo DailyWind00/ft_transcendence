@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'default',
-    redirect: '/home' // Redirige vers la route 'home'
+    redirect: '/home'
   },
   {
     path: '/home',
@@ -18,9 +18,6 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/AboutView/AboutView.vue')
     
   },
@@ -64,6 +61,16 @@ const routes = [
     path: '/tictactoe/history',
     name: 'tictactoe_history',
     component: () => import('../views/tictactoe/historyview/historyVue.vue')
+  },
+  {
+    path: '/tournament',
+    name: 'tournament',
+    component: () => import('../views/TournamentView/TournamentView.vue')
+  },
+  {
+    path: '/pong_mode_choose',
+    name: 'pong_mode_choose',
+    component: () => import('../views/PongModeChooseView/PongModeChooseView.vue')
   },
 ]
 

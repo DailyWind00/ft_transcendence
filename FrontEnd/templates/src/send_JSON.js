@@ -1,5 +1,6 @@
 export default {
 	methods: {
+		
 		sendRequestRegister(data) {
 			let xhr = new XMLHttpRequest();
 			let url = "https://localhost:2000/api/accounts/register/";
@@ -86,6 +87,44 @@ export default {
 		};
 		
 		xhr.send(data);
+	},
+	joinMatchmaking() {
+
+		if (!localStorage.getItem('token')) {
+			console.error('No token found');
+			return;
+		}
+		const token = localStorage.getItem('token');
+	
+		function checkMatchmaking() {
+			const xhr = new XMLHttpRequest();
+			xhr.open('POST', 'https://localhost:2000/api/join_matchmaking/', true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+	
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						const response = JSON.parse(xhr.responseText);
+						if (response.status === 'waiting') {
+							console.log('Still waiting for a match...');
+						} else {
+							console.log('Match found:', response);
+							clearInterval(waitingLoop);
+						}
+					} else {
+						console.error('Error checking matchmaking:', xhr.statusText);
+						clearInterval(waitingLoop);
+					}
+				}
+			};
+	
+			xhr.send();
+		}
+	
+		const waitingLoop = setInterval(checkMatchmaking, 5000);
+		
+		checkMatchmaking();
 	},
   }
 }
