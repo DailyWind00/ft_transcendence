@@ -12,6 +12,7 @@ if [ ! -f "${FRONTEND}/frontend.crt" ]; then
     openssl req -new -x509 -days 3650 -keyout "${FRONTEND}/frontend.key" -out "${FRONTEND}/frontend.crt" -nodes \
         -subj "/C=FR/O=42LeHavre/CN=transcendance-frontend" >/dev/null 2>&1
 fi
+echo "Created frontend certificate"
 
 # Backend
 if [ ! -f "${BACKEND}/backend.crt" ]; then
@@ -20,6 +21,7 @@ if [ ! -f "${BACKEND}/backend.crt" ]; then
 fi
 cp "${BACKEND}/backend.crt" "${FRONTEND}/backend.crt"
 cp "${BACKEND}/backend.key" "${FRONTEND}/backend.key"
+echo "Created backend certificate"
 
 # Vault
 if [ ! -f "${VAULT}/vault.crt" ]; then
@@ -29,3 +31,4 @@ if [ ! -f "${VAULT}/vault.crt" ]; then
 fi
 cp "${VAULT}/vault.crt" "${BACKEND}/vault.crt"
 cp "${VAULT}/vault.key" "${BACKEND}/vault.key"
+echo "Created vault certificate"
