@@ -21,12 +21,16 @@
   import sendJSON from './../../send_JSON.js';
 
   export default {
-	mixins: [GlobalJS, sendJSON],
+	components: {
+    GlobalJS,
+    SENDJS,
+  	},
 	data() {
 	  return {
 	  }
 	},
 	methods: {
+		...sendJSON.methods,
 		search_game(){
 			this.joinMatchmaking();
 		},
@@ -36,4 +40,5 @@
 	}
   }
   </script>
+
   <style src="./PongModeChooseView.css" scoped></style>

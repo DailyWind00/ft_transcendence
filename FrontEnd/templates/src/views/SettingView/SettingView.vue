@@ -24,11 +24,11 @@
 			<b-button id="Protanopia" class="button" @click="set_daltonism('p')">{{ $t('protanopia') }}</b-button>
 			<b-button id="Tritanopia" class="button" @click="set_daltonism('t')">{{ $t('tritanopie') }}</b-button>
 		</div>
-		<div id="selector">
+		<!-- <div id="selector">
 			<h2>{{$t('data_options')}} :</h2>
 			<b-button id="delete" class="button" @click="delete_data">{{ $t('delete_account') }}</b-button>
 			<b-button id="anonimyse" class="button" @click="anonimyse_data">{{ $t('anonymize_account') }}</b-button>
-		</div>
+		</div> -->
 		
 	</div>
 </div>

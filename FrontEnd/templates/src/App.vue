@@ -4,9 +4,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap" rel="stylesheet">
-    <div class="background">
+    <!-- <div class="background">
       <TestThreeJS></TestThreeJS>
-    </div>
+    </div> -->
         
     <LanguageSelector></LanguageSelector>
     <nav id="a">
@@ -14,6 +14,7 @@
          ☰
       </button>
       <div id="test" :class="{'nav-menu': true, 'is-active': isMenuActive}" >
+        <router-link id="right" to="/tournament" @click.native="closeMenu">A RETIRER</router-link>
         <router-link id="right" to="/tictactoe/game" @click.native="closeMenu">A RETIRER</router-link>
         <router-link id="right" to="/home" @click.native="closeMenu">{{ $t('home') }}</router-link>
         <router-link id="right" to="/gameselect" @click.native="closeMenu">{{ $t('game_choose') }}</router-link>
