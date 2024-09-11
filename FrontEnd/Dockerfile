@@ -27,7 +27,7 @@ COPY    tools/modsecurity.conf /etc/nginx/modsecurity/modsecurity.conf
 COPY    tools/crs-setup.conf /etc/nginx/modsecurity-crs/crs-setup.conf
 COPY 	tools/ssl/ /etc/nginx/certs/
 
-COPY    static/ /usr/share/nginx/html/static
+COPY    templates/static/ /usr/share/nginx/html/static
 
 # Copy CA certificate
 COPY    tools/ssl/cert.crt /usr/local/share/ca-certificates/cert.crt
