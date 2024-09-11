@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
 from .serializers import UserProfileSerializer
+from rest_framework.authentication import TokenAuthentication
 
 User = get_user_model()
 
@@ -40,6 +41,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_object(self):
         return self.request.user

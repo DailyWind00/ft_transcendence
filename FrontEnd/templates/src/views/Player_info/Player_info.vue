@@ -2,9 +2,9 @@
 <div id="app" :class="[my_font_size, my_BG_color]">
   <div class="picture_info">
     <img id= "profile_picture" src="./../../assets/pong.png" alt="player picture" />
-    <div id="info"><h1>Player Name</h1>
-      <p>ID: 123456</p>
-      <p>Email: test</p>
+    <div id="info">
+      <h1>name : {{player_name}}</h1>
+      <p>ID: {{id}}</p>
     </div>
   </div>
   <div class="history">
@@ -36,18 +36,46 @@ Suspendisse posuere porttitor mauris non dignissim. Praesent tempor blandit odio
 <style src="./Player_info.css" scoped></style> 
 <script>
 import GlobalJS from './../../global.js';
+import SENDJS from './../../send_JSON.js';
 
 export default {
   components: {
-    GlobalJS
+    GlobalJS,
+    SENDJS,
   },
   data() {
     return {
+      player_name: 'not logged in',
+      id: 'not logged in',
+      // ...SENDJS.data.call(this),
       ...GlobalJS.data.call(this),
     };
   },
+  created() {
+  this.getUserProfile()
+    .then(responseText => {
+      let profileData = JSON.parse(responseText);
+      console.log('Profile Data:', profileData); // Vérifiez ici la structure des données
+      this.$nextTick(() => {
+        this.player_name = profileData.username;
+        this.id = profileData.id;
+        console.log('Profile fetched:', this.player_name, ' ID:', this.id);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching profile:', error);
+    });
+},
+mounted() {
+  console.log('Component mounted');
+},
+
   methods: {
     ...GlobalJS.methods,
+    ...SENDJS.methods,
+    test() {
+      
+    },
   },
 }
 </script>

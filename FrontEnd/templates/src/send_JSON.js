@@ -1,130 +1,174 @@
 export default {
-	methods: {
-		
-		sendRequestRegister(data) {
-			let xhr = new XMLHttpRequest();
-			let url = "https://localhost:2000/api/accounts/register/";
-		
-			alert("data: " + JSON.stringify(data));
-		
-			xhr.open("POST", url, true);
-			xhr.setRequestHeader("Content-Type", "application/json");
-		
-			xhr.onreadystatechange = () => {
-				if (xhr.readyState === 4) {
-					if (xhr.status === 200 || xhr.status === 201) {
-						let responseJson = JSON.parse(xhr.responseText);
-						let idNumber = responseJson.id;
+  methods: {
 
-						localStorage.setItem('idNumber', idNumber);
-						this.sendRequestLogin(data);
-						// this.responseMessage = response.message;
-						// this.$toast.success(this.$t('login_sucess'), {
-						// 	position: "top-center",
-						// 	timeout: 2990,
-						// 	closeOnClick: true,
-						// 	pauseOnFocusLoss: true,
-						// 	pauseOnHover: false,
-						// 	draggable: false,
-						// 	draggablePercent: 2,
-						// 	showCloseButtonOnHover: false,
-						// 	hideProgressBar: true,
-						// 	closeButton: "button",
-						// 	icon: true,
-						// 	rtl: false
-						// });
-						// this.$router.push('home');
-					} else {
-						let errorResponse = JSON.parse(xhr.responseText);
-						let final = errorResponse.error + errorResponse.username + errorResponse.email + errorResponse.password;
-						this.$toast.error(`Erreur: ${xhr.status} - ${final}`, {
-							position: "top-center",
-							timeout: 2990
-						});
-					}
-				}
-			};		
-			xhr.send(data);
-		},
-	  sendRequestLogin(data) {
-		let xhr = new XMLHttpRequest();
-		let url = "https://localhost:2000/api/accounts/login/";
-	
-		xhr.open("POST", url, true);
-		xhr.setRequestHeader("Content-Type", "application/json");
-	
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200 || xhr.status === 201) {
-					let responseJson = JSON.parse(xhr.responseText);
-					let token = responseJson.token;
-					
-					localStorage.setItem('authToken', token);
-					this.$router.push('/gameselect');
-					this.$toast.success(this.$t('login_success'), {
-						position: "top-center",
-						timeout: 2990,
-						closeOnClick: true,
-						pauseOnFocusLoss: true,
-						pauseOnHover: false,
-						draggable: false,
-						draggablePercent: 2,
-						showCloseButtonOnHover: false,
-						hideProgressBar: true,
-						closeButton: "button",
-						icon: true,
-						rtl: false
-					});
-					
-				} else {
-					let errorResponse = JSON.parse(xhr.responseText);
-					this.$toast.error((this.$t('login_success') ,` ${xhr.status} - ${errorResponse.error}`), {
-						position: "top-center",
-						timeout: 2990
-					});
-				}
-			}
-		};
-		
-		xhr.send(data);
-	},
-	joinMatchmaking() {
+    sendRequestRegister(data) {
+      let xhr = new XMLHttpRequest();
+      let url = "https://localhost:2000/api/accounts/register/";
 
-		if (!localStorage.getItem('token')) {
-			console.error('No token found');
-			return;
-		}
-		const token = localStorage.getItem('token');
-	
-		function checkMatchmaking() {
-			const xhr = new XMLHttpRequest();
-			xhr.open('POST', 'https://localhost:2000/api/join_matchmaking/', true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-	
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState === XMLHttpRequest.DONE) {
-					if (xhr.status === 200) {
-						const response = JSON.parse(xhr.responseText);
-						if (response.status === 'waiting') {
-							console.log('Still waiting for a match...');
-						} else {
-							console.log('Match found:', response);
-							clearInterval(waitingLoop);
-						}
-					} else {
-						console.error('Error checking matchmaking:', xhr.statusText);
-						clearInterval(waitingLoop);
-					}
-				}
-			};
-	
-			xhr.send();
-		}
-	
-		const waitingLoop = setInterval(checkMatchmaking, 5000);
-		
-		checkMatchmaking();
-	},
+      alert("data: " + JSON.stringify(data));
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 201) {
+            let responseJson = JSON.parse(xhr.responseText);
+            let idNumber = responseJson.id;
+
+            localStorage.setItem('idNumber', idNumber);
+            this.sendRequestLogin(data);
+            // this.responseMessage = response.message;
+            // this.$toast.success(this.$t('login_sucess'), {
+            // 	position: "top-center",
+            // 	timeout: 2990,
+            // 	closeOnClick: true,
+            // 	pauseOnFocusLoss: true,
+            // 	pauseOnHover: false,
+            // 	draggable: false,
+            // 	draggablePercent: 2,
+            // 	showCloseButtonOnHover: false,
+            // 	hideProgressBar: true,
+            // 	closeButton: "button",
+            // 	icon: true,
+            // 	rtl: false
+            // });
+            // this.$router.push('home');
+          } else {
+            let errorResponse = JSON.parse(xhr.responseText);
+            let final = errorResponse.error + errorResponse.username + errorResponse.email + errorResponse.password;
+            this.$toast.error(`Erreur: ${xhr.status} - ${final}`, {
+              position: "top-center",
+              timeout: 2990
+            });
+            n
+          }
+        }
+      };
+      xhr.send(data);
+    },
+    sendRequestLogin(data) {
+      let xhr = new XMLHttpRequest();
+      let url = "https://localhost:2000/api/accounts/login/";
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 201) {
+            let responseJson = JSON.parse(xhr.responseText);
+            let token = responseJson.token;
+
+            localStorage.setItem('token', token);
+            this.$router.push('/gameselect');
+            this.$toast.success(this.$t('login_success'), {
+              position: "top-center",
+              timeout: 2990,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: false,
+              draggable: false,
+              draggablePercent: 2,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+            });
+
+          } else {
+            let errorResponse = JSON.parse(xhr.responseText);
+            this.$toast.error((this.$t('login_success'), ` ${xhr.status} - ${errorResponse.error}`), {
+              position: "top-center",
+              timeout: 2990
+            });
+          }
+        }
+      };
+
+      xhr.send(data);
+    },
+    joinMatchmaking() {
+
+      if (!localStorage.getItem('token')) {
+        console.error('No token found');
+        return;
+      }
+      const token = localStorage.getItem('token');
+
+      function checkMatchmaking() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://localhost:2000/api/join_matchmaking/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+              if (response.status === 'waiting') {
+                console.log('Still waiting for a match...');
+              } else {
+                console.log('Match found:', response);
+                clearInterval(waitingLoop);
+              }
+            } else {
+              console.error('Error checking matchmaking:', xhr.statusText);
+              clearInterval(waitingLoop);
+            }
+          }
+        };
+
+        xhr.send();
+      }
+
+      const waitingLoop = setInterval(checkMatchmaking, 5000);
+
+      checkMatchmaking();
+    },
+    getUserProfile() {
+      return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        let url = "https://localhost:2000/api/accounts/profile/";
+
+        // Retrieve the stored token from localStorage
+        let token = localStorage.getItem('token');
+        console.log('Token:', token);
+
+        if (!token) {
+          reject('Token not found in localStorage');
+          return;
+        }
+
+        xhr.open("GET", url, true);
+
+        // Set the authorization header with the token
+        xhr.setRequestHeader("Authorization", `Token ${token}`);
+        // xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200 || xhr.status === 201) {
+              console.log('Profile:', xhr.responseText);
+              // If the request is successful, resolve the promise with the response
+              resolve(xhr.responseText);
+            } else if (xhr.status === 401) {
+              // Handle unauthorized response
+              console.error('Unauthorized request, check token or API');
+              reject('Unauthorized: Check your token or API');
+            } else {
+              // If there's an error, reject the promise with an error message
+              console.error('Error fetching profile:', xhr.responseText);
+              reject(xhr.responseText);
+            }
+          }
+        };
+
+        // Send the GET request
+        xhr.send();
+
+      });
+    },
   }
 }
