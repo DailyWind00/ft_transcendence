@@ -8,7 +8,6 @@ export default {
     },
     methods: {
       set_font_size(size) {
-        alert("font set to " + size);
         this.my_font_size = `${size}`;
         localStorage.setItem('my_font_size', this.my_font_size);
         window.location.reload();
@@ -17,7 +16,6 @@ export default {
         return this.my_font_size;
       },
       set_BG_color(color) {
-        alert("color set to " + color);
         this.my_BG_color = `${color}`;
         localStorage.setItem('my_BG_color', this.my_BG_color);
         window.location.reload();
@@ -26,7 +24,6 @@ export default {
         return this.my_BG_color;
       },
       set_daltonism(daltonism) {
-        alert("daltonism set to " + daltonism);
         this.my_daltonism = `${daltonism}`;
         localStorage.setItem('my_daltonism', this.my_daltonism);
         window.location.reload();
