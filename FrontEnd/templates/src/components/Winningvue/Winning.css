@@ -1,0 +1,54 @@
+@font-face {
+	font-family: Crang;
+	src: url('./../../assets/Crang.ttf') format('truetype');
+  }
+
+
+  .purple .btn{
+	background-color: #800080;
+  }
+  
+  .green .btn{
+	background-color: #094d09;
+  }
+  
+  .yellow .btn{
+	background-color: #d35e11;
+  }
+
+.oui{
+	position: absolute;
+	top: 40%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+	font-family: Crang;
+	font-style: italic;
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+	color:white;
+	max-height: 80vh;
+	padding: 5vh 40vw;
+	/* overflow:scroll; */
+}
+
+.btn {
+	padding: 10px;
+	padding-left: 2vw;
+	padding-right: 2vw;
+	margin: 5vh 1vw;
+	border-color:rgb(255, 255, 255);
+	border-radius: 10px;
+	color : white;
+}
+h1{
+	margin: 5vh 5vw;
+}
+
+h2{
+	margin: 4vh 5vw;
+}
+
+h3{
+	font-style: none;
+	font-size: 6em;
+}

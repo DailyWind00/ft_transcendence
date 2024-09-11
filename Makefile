@@ -1,7 +1,7 @@
 all:
 	@if [ -f oui ];                                                                        \
 	then                                                                                    \
-		sh ./ssl_generator.sh;                                                               \
+		bash "./ssl_generator.sh";                                                               \
 		docker compose -f ./docker-compose.yml up -d --build                                  \
 		&& echo "\033[1;35m> You can go to the website : \033[1;33mhttps://localhost\033[0m";  \
 	else           		                      	 	                                            \

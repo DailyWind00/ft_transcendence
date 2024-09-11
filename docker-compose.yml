@@ -7,8 +7,6 @@ services:
     build:
       context: ./BackEnd
     depends_on:
-      redis:
-        condition: service_healthy
       database:
         condition: service_healthy
       vault:
@@ -57,12 +55,12 @@ services:
       - .env
     ports:
       - "443:443"
-      - "2000:2000" # Backend access
+      #- "2000:2000" # Backend access
     restart: unless-stopped
     networks:
       - ft_transcendence
     healthcheck:
-      test: ["CMD-SHELL", "curl -f https://backend:2000/health/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f https://localhost/api/health/ || exit 1"]
       interval: 2s
       timeout: 30s
       retries: 10
@@ -83,26 +81,12 @@ services:
     cap_add:
       - IPC_LOCK
     healthcheck:
-      test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health || exit 1"]
+      test: ["CMD-SHELL", "curl -k https://localhost:8200/v1/sys/health && test -f /shared_data/vault_token.json"]
       interval: 2s
       start_period: 5s
       timeout: 30s
       retries: 10
 
-  redis:
-    container_name: redis
-    hostname: redis
-    image: redis
-    restart: unless-stopped
-    expose:
-      - "6379"
-    networks:
-      - ft_transcendence
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping"]
-      interval: 2s
-      timeout: 30s
-      retries: 10
 
 volumes:
   postgres_data:

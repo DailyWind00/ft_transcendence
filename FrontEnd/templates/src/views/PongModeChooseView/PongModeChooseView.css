@@ -1,0 +1,67 @@
+@font-face {
+	font-family: Crang;
+	src: url('./../../assets/Crang.ttf') format('truetype');
+  }
+.app{
+	font-family: Crang;
+	font-style: italic;
+}
+div.login-page{
+	background-color: rgba(0, 0, 0, 0.76);
+	border-radius: 20px;
+
+	margin-top: 10%;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: none;
+	color: white;
+}
+.spacer{
+	margin: 5vh 0px;
+}
+h1{
+	font-size: 5vw;
+	margin: 8vh 4vw;
+}
+h2{
+	margin-bottom: 1em; 
+	padding-bottom: 1vh;
+}
+.button{
+	image-rendering: pixelated;
+	background-color: rgba(0, 0, 0, 0.616);
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	padding: 2em;
+	border-radius: 40px;
+	
+}
+
+.button-container > div {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+}
+
+
+img {
+	width: 20vw;
+	height: auto;
+  }
+  @media (max-width: 768px) {
+	h1 {
+		font-size: 2em;
+	}
+	.button-container{
+		display: flex;
+		flex-direction: column;
+	}
+	.button-container > div {
+		flex: 1;
+		display: flex;
+		align-items: stretch;
+	}
+  }
+  

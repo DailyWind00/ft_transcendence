@@ -2,7 +2,9 @@
 
 # Start Vault
 vault server -config=/vault/config/config.hcl &
-sleep 5
+while ! curl -k https://localhost:8200/v1/sys/health; do
+  sleep 1
+done
 
 # Initialize Vault
 vault operator init -key-shares=1 -key-threshold=1 > /vault/config/init-keys.txt

@@ -7,25 +7,14 @@ VAULT="./Vault/tools/ssl"
 
 mkdir -p "$FRONTEND" "$BACKEND" "$VAULT"
 
-# Frontend
-if [ ! -f "${FRONTEND}/frontend.crt" ]; then
-    openssl req -new -x509 -days 3650 -keyout "${FRONTEND}/frontend.key" -out "${FRONTEND}/frontend.crt" -nodes \
-        -subj "/C=FR/O=42LeHavre/CN=transcendance-frontend" >/dev/null 2>&1
+if [ ! -f "${FRONTEND}/cert.crt" ]; then
+    openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
+        -keyout "${FRONTEND}/cert.key" -out "${FRONTEND}/cert.crt" \
+        -subj "/C=FR/O=42LeHavre/CN=transcendance-cert" \
+        -extensions v3_ca \
+        -config <(cat /etc/ssl/openssl.cnf <(printf '[v3_ca]\nsubjectAltName=DNS:vault')) >/dev/null 2>&1
 fi
 
-# Backend
-if [ ! -f "${BACKEND}/backend.crt" ]; then
-    openssl req -new -x509 -days 3650 -keyout "${BACKEND}/backend.key" -out "${BACKEND}/backend.crt" -nodes \
-        -subj "/C=FR/O=42LeHavre/CN=transcendance-backend" >/dev/null 2>&1
-fi
-cp "${BACKEND}/backend.crt" "${FRONTEND}/backend.crt"
-cp "${BACKEND}/backend.key" "${FRONTEND}/backend.key"
-
-# Vault
-if [ ! -f "${VAULT}/vault.crt" ]; then
-    openssl req -new -x509 -days 3650 -keyout "${VAULT}/vault.key" -out "${VAULT}/vault.crt" -nodes \
-        -subj "/C=FR/O=42LeHavre/CN=transcendance-vault" \
-        -addext "subjectAltName=DNS:vault" >/dev/null 2>&1
-fi
-cp "${VAULT}/vault.crt" "${BACKEND}/vault.crt"
-cp "${VAULT}/vault.key" "${BACKEND}/vault.key"
+cp "${FRONTEND}/cert.crt" "${BACKEND}/cert.crt" && cp "${FRONTEND}/cert.key" "${BACKEND}/cert.key"
+cp "${FRONTEND}/cert.crt" "${VAULT}/cert.crt" && cp "${FRONTEND}/cert.key" "${VAULT}/cert.key"
+echo "Created certificates"
