@@ -3,7 +3,7 @@
 python3 manage.py collectstatic --noinput
 
 # Database configuration
-python3 manage.py makemigrations
+python3 manage.py makemigrations manage_user matchmaking
 python3 manage.py migrate
 echo $DJANGO_SUPERUSER_PASSWORD | python3 manage.py createsuperuser --noinput --username="admin" --email="DailyWind1@gmail.com"
 
