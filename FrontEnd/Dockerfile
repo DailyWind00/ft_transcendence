@@ -29,6 +29,10 @@ COPY 	tools/ssl/ /etc/nginx/certs/
 
 COPY    static/ /usr/share/nginx/html/static
 
+# Copy CA certificate
+COPY    tools/ssl/cert.crt /usr/local/share/ca-certificates/cert.crt
+RUN     update-ca-certificates
+
 WORKDIR /usr/share/nginx/html
 
 # Download and extract OWASP CRS rules

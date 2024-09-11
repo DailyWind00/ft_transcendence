@@ -29,7 +29,7 @@ os.environ['VAULT_TOKEN'] = vault_token
 client = hvac.Client(
     url=os.getenv('VAULT_ADDR'),
     token=os.getenv('VAULT_TOKEN'),
-    cert=("/app/vault.crt", "/app/vault.key"),
+    cert=("/app/cert.crt", "/app/cert.key"),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -176,10 +176,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_HOSTS = [
+    '*',
+]
 
+# Celery configuration
 CELERY_BROKER_URL = 'amqp://localhost:5672'
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_ACCEPT_CONTENT = ['json']

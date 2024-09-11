@@ -18,4 +18,4 @@ done
 export VAULT_TOKEN=$(cat /shared_data/vault_token.json | jq -r '.auth.client_token')
 
 # Start server
-gunicorn --workers=17 --bind 0.0.0.0:2000 --certfile "backend.crt" --keyfile "backend.key" "backend.wsgi:application" # HTTPS
+gunicorn --workers=17 --bind 0.0.0.0:2000 --certfile "cert.crt" --keyfile "cert.key" "backend.wsgi:application" # HTTPS
