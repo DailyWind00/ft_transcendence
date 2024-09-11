@@ -70,3 +70,17 @@ class AnonymizeAccountView(APIView):
             return Response({'message': 'Compte anonymisé avec succès'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'message': 'Erreur lors de l\'anonymisation du compte'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class win_rate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        games_played = user.manageuser.games_played
+        games_won = user.manageuser.games_won
+
+        if games_played == 0:
+            return Response({'win_rate': 0}, status=status.HTTP_200_OK)
+
+        win_rate = (games_won / games_played) * 100
+        return Response({'win_rate': win_rate}, status=status.HTTP_200_OK)
