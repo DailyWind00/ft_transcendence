@@ -54,12 +54,10 @@ class AnonymizeAccountView(APIView):
     def post(self, request):
         user = request.user
 
-        # Vérifier si l'utilisateur est déjà anonymisé
         if user.username.startswith('anonymous_'):
             return Response({'message': 'Le compte est déjà anonymisé'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Générer un identifiant unique avec uuid
             anonymized_username = f"anonymous_{uuid.uuid4()}"
             user.username = anonymized_username
             user.email = f"anonyme{uuid.uuid4()}@exemple.com"

@@ -26,4 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
     path('accounts/', include('manage_user.urls')),
+    path('matchmaking/', include('matchmaking.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
