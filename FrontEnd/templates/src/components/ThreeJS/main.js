@@ -304,6 +304,7 @@ export function playDefault()
 export function playLocal()
 {
 	appState = "LOCAL";
+	console.log("local");
 }
 
 function playerInput()
