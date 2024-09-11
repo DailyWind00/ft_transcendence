@@ -8,11 +8,16 @@ import pathlib
 SERVER_TICK_DELAY      = 0.016	#in milliseconds
 SERVER_TICK_PER_SECOND = 60
 
+async def calcon(time):
+	await asyncio.sleep(time)
+
 class MessageType:
+	ID      = 0
 	START   = 1
 	END     = 2
 	IN_GAME = 3
 	SCORE   = 4
+	RESTART = 5
 
 class Timer:
 	def __init__(self, time = 1):
@@ -94,13 +99,20 @@ class Ball:
 		self.radius = radius
 		self.speed = Point(0.2, 0)
 
-class Game:
-	def __init__(self, ssl_context):
-		self.connectionNumber = 0
+class Match:
+	def __init__(self, matchID):
+		self.id = matchID
 		self.players = list()
 		self.ball = Ball(0, 0, 0.5)
 		self.timer = Timer(1)
-		self.ssl_context = ssl_context
+
+class Game:
+	def __init__(self):
+		self.connectionNumber = 0
+		self.players = list()
+		self.rooms = list()
+		self.ball = Ball(0, 0, 0.5)
+		self.timer = Timer(1)
 
 	def getPlayerFromSocket(self, webSocket):
 		for player in self.players:
@@ -114,31 +126,44 @@ class Game:
 		async with serve(self.socketHandler, "0.0.0.0", 2500):
 			await asyncio.get_running_loop().create_future()
 
-	def composeStartMessage(self):
+	async def identificationMessage(self, websocket, ID):
+		# Give the player his ID
+		#
+		# byte 1: <message-type> | byte 2: <player-ID>
+
+		await websocket.send(chr(MessageType.ID) + chr(ID))
+
+	async def startMessage(self, StartDuration):
 		# Indicate the start of the game
 		#
 		# Give controle to players
 		# Server will start to send "In Game Message". Client must listen to them
 		#
-		# byte 1: <message-type>
+		# byte 1: <message-type> | byte 2: <remaining-time-in-second>
 
-		message = chr(MessageType.START)
-
-		return (message, message)
+		for i in range(StartDuration, 0, -1):
+			while self.timer.getRemaningTime() <= 0:
+				print("waiting..")
+				await asyncio.sleep(SERVER_TICK_DELAY)	
+				self.timer.update()
+			print(i)
+			for player in self.players:
+				await player.send(chr(MessageType.START) + chr(i))
+			self.timer.reset(1);
 	
-	def composeEndMessage(self):
+	async def endMessage(self, winnerID):
 		# Indicate the end of a match
 		#
 		# Remove controle from client
 		# Client will stop listening for "In Game Message"
 		#
-		# byte 1: <message-type>
+		# byte 1: <message-type> | byte 2: <match-winner>
 
-		message = chr(MessageType.END)
+		for player in self.players:
+			await player.send(chr(MessageType.END) + chr(winnerID))
 
-		return (message, message)
 	
-	def composeInGameMessage(self):
+	async def inGameMessage(self):
 		# Indicate the new state of elements in the game
 		#
 		# Update opposite player position on client-side
@@ -151,26 +176,28 @@ class Game:
 		ball = self.ball
 
 		#for player one
-		message1 = chr(MessageType.IN_GAME)
-		message1 += chr(int(player2.center.y) + 128)
-		message1 += chr(int(10 * (player2.center.y - int(player2.center.y)) + 128))
-		message1 += chr(int(ball.speed.x) + 128)
-		message1 += chr(int(10 * (ball.speed.x - int(ball.speed.x)) + 128))
-		message1 += chr(int(ball.speed.y) + 128)
-		message1 += chr(int(10 * (ball.speed.y - int(ball.speed.y)) + 128))
+		message = chr(MessageType.IN_GAME)
+		message += chr(int(player2.center.y) + 128)
+		message += chr(int(10 * (player2.center.y - int(player2.center.y)) + 128))
+		message += chr(int(ball.speed.x) + 128)
+		message += chr(int(10 * (ball.speed.x - int(ball.speed.x)) + 128))
+		message += chr(int(ball.speed.y) + 128)
+		message += chr(int(10 * (ball.speed.y - int(ball.speed.y)) + 128))
 
+		await player1.send(message)
+		
 		#for player two
-		message2 = chr(MessageType.IN_GAME)
-		message2 += chr(int(player1.center.y) + 128)
-		message2 += chr(int(10 * (player1.center.y - int(player1.center.y)) + 128))
-		message2 += chr(int(ball.speed.x) + 128)
-		message2 += chr(int(10 * (ball.speed.x - int(ball.speed.x)) + 128))
-		message2 += chr(int(ball.speed.y) + 128)
-		message2 += chr(int(10 * (ball.speed.y - int(ball.speed.y)) + 128))
+		message = chr(MessageType.IN_GAME)
+		message += chr(int(player1.center.y) + 128)
+		message += chr(int(10 * (player1.center.y - int(player1.center.y)) + 128)) 
+		message += chr(int(ball.speed.x) + 128)
+		message += chr(int(10 * (ball.speed.x - int(ball.speed.x)) + 128))
+		message += chr(int(ball.speed.y) + 128)
+		message += chr(int(10 * (ball.speed.y - int(ball.speed.y)) + 128))
+		
+		await players2.send(message)
 
-		return (message1, message2)
-
-	def composeScoreMessage(self):
+	async def scoreMessage(self, scoringPlayerID):
 		# Indicate that a point as been taken
 		#
 		# Add one point to <scoring-player-ID>
@@ -179,38 +206,39 @@ class Game:
 		#
 		# byte 1: <message-type> | byte 2: <scoring-player-ID>
 
-		message = chr(MessageType.SCORE)
-		message += chr(1)	#implementer system de score
+		for player in self.players:
+			await player.send(chr(MessageType.SCORE) + chr(scoringPlayerID))
 
-	async def sendGameInfo(self, message_type):
+	async def restartMessage(self, restartTime):
+		# After a score, restart the match after a certain time
+		#
+		# byte 1: <message-type> | byte 2: <remaining-type>
 		
-		message = None
-
-		match message_type:
-			case MessageType.START:
-				message = self.composeStartMessage()
-			case MessageType.END:
-				message = self.composeEndMessage()
-			case MessageType.IN_GAME:
-				message = self.composeInGameMessage()
-			case MessageType.SCORE:
-				message = self.composeScoreMessage()
-
-		await self.players[0].send(message[0])
-		await self.players[1].send(message[1])
+		for i in range(restartTime, 0, -1):
+			while self.timer.getRemaningTime:
+				await asyncio.sleep(SERVER_TICK_DELAY)	
+				self.timer.update()
+			for player in self.players:
+				await player.send(chr(MessageType.RESTART) + chr(i))
+			self.timer.reset(1);
+				
 
 	async def socketHandler(self, webSocket):
-		print("connection caught")
-
 		#Update number of connection and add player to list
 		self.connectionNumber += 1
-		self.players.append(Player(webSocket, self.connectionNumber))
+		playerID = self.connectionNumber
+		self.players.append(Player(webSocket, playerID))
 	
-		#Identify client on client-side
-		await webSocket.send(chr(self.connectionNumber))
+		print("connection caught")
+		print("player is : ")
+		print(playerID)
 
-		#Launch game loop
+		#Identify client on client-side
+		await self.identificationMessage(webSocket, playerID)
+
+		#Launch game loop if there is 
 		if self.connectionNumber == 2:
+			print("launching game loop...")
 			asyncio.create_task(self.run())
 		
 		while True:
@@ -219,17 +247,16 @@ class Game:
 			
 			#get player position
 			player = self.getPlayerFromSocket(webSocket)
-			if player is None:
-				continue
-			player.center.y = ord(message[0]) - 128
-			player.center.y += (ord(message[1]) - 128) / 10
+			if player is not None:
+				player.center.y = (ord(message[0]) - 128) + ((ord(message[1]) - 128) / 10)
 
 	async def run(self):
-		await self.sendGameInfo()
+		print("Game loop as been launched...")
+		await self.startMessage(3)
 
 		while True:
 			#keep server to a fixed tick rate
-			await asyncio.sleep(SERVER_TICK_DELAY)	
+			await calcon(SERVER_TICK_DELAY)
 
 			#bounce ball on the up and down walls
 			if abs(self.ball.position.y) >= 12.5:
@@ -249,16 +276,10 @@ class Game:
 			self.ball.position.add(self.ball.speed)
 
 			#send up-to-date info to both clients
-			await self.sendGameInfo()
+			await self.inGameMessage()
 
 if __name__ == "__main__":
-	ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-	localhost_crt = pathlib.PurePath("./tools/ssl/backend.crt")
-	print(localhost_crt)
-	localhost_key = pathlib.PurePath("./tools/ssl/backend.key")
-	ssl_context.load_cert_chain(certfile=localhost_crt, keyfile=localhost_key)
-
-	game = Game(ssl_context)
+	game = Game()
 	
 	print("Pong serv Successfully started")
 
