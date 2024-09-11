@@ -6,11 +6,11 @@
 		<div class="button-container d-flex justify-content-around">
 		  <div>
 			
-			<b-button class="button"><h2>PONG</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button"><h2>Search_match</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
 			
-			<b-button class="button" @click="launchgame()"><h2>{{$t('tournament')}}</h2><img src="./../../assets/tournament_tree.png" alt="tictactoe logo"></b-button>
+			<b-button class="button" @click="launchtournament()"><h2>{{$t('tournament')}}</h2><img src="./../../assets/tournament_tree.png" alt="tictactoe logo"></b-button>
 		  </div>
 		</div>
 	  </b-container>
@@ -18,13 +18,19 @@
   </template>
   
   <script>
+  import sendJSON from './../../send_JSON.js';
+
   export default {
+	mixins: [GlobalJS, sendJSON],
 	data() {
 	  return {
 	  }
 	},
 	methods: {
-	  launchgame() {
+		search_game(){
+			this.joinMatchmaking();
+		},
+		launchtournament() {
 		this.$router.push('/tournament');
 	  }
 	}

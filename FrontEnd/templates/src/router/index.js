@@ -68,8 +68,8 @@ const routes = [
     component: () => import('../views/TournamentView/TournamentView.vue')
   },
   {
-    path: '/Pong_mode_choose',
-    name: 'Pong_mode_choose',
+    path: '/pong_mode_choose',
+    name: 'pong_mode_choose',
     component: () => import('../views/PongModeChooseView/PongModeChooseView.vue')
   },
 ]

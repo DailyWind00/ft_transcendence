@@ -14,6 +14,8 @@
          ☰
       </button>
       <div id="test" :class="{'nav-menu': true, 'is-active': isMenuActive}" >
+        <router-link id="right" to="/tournament" @click.native="closeMenu">A RETIRER</router-link>
+        <router-link id="right" to="/tictactoe/game" @click.native="closeMenu">A RETIRER</router-link>
         <router-link id="right" to="/home" @click.native="closeMenu">{{ $t('home') }}</router-link>
         <router-link id="right" to="/gameselect" @click.native="closeMenu">{{ $t('game_choose') }}</router-link>
         <router-link id="right" to="/login" @click.native="closeMenu">{{$t('login')}}</router-link>
