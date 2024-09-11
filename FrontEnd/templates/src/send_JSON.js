@@ -226,7 +226,65 @@ export default {
       };
     
       xhr.send();
-    }
+    },
+    anonymiseAccount() {
+      let xhr = new XMLHttpRequest();
+      let url = "https://localhost/api/accounts/anonymize-account/";
+      let token = localStorage.getItem('token');
+    
+      if (!token) {
+        this.$toast.error('Token not found in localStorage', {
+          position: "top-center",
+          timeout: 2990
+        });
+        return;
+      }
+      console.log('Token:', token);
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Authorization", `Token ${token}`);
+      xhr.setRequestHeader("Content-Type", "application/json");
+    
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('idNumber');
+            this.$toast.success(this.$t('account_anonymise_success'), {
+              position: "top-center",
+              timeout: 2990,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: false,
+              draggable: false,
+              draggablePercent: 2,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+            });
+            this.$router.push('/login');
+          } else {
+            // Handle errors
+            try {
+              let errorResponse = JSON.parse(xhr.responseText);
+              this.$toast.error(`Error: ${xhr.status} - ${errorResponse.error}`, {
+                position: "top-center",
+                timeout: 2990
+              });
+            } catch (e) {
+              // If response is not JSON, show a generic error
+              this.$toast.error(`Error: ${xhr.status} - Unable to parse error response`, {
+                position: "top-center",
+                timeout: 2990
+              });
+            }
+          }
+        }
+      };
+    
+      xhr.send();
+    },
     
   }
 }
