@@ -27,9 +27,6 @@ RUN 	update-ca-certificates
 ENV		PYTHONBUFFERED=1
 ENV		PYTHONDONTWRITEBYTECODE=1
 
-# Change user to non-root for celery
-RUN 	useradd -ms /bin/bash celeryuser
-
 EXPOSE	5672
 EXPOSE	2000
 
