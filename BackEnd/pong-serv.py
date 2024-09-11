@@ -12,12 +12,13 @@ async def calcon(time):
 	await asyncio.sleep(time)
 
 class MessageType:
-	ID      = 0
-	START   = 1
-	END     = 2
-	IN_GAME = 3
-	SCORE   = 4
-	RESTART = 5
+	ID          = 0
+	START       = 1
+	END         = 2
+	IN_GAME     = 3
+	SCORE       = 4
+	RESTART     = 5
+	MATCHID_REQ = 6
 
 class Timer:
 	def __init__(self, time = 1):
@@ -100,32 +101,12 @@ class Ball:
 		self.speed = Point(0.2, 0)
 
 class Match:
-	def __init__(self, matchID):
+	def __init__(self, matchID, game):
 		self.id = matchID
 		self.players = list()
 		self.ball = Ball(0, 0, 0.5)
 		self.timer = Timer(1)
-
-class Game:
-	def __init__(self):
-		self.connectionNumber = 0
-		self.players = list()
-		self.rooms = list()
-		self.ball = Ball(0, 0, 0.5)
-		self.timer = Timer(1)
-
-	def getPlayerFromSocket(self, webSocket):
-		for player in self.players:
-			if webSocket == player.webSocket:
-				return player
-		return None
-
-	async def listen(self):
-		#listening for pending connection
-		print("starting to listen")
-		async with serve(self.socketHandler, "0.0.0.0", 2500):
-			await asyncio.get_running_loop().create_future()
-
+	
 	async def identificationMessage(self, websocket, ID):
 		# Give the player his ID
 		#
@@ -142,8 +123,7 @@ class Game:
 		# byte 1: <message-type> | byte 2: <remaining-time-in-second>
 
 		for i in range(StartDuration, 0, -1):
-			while self.timer.getRemaningTime() <= 0:
-				print("waiting..")
+			while self.timer.getRemaningTime() > 0:
 				await asyncio.sleep(SERVER_TICK_DELAY)	
 				self.timer.update()
 			print(i)
@@ -195,7 +175,7 @@ class Game:
 		message += chr(int(ball.speed.y) + 128)
 		message += chr(int(10 * (ball.speed.y - int(ball.speed.y)) + 128))
 		
-		await players2.send(message)
+		await player2.send(message)
 
 	async def scoreMessage(self, scoringPlayerID):
 		# Indicate that a point as been taken
@@ -221,37 +201,9 @@ class Game:
 			for player in self.players:
 				await player.send(chr(MessageType.RESTART) + chr(i))
 			self.timer.reset(1);
-				
 
-	async def socketHandler(self, webSocket):
-		#Update number of connection and add player to list
-		self.connectionNumber += 1
-		playerID = self.connectionNumber
-		self.players.append(Player(webSocket, playerID))
-	
-		print("connection caught")
-		print("player is : ")
-		print(playerID)
-
-		#Identify client on client-side
-		await self.identificationMessage(webSocket, playerID)
-
-		#Launch game loop if there is 
-		if self.connectionNumber == 2:
-			print("launching game loop...")
-			asyncio.create_task(self.run())
-		
-		while True:
-			#get info sent by the clients
-			message = await webSocket.recv()
-			
-			#get player position
-			player = self.getPlayerFromSocket(webSocket)
-			if player is not None:
-				player.center.y = (ord(message[0]) - 128) + ((ord(message[1]) - 128) / 10)
-
-	async def run(self):
-		print("Game loop as been launched...")
+	async def gameLoop(self):
+		print("Match's game loop as been launched...")
 		await self.startMessage(3)
 
 		while True:
@@ -277,6 +229,71 @@ class Game:
 
 			#send up-to-date info to both clients
 			await self.inGameMessage()
+
+class Game:
+	def __init__(self):
+		self.connectionNumber = 0
+		self.players = list()
+		self.matchs = list()
+		self.ball = Ball(0, 0, 0.5)
+		self.timer = Timer(1)
+
+	def getMatchFromID(self, matchID):
+		for match in self.matchs:
+			if match.matchID == matchID:
+				return match
+		return None
+
+	def getPlayerFromSocket(self, webSocket):
+		for player in self.players:
+			if webSocket == player.webSocket:
+				return player
+		return None
+
+	async def listen(self):
+		#listening for pending connection
+		print("starting to listen")
+		async with serve(self.socketHandler, "0.0.0.0", 2500):
+			await asyncio.get_running_loop().create_future()
+
+	async def requestMatchID(self, webSocket):
+		# Ask the client for its match ID
+		#
+		# byte 1: <message-type>
+
+		await webSocket.send(chr(MessageType.MATCHID_REQ))
+		
+		message = await webSocket.recv()
+		return ord(message[0])
+
+	async def socketHandler(self, webSocket):
+		
+
+
+		#Update number of connection and add player to list
+		self.connectionNumber += 1
+		playerID = self.connectionNumber
+		self.players.append(Player(webSocket, playerID))
+	
+		print("connection caught")
+		print("player is : ", playerID)
+
+		#Identify client on client-side
+		await self.identificationMessage(webSocket, playerID)
+
+		#Launch game loop if there is 
+		if self.connectionNumber == 2:
+			print("launching game loop...")
+			asyncio.create_task(self.run())
+		
+		while True:
+			#get info sent by the clients
+			message = await webSocket.recv()
+			
+			#get player position
+			player = self.getPlayerFromSocket(webSocket)
+			if player is not None:
+				player.center.y = (ord(message[0]) - 128) + ((ord(message[1]) - 128) / 10)
 
 if __name__ == "__main__":
 	game = Game()

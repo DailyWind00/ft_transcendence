@@ -301,8 +301,15 @@ function playerInput()
 	}
 	if (IsKeyPressed(KeyEnter) && appState == 'GAME') {
 		appState = 'PLAYING';
-		webSocket = new WebSocket("wss://localhost:2000/pong-serv/");
+		
+		const words = document.URL.split('/');
+
+		for (let i = 0; i < words.length; i++)
+			console.log(words[i]);
+
+		webSocket = new WebSocket("wss://" + words[2] + ":2000/pong-serv/");
 		webSocket.addEventListener("message", recvFromServ);
+		webSocket.send(String.fromCharCode())
 	}
 
 	if (webSocket)

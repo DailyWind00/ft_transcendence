@@ -6,7 +6,7 @@ python3 manage.py migrate
 echo $DJANGO_SUPERUSER_PASSWORD | python3 manage.py createsuperuser --noinput --username="admin" --email="DailyWind1@gmail.com"
 
 # Start Pong server
-python3 pong-serv.py &
+# python3 pong-serv.py &
 # Possible healthcheck
 echo "Pong server started"
 
