@@ -3,7 +3,7 @@ export default {
 
     sendRequestRegister(data) {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost:2000/api/accounts/register/";
+      let url = "https://localhost/api/accounts/register/";
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -47,7 +47,7 @@ export default {
     },
     sendRequestLogin(data) {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost:2000/api/accounts/login/";
+      let url = "https://localhost/api/accounts/login/";
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
