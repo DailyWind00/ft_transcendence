@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
 from .serializers import UserProfileSerializer
+import uuid
 from rest_framework.authentication import TokenAuthentication
 
 User = get_user_model()
@@ -45,3 +46,27 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class AnonymizeAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        # Vérifier si l'utilisateur est déjà anonymisé
+        if user.username.startswith('anonymous_'):
+            return Response({'message': 'Le compte est déjà anonymisé'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Générer un identifiant unique avec uuid
+            anonymized_username = f"anonymous_{uuid.uuid4()}"
+            user.username = anonymized_username
+            user.email = f"anonyme{uuid.uuid4()}@exemple.com"
+            user.first_name = 'Anonyme'
+            user.last_name = ''
+            user.save()
+
+            return Response({'message': 'Compte anonymisé avec succès'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'message': 'Erreur lors de l\'anonymisation du compte'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
