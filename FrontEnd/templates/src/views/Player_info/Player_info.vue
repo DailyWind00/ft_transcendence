@@ -3,6 +3,7 @@
   <div class="picture_info">
     <img id= "profile_picture" src="./../../assets/pong.png" alt="player picture" />
     <div id="info">
+      <b-button id="delete" class="button" @click="delete_confirm">{{ $t('delete_account') }}</b-button>
       <h1>name : {{player_name}}</h1>
       <p>ID: {{id}}</p>
     </div>
@@ -73,8 +74,10 @@ mounted() {
   methods: {
     ...GlobalJS.methods,
     ...SENDJS.methods,
-    test() {
-      
+    delete_confirm() {
+      if (confirm('Are you sure you want to delete your account?')) {
+        this.deleteAccount();
+      }
     },
   },
 }
