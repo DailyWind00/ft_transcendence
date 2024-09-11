@@ -128,8 +128,7 @@ export default {
     getUserProfile() {
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        let url = "https://localhost:2000/api/accounts/profile/";
-
+        let url = "https://localhost/api/accounts/profile/";
         // Retrieve the stored token from localStorage
         let token = localStorage.getItem('token');
         console.log('Token:', token);
