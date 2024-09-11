@@ -291,17 +291,27 @@ function sendToServ()
 	webSocket.send(String.fromCharCode(p1PosInt, p1PosDec));
 }
 
+export function initGame()
+{
+	appState = "GAME";
+}
+
+export function playDefault()
+{
+	appState = "PLAYING";
+}
+
+export function playLocal()
+{
+	appState = "LOCAL";
+}
+
 function playerInput()
 {
-	if (IsKeyPressed(KeySpace)) {
-		if (appState == 'DEFAULT')
-			appState = 'GAME';
-		else if (appState == 'GAME')
-			appState = 'DEFAULT';
-	}
-	if (IsKeyPressed(KeyEnter) && appState == 'GAME') {
-		appState = 'PLAYING';
-		
+	if (appState == "GAME" && IsKeyPressed(KeyEnter))
+		appState = "PLAYING";
+
+	if (appState == 'PLAYING') {
 		const words = document.URL.split('/');
 
 		for (let i = 0; i < words.length; i++)
