@@ -3,7 +3,7 @@ export default {
 		
 		sendRequestRegister(data) {
 			let xhr = new XMLHttpRequest();
-			let url = "https://localhost:2000/api/accounts/register/";
+			let url = "https://localhost/api/accounts/register/";
 		
 			alert("data: " + JSON.stringify(data));
 		
@@ -48,7 +48,7 @@ export default {
 		},
 	  sendRequestLogin(data) {
 		let xhr = new XMLHttpRequest();
-		let url = "https://localhost:2000/api/accounts/login/";
+		let url = "https://localhost/api/accounts/login/";
 	
 		xhr.open("POST", url, true);
 		xhr.setRequestHeader("Content-Type", "application/json");
@@ -98,7 +98,7 @@ export default {
 	
 		function checkMatchmaking() {
 			const xhr = new XMLHttpRequest();
-			xhr.open('POST', 'https://localhost:2000/api/join_matchmaking/', true);
+			xhr.open('POST', 'https://localhost/api/join_matchmaking/', true);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 	

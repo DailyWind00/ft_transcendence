@@ -25,5 +25,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
-    path('api/accounts/', include('manage_user.urls')),
+    path('accounts/', include('manage_user.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

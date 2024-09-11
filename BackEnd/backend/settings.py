@@ -58,6 +58,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 
 ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',')
 
+SUB_SITE = "/api/"
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
