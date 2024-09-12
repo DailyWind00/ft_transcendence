@@ -14,7 +14,7 @@ export default {
             let responseJson = JSON.parse(xhr.responseText);
             let idNumber = responseJson.id;
 
-            localStorage.setItem('idNumber', idNumber);
+            localStorage.setItem('ultra_secret_id', idNumber);
             this.sendRequestLogin(data);
             // this.responseMessage = response.message;
             // this.$toast.success(this.$t('login_sucess'), {
@@ -97,7 +97,7 @@ export default {
       
       // Get token and player from localStorage
       const token = localStorage.getItem('token');
-      const player = localStorage.getItem('player');
+      const player = localStorage.getItem('ultra_secret_id');
       
       if (!player) {
         console.error('No player found');
