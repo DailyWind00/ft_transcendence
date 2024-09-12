@@ -81,7 +81,8 @@ export default {
             let errorResponse = JSON.parse(xhr.responseText);
             this.$toast.error((this.$t('login_success'), ` ${xhr.status} - ${errorResponse.error}`), {
               position: "top-center",
-              timeout: 2990
+              timeout: 2990,
+              hideProgressBar: true,
             });
           }
         }
@@ -128,7 +129,8 @@ export default {
       function checkMatchmaking() {
         const xhr = new XMLHttpRequest();
         const words = document.URL.split('/');
-        xhr.open('POST', 'https://" + words[2] + "/api/matchmaking/join_matchmaking/', true);
+        const url = "https://" + words[2] + "/api/matchmaking/join_matchmaking/"
+        xhr.open('POST', url , true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader('Authorization', `Token ${token}`);
     
