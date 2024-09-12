@@ -43,6 +43,8 @@ import {initGame, playDefault, playLocal} from './../../components/ThreeJS/main.
 	  
 	  if (round == 0) {
 		alert(this.players[0].name + " vs " + this.players[2].name);
+		localStorage.setItem("tournament_name_1", this.players[0].name);
+		localStorage.setItem("tournament_name_2", this.players[2].name);
 		localStorage.setItem("tournament_round", 1);
 		initGame();
 		this.$router.push('/empty');

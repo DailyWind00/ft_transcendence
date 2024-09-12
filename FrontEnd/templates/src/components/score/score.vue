@@ -1,8 +1,8 @@
 <template>
 	<div class="score-display">
 	  <h1>Score</h1>
-	  <p>Joueur 1: {{ player1Score }}</p>
-	  <p>Joueur 2: {{ player2Score }}</p>
+	  <p>{{ playername }}: {{ player1Score }}</p>
+	  <p>{{ playername2 }}: {{ player2Score }}</p>
 	</div>
   </template>
   
@@ -17,6 +17,8 @@ import SENDJS from './../../send_JSON.js';
 	data() {
 	  return {
 		player1Score: 0,
+		playername: localStorage.getItem("tournament_name_1") || "Player 1",
+		playername2: localStorage.getItem("tournament_name_2") || "Player 2",
 		player2Score: 0,
 		scoreUpdater: null,
 		winstatus: 0,
