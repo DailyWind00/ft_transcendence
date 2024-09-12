@@ -83,3 +83,6 @@ class win_rate(APIView):
 
         win_rate = (games_won / games_played) * 100
         return Response({'win_rate': win_rate}, status=status.HTTP_200_OK)
+
+
+# comment ne pas etre un pitbull quand la vie est une chienne

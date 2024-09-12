@@ -54,8 +54,7 @@ services:
     env_file:
       - .env
     ports:
-      - "443:443"
-      #- "2000:2000" # Backend access
+      - "6942:443"
     restart: unless-stopped
     networks:
       - ft_transcendence
