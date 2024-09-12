@@ -41,7 +41,7 @@ def join_matchmaking(request):
     if queue.count() >= 2:
         player1 = queue[0].player
         player2 = queue[1].player
-
+    
         
         try:
             match = Match.objects.create(player1=player1, player2=player2, status='in_progress')
