@@ -52,6 +52,10 @@
 			playDefault(localStorage.getItem("game_id"));
 		},
 		launchtournament() {
+		localStorage.removeItem("tournament_round");
+		localStorage.removeItem("tournament_first_round");
+		localStorage.removeItem("tournament_second_round");
+		localStorage.removeItem("tournament_players");
 		this.$router.push('/tournament');
 	  },
 	  waitFor(ms) {

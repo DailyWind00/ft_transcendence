@@ -4,7 +4,7 @@
     <h2>{{ $t('score') }}</h2>
     <h3>{{ left_score }} : {{ right_score }}</h3>
     <b-button class="btn" @click="goToHome">{{ $t('game_select') }}</b-button>
-	<b-button class="btn" @click="goToTournament">{{ $t('tournament') }}</b-button>
+	<b-button class="btn" @click="goToTournament">{{ $t('tournamentr') }}</b-button>
   </div>
 </template>
 
