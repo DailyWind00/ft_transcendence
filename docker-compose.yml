@@ -54,7 +54,7 @@ services:
     env_file:
       - .env
     ports:
-      - "443:443"
+      - "6942:443"
       #- "2000:2000" # Backend access
     restart: unless-stopped
     networks:
