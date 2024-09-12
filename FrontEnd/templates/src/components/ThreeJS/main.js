@@ -65,9 +65,18 @@ function IsKeyPressed(key)
 	return false;
 }
 
+let lastResizeTime = 0;
+function onWindowResize() {
+    const now = Date.now();
+    if (now - lastResizeTime >= FRAMETIME) {
+        lastResizeTime = now;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+}
 
 //====================================================
-
 
 function InitCamera()
 {
@@ -412,6 +421,7 @@ scene.add(paddleMesh1);
 scene.add(paddleMesh2);
 scene.add(arenaMesh);
 scene.add(ballMesh);
+window.addEventListener('resize', onWindowResize, false);
 
 InitInputHandling();
 

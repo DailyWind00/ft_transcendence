@@ -20,4 +20,4 @@ export VAULT_TOKEN=$(cat /shared_data/vault_token.json | jq -r '.auth.client_tok
 
 # Start server
 python3 pong-serv.py &
-gunicorn --workers=17 --bind 0.0.0.0:2000 --certfile "cert.crt" --keyfile "cert.key" "backend.wsgi:application" # HTTPS
+gunicorn --workers=1 --bind 0.0.0.0:2000 --certfile "cert.crt" --keyfile "cert.key" "backend.wsgi:application" # HTTPS
