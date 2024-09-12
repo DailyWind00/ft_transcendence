@@ -6,7 +6,10 @@
 		<div class="button-container d-flex justify-content-around">
 		  <div>
 			
-			<b-button class="button"><h2>Search_match</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button" @click="search_game_online()" ><h2>online</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+		  </div>
+		  <div>
+			<b-button class="button" @click="search_game_local()" ><h2>local</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
 			
@@ -19,24 +22,39 @@
   
   <script>
   import sendJSON from './../../send_JSON.js';
+  import GlobalJS from './../../global.js';
+  import {initGame, playLocal} from './../../components/ThreeJS/main.js';
+  
 
   export default {
 	components: {
     GlobalJS,
-    SENDJS,
+    sendJSON,
   	},
 	data() {
 	  return {
 	  }
 	},
 	methods: {
+
 		...sendJSON.methods,
-		search_game(){
+		search_game_online(){
+			// this.joinMatchmaking();
+			initGame();
+		},
+		async search_game_local(){
+			initGame();
 			this.joinMatchmaking();
+			this.$router.push('/empty');
+			await this.waitFor(5000);
+			playLocal();
 		},
 		launchtournament() {
 		this.$router.push('/tournament');
-	  }
+	  },
+	  waitFor(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
 	}
   }
   </script>

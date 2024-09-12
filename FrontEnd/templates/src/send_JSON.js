@@ -89,23 +89,41 @@ export default {
     },
     joinMatchmaking() {
 
+      // Check for token in localStorage
       if (!localStorage.getItem('token')) {
         console.error('No token found');
         return;
       }
+      
+      // Get token and player from localStorage
       const token = localStorage.getItem('token');
-
+      const player = localStorage.getItem('player');
+      
+      if (!player) {
+        console.error('No player found');
+        return;
+      }
+    
+      // Prepare data to be sent
+      const data = JSON.stringify({
+        player: player,
+        token: token,
+      });
+    
+      console.log('Sending data:', data);
+    
+      // Function to check matchmaking status
       function checkMatchmaking() {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://localhost:2000/api/join_matchmaking/', true);
+        xhr.open('POST', 'https://localhost/api/matchmaking/join_matchmaking/', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-
+        xhr.setRequestHeader('Authorization', `Token ${token}`);
+    
         xhr.onreadystatechange = function () {
           if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
               const response = JSON.parse(xhr.responseText);
-              if (response.status === 'waiting') {
+              if (response.status === 'waiting' || response.status === 'already_in_queue') {
                 console.log('Still waiting for a match...');
               } else {
                 console.log('Match found:', response);
@@ -117,12 +135,13 @@ export default {
             }
           }
         };
-
-        xhr.send();
+    
+        // Send request with data
+        xhr.send(data);
       }
-
+    
+      // Call the matchmaking function and set an interval to repeat it every 5 seconds
       const waitingLoop = setInterval(checkMatchmaking, 5000);
-
       checkMatchmaking();
     },
     getUserProfile() {
@@ -132,7 +151,6 @@ export default {
         // Retrieve the stored token from localStorage
         let token = localStorage.getItem('token');
         console.log('Token:', token);
-
         if (!token) {
           reject('Token not found in localStorage');
           return;
@@ -164,7 +182,7 @@ export default {
         
 
         // Send the GET request
-        xhr.send();
+        xhr.send(data);
 
       });
     },

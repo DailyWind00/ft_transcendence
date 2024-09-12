@@ -54,7 +54,6 @@ class AnonymizeAccountView(APIView):
     def post(self, request):
         user = request.user
 
-        # Vérifier si l'utilisateur est déjà anonymisé
         if user.username.startswith('anonymous_'):
             return Response({'message': 'Le compte est déjà anonymisé'}, status=status.HTTP_400_BAD_REQUEST)
 

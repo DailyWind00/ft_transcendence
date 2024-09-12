@@ -10,6 +10,11 @@ const routes = [
     redirect: '/home'
   },
   {
+    path: '/empty',
+    name: 'empty',
+    component: () => import('../views/empty.vue')
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import('../views/HomeView/HomeView.vue')
