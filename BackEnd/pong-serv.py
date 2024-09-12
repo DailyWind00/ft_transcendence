@@ -110,6 +110,7 @@ class Match:
 		self.players = list()
 		self.ball = Ball(0, 0, 0.5)
 		self.timer = Timer(1)
+		self.over = False
 	
 	def getPlayerFromSocket(self, webSocket):
 		for player in self.players:
@@ -228,6 +229,15 @@ class Match:
 			#keep server to a fixed tick rate
 			await calcon(SERVER_TICK_DELAY)
 
+			if self.players[0].score >= 3:
+				await self.endMessage(1)
+				self.over = True
+				break
+			elif self.players[1].score >= 3:
+				await self.endMessage(2)
+				self.over = True
+				break
+
 			#bounce ball on the up and down walls
 			if abs(self.ball.position.y) >= 12.5:
 				self.ball.speed.y *= -1
@@ -260,11 +270,7 @@ class Match:
 
 class Game:
 	def __init__(self):
-		#self.connectionNumber = 0
-		#self.players = list()
 		self.matchs = list()
-		#self.ball = Ball(0, 0, 0.5)
-		#self.timer = Timer(1)
 
 	def getMatchFromID(self, matchID):
 		for match in self.matchs:
@@ -286,6 +292,16 @@ class Game:
 		
 		message = await webSocket.recv()
 		return ord(message[0])
+
+	async def matchCleaner(self):
+		while True:
+			await calcon((SERVER_TICK_DELAY * SERVER_TICK_PER_SECOND) / 2)
+			for i in range(len(self.matchs)):
+				if (self.matchs[i].over):
+					print("removing match", self.matchs[i].ID);
+					del self.matchs[i]
+					break
+			
 
 	async def socketHandler(self, webSocket):
 		print("|--- connection caught")
