@@ -382,6 +382,46 @@ export default {
 
       });
     },
+    set_match_in_history(data) {
+      let xhr = new XMLHttpRequest();
+      const words = document.URL.split('/');
+      let url = "https://" + words[2] + "/api/accounts/matches/";
+
+      let token = localStorage.getItem('token');
+    
+      if (!token) {
+        this.$toast.error('Token not found in localStorage', {
+          position: "top-center",
+          timeout: 2990
+        });
+        return;
+      }
+      console.log('Token:', token);
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Authorization", `Token ${token}`);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 201) {
+            let responseJson = JSON.parse(xhr.responseText);
+            let idNumber = responseJson.id;
+
+            localStorage.setItem('ultra_secret_id', idNumber);
+            this.sendRequestLogin(data);
+          } else {
+            let errorResponse = JSON.parse(xhr.responseText);
+            let final = errorResponse.error + errorResponse.username + errorResponse.email + errorResponse.password;
+            this.$toast.error(`Erreur: ${xhr.status} - ${final}`, {
+              position: "top-center",
+              timeout: 2990
+            });
+            n
+          }
+        }
+      };
+      xhr.send(data);
+    },
     
   }
 }

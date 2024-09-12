@@ -77,6 +77,11 @@ const routes = [
     name: 'pong_mode_choose',
     component: () => import('../views/PongModeChooseView/PongModeChooseView.vue')
   },
+  {
+    path: '/win',
+    name: 'win',
+    component: () => import('../views/WinView.vue')
+  }
 ]
 
 const router = new VueRouter({

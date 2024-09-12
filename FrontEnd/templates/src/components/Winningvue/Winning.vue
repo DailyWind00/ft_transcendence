@@ -4,6 +4,7 @@
     <h2>{{ $t('score') }}</h2>
     <h3>{{ left_score }} : {{ right_score }}</h3>
     <b-button class="btn" @click="goToHome">{{ $t('game_select') }}</b-button>
+	<b-button class="btn" @click="goToTournament">{{ $t('tournament') }}</b-button>
   </div>
 </template>
 
@@ -26,6 +27,9 @@ export default {
     ...GlobalJS.methods,
 	goToHome(){
 			this.$router.push('./../gameselect');
+		},
+	goToTournament(){
+			this.$router.push('./../tournament');
 		},
 	get_left_score: function() {
 		const left_score = localStorage.getItem('left_score') || 5;

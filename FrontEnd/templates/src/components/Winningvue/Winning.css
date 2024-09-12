@@ -28,6 +28,8 @@
 	color:white;
 	max-height: 80vh;
 	padding: 5vh 40vw;
+	margin-left: 30%;
+    margin-right: 10%;
 	/* overflow:scroll; */
 }
 
