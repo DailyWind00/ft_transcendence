@@ -238,10 +238,14 @@ class Match:
 			if self.players[0].score >= 3:
 				await self.endMessage(1)
 				self.over = True
+				for player in self.players:
+					await player.webSocket.close()
 				break
 			elif self.players[1].score >= 3:
 				await self.endMessage(2)
 				self.over = True
+				for player in self.players:
+					await player.webSocket.close()
 				break
 
 			#bounce ball on the up and down walls
@@ -277,6 +281,7 @@ class Match:
 class Game:
 	def __init__(self):
 		self.matchs = list()
+		self.local_match_index = 1000
 
 	def getMatchFromID(self, matchID):
 		for match in self.matchs:
@@ -311,12 +316,12 @@ class Game:
 	async def socketHandler(self, webSocket):
 		print("|--- connection caught")
 		
+
 		#Getting the client's match
 		matchID = await self.requestMatchID(webSocket)
-
-		if matchID == -128:
-			LOCAL_MATCH_INDEX += 1
-			matchID = LOCAL_MATCH_INDEX
+		print(matchID)
+		if matchID == 128:
+			matchID = self.local_match_index
 
 		match = self.getMatchFromID(matchID)
 		if match is None:
@@ -338,6 +343,7 @@ class Game:
 		#Launch game loop if there is 
 		if match.connectionNumber == 2:
 			print("|-   launching match ", matchID, " game loop...")
+			self.local_match_index += 1
 			asyncio.create_task(match.gameLoop())
 		
 		while True:
