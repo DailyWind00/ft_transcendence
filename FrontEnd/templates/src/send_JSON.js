@@ -123,7 +123,7 @@ export default {
           if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
               const response = JSON.parse(xhr.responseText);
-              if (response.status === 'waiting') {
+              if (response.status === 'waiting' || response.status === 'already_in_queue') {
                 console.log('Still waiting for a match...');
               } else {
                 console.log('Match found:', response);

@@ -7,25 +7,23 @@ from .serializers import MatchSerializer
 from django.db import IntegrityError
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def join_matchmaking(request):
     player_id = request.data.get('player')
     token = request.data.get('token')
 
-    # Log the incoming data for debugging
-    print(f"Received player: {player_id}, token: {token}")
 
     if not player_id or not token:
-        return Response({'error': 'Missing player or token'}, status=400)
+        return Response({'error': 'Missing player or token', 'player_id': player_id, 'token': token}, status=400)
 
     try:
-        # Récupérer l'instance User à partir de l'ID du joueur
         player = User.objects.get(id=player_id)
     except User.DoesNotExist:
         return Response({'error': 'Invalid player ID'}, status=400)
 
+    
     if PlayerQueue.objects.filter(player=player).exists():
-        return Response({'status': 'already_in_queue'}, status=400)
+        return Response({'status': 'already_in_queue'}, status=200)
 
     try:
         PlayerQueue.objects.create(player=player)
@@ -38,6 +36,7 @@ def join_matchmaking(request):
         player1 = queue[0].player
         player2 = queue[1].player
 
+        if ()
         try:
             match = Match.objects.create(player1=player1, player2=player2, status='in_progress')
         except IntegrityError:
