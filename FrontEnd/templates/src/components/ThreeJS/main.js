@@ -166,12 +166,32 @@ function gameLoop()
 	if (paddleMesh2.position.z <= arenaMesh.position.z - 12.5 + 1.75) paddleMesh2.position.z = arenaMesh.position.z - 12.5 + 1.75;
 }
 
+function localLoop()
+{
+	if (IsKeyDown(KeyS))
+		paddleMesh1.position.z += 0.3;
+	else if (IsKeyDown(KeyW))
+		paddleMesh1.position.z -= 0.3;
+
+	if (IsKeyDown(KeyDown))
+		paddleMesh2.position.z += 0.3;
+	else if (IsKeyDown(KeyUp))
+		paddleMesh2.position.z -= 0.3;
+	
+	if (paddleMesh1.position.z >= arenaMesh.position.z + 12.5 - 1.75) paddleMesh1.position.z = arenaMesh.position.z + 12.5 - 1.75;
+	if (paddleMesh1.position.z <= arenaMesh.position.z - 12.5 + 1.75) paddleMesh1.position.z = arenaMesh.position.z - 12.5 + 1.75;
+	
+	if (paddleMesh2.position.z >= arenaMesh.position.z + 12.5 - 1.75) paddleMesh2.position.z = arenaMesh.position.z + 12.5 - 1.75;
+	if (paddleMesh2.position.z <= arenaMesh.position.z - 12.5 + 1.75) paddleMesh2.position.z = arenaMesh.position.z - 12.5 + 1.75;
+}
+
 function CubeAnimation()
 {
 	playerInput();
 	if (appState == 'DEFAULT') cameraDefaultState();
 	else if (appState == 'GAME') cameraGameState();
 	else if (appState == 'PLAYING') gameLoop();
+	else if (appState == 'LOCAL') localLoop();
 
 	if (camPanSpeed <= 0.01) camPanSpeed = 0.001;
 	if (rotSpeed <= 0.001) rotSpeed = 0.01;
@@ -193,7 +213,7 @@ function idMsg(data)
 	const id = data.charCodeAt(1);
 
 	console.log("you are player : " + id);
-	if (id == 2) {
+	if (id == 2 && appState == 'PLAYING') {
 		paddleMesh2.position.x = camera.position.x - 28;
 		paddleMesh1.position.x = camera.position.x + 28;
 	}
@@ -205,8 +225,6 @@ function startMsg(data)
 
 	if (currentSec != 0)
 		console.log(currentSec);
-	else
-		appState = "PLAYING";
 }
 
 function endMsg(data)
@@ -223,8 +241,10 @@ function inGameMsg(data)
 	const ballSpeedYInt = data.charCodeAt(5);
 	const ballSpeedYDec = data.charCodeAt(6);
 
-	paddleMesh2.position.z = (plr2yInt - 128) + 125;
-	paddleMesh2.position.z += (plr2yDec - 128) / 10;
+	if (appState == 'PLAYING') {
+		paddleMesh2.position.z = (plr2yInt - 128) + 125;
+		paddleMesh2.position.z += (plr2yDec - 128) / 10;
+	}
 	ballMesh.position.x += ballSpeedXInt - 128;
 	ballMesh.position.x += (ballSpeedXDec - 128) / 10;
 	ballMesh.position.z += ballSpeedYInt - 128;
@@ -237,19 +257,26 @@ function scoreMsg(data)
 
 	paddleMesh1.position.z = 125;
 	paddleMesh2.position.z = 125;
-	ballMesh.postion.x = camera.positon.x;
-	ballMesh.postion.z = 125;
-	appState = "GAME";
+	ballMesh.position.x = camera.position.x;
+	ballMesh.position.z = 125;
+	if (appState == "PLAYING")
+		appState = "GAME";
+	else if (appState == "LOCAL")
+		appState = "LOCALPAUSE";
 }
 
-function restartMessage(data)
+function restartMsg(data)
 {
 	const	currentSec = data.charCodeAt(1);
 
 	if (currentSec != 0)
 		console.log(currentSec);
-	else
-		appState = "PLAYING";
+	else {
+		if (appState == "GAME")
+			appState = "PLAYING";
+		else if (appState == "LOCALPAUSE")
+			appState = "LOCAL";
+	}
 }
 
 function recvFromServ(event)
@@ -288,7 +315,12 @@ function sendToServ()
 	let	p1PosInt = Math.floor((paddleMesh1.position.z - 125) + 128)
 	let	p1PosDec = Math.floor(10 * ((paddleMesh1.position.z - 125) - Math.floor(paddleMesh1.position.z - 125)) + 128)
 
+	let	p2PosInt = Math.floor((paddleMesh2.position.z - 125) + 128)
+	let	p2PosDec = Math.floor(10 * ((paddleMesh2.position.z - 125) - Math.floor(paddleMesh2.position.z - 125)) + 128)
+	
 	webSocket.send(String.fromCharCode(p1PosInt, p1PosDec));
+	if (appState == 'LOCAL')
+		webSocket2.send(String.fromCharCode(p2PosInt, p2PosDec));
 }
 
 export function initGame()
@@ -296,7 +328,7 @@ export function initGame()
 	appState = "GAME";
 }
 
-var Game_Id = -1;
+var Game_Id = null;
 
 export function playDefault(game_id)
 {
@@ -307,31 +339,37 @@ export function playDefault(game_id)
 export function playLocal()
 {
 	appState = "LOCAL";
-	console.log("local");
 }
 
 function playerInput()
 {
-	if (appState == "GAME" && IsKeyPressed(KeyEnter))
-		appState = "PLAYING";
-
 	if (appState == 'PLAYING' && !webSocket) {
 		const words = document.URL.split('/');
-
-		for (let i = 0; i < words.length; i++)
-			console.log(words[i]);
 
 		webSocket = new WebSocket("wss://" + words[2] + "/pong-serv/");
 		webSocket.addEventListener("message", recvFromServ);
 		webSocket.send(String.fromCharCode(Game_Id));
 	}
+	
+	if (appState == 'LOCAL' && !webSocket && !webSocket2) {
+		const words = document.URL.split('/');
 
+		webSocket = new WebSocket("wss://" + words[2] + "/pong-serv/");
+		webSocket2 = new WebSocket("wss://" + words[2] + "/pong-serv/");
+		
+		webSocket.addEventListener("message", recvFromServ);
+		
+		webSocket.send(String.fromCharCode(255));
+		webSocket2.send(String.fromCharCode(255));
+	}
+	
 	if (webSocket)
 		sendToServ();
 }
 
 var id = null;
 var webSocket = null;
+var webSocket2 = null;
 const renderer = InitRenderer();
 const camera = InitCamera();
 const scene = new THREE.Scene();

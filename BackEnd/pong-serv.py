@@ -132,7 +132,7 @@ class Match:
 		#
 		# byte 1: <message-type> | byte 2: <remaining-time-in-second>
 
-		for i in range(StartDuration, 0, -1):
+		for i in range(StartDuration, -1, -1):
 			while self.timer.getRemaningTime() > 0:
 				await asyncio.sleep(SERVER_TICK_DELAY)	
 				self.timer.update()
@@ -217,7 +217,7 @@ class Match:
 
 		for player in self.players:
 			player.hitbox.position.y = 0
-		self.ball.positon = Point(0, 0)
+		self.ball.position = Point(0, 0)
 		self.ball.speed = Point(0.2, 0)
 
 	async def gameLoop(self):
@@ -243,14 +243,14 @@ class Match:
 					self.ball.speed.x *= -1
 
 			#check for score
-			if self.ball.position.x > 28:
+			if self.ball.position.x > 30:
 				await self.scoreMessage(1)
 				self.resetMatch(0)
-				self.restartMessage()
-			elif self.ball.position.x < -28:
+				await self.restartMessage(1)
+			elif self.ball.position.x < -30:
 				await self.scoreMessage(2)
 				self.resetMatch(1)
-				self.restartMessage()
+				await self.restartMessage(1)
 
 			#update ball position
 			self.ball.position.add(self.ball.speed)
@@ -292,7 +292,7 @@ class Game:
 		
 		#Getting the client's match
 		matchID = await self.requestMatchID(webSocket)
-		
+
 		match = self.getMatchFromID(matchID)
 		if match is None:
 			self.matchs.append(Match(matchID))
