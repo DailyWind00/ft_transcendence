@@ -48,7 +48,7 @@
 			this.joinMatchmaking();
 			this.$router.push('/empty');
 			await this.waitFor(5000);
-			// playDefault();
+			playDefault(localStorage.getItem("game_id"));
 		},
 		launchtournament() {
 		this.$router.push('/tournament');

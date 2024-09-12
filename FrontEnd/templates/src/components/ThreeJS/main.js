@@ -296,8 +296,11 @@ export function initGame()
 	appState = "GAME";
 }
 
-export function playDefault()
+var Game_Id = -1;
+
+export function playDefault(game_id)
 {
+	Game_Id = parseInt(game_id, 10);
 	appState = "PLAYING";
 }
 
@@ -312,7 +315,7 @@ function playerInput()
 	if (appState == "GAME" && IsKeyPressed(KeyEnter))
 		appState = "PLAYING";
 
-	if (appState == 'PLAYING') {
+	if (appState == 'PLAYING' && !webSocket) {
 		const words = document.URL.split('/');
 
 		for (let i = 0; i < words.length; i++)
@@ -320,7 +323,7 @@ function playerInput()
 
 		webSocket = new WebSocket("wss://" + words[2] + "/pong-serv/");
 		webSocket.addEventListener("message", recvFromServ);
-		webSocket.send(String.fromCharCode())
+		webSocket.send(String.fromCharCode(Game_Id));
 	}
 
 	if (webSocket)

@@ -146,6 +146,8 @@ export default {
                 // });
               } else {
                 console.log('Match found:', response);
+                let Response = JSON.parse(xhr.responseText);
+                localStorage.setItem('game_id', Response.game_id);
                 clearInterval(waitingLoop);
               }
             } else {
