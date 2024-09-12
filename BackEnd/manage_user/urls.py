@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import RegisterView, LoginView, DeleteAccountView
-from .views import UserProfileView, AnonymizeAccountView
+from .views import UserProfileView, AnonymizeAccountView, MatchListCreateView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('delete-account/', DeleteAccountView.as_view(), name='delete-account'),
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('anonymize-account/', AnonymizeAccountView.as_view(), name='anonymize-account'),
+    path('matches/', MatchListCreateView.as_view(), name='match-list-create'),
 ]

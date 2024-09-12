@@ -342,6 +342,46 @@ export default {
     
       xhr.send();
     },
+    get_match_history() {
+      return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        const words = document.URL.split('/');
+        let url = "https://" + words[2] + "/api/accounts/matches/";
+        // Retrieve the stored token from localStorage
+        let token = localStorage.getItem('token');
+        console.log('Token:', token);
+        if (!token) {
+          reject('Token not found in localStorage');
+          return;
+        }
+
+        xhr.open("GET", url, true);
+
+        // Set the authorization header with the token
+        xhr.setRequestHeader("Authorization", `Token ${token}`);
+        // xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200 || xhr.status === 201) {
+              console.log('Profile:', xhr.responseText);
+              resolve(xhr.responseText);
+            } else if (xhr.status === 401) {
+              console.error('Unauthorized request, check token or API');
+              reject('Unauthorized: Check your token or API');
+            } else {
+              console.error('Error fetching profile:', xhr.responseText);
+              reject(xhr.responseText);
+            }
+          }
+        };
+        
+
+        // Send the GET request
+        xhr.send();
+
+      });
+    },
     
   }
 }

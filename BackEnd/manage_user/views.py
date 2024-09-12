@@ -4,9 +4,11 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
-from .serializers import UserProfileSerializer
+from .serializers import UserProfileSerializer, MatchSerializer
+from .models import Match
 import uuid
 from rest_framework.authentication import TokenAuthentication
 
@@ -58,7 +60,6 @@ class AnonymizeAccountView(APIView):
             return Response({'message': 'Le compte est déjà anonymisé'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Générer un identifiant unique avec uuid
             anonymized_username = f"anonymous_{uuid.uuid4()}"
             user.username = anonymized_username
             user.email = f"anonyme{uuid.uuid4()}@exemple.com"
@@ -70,19 +71,12 @@ class AnonymizeAccountView(APIView):
         except Exception as e:
             return Response({'message': 'Erreur lors de l\'anonymisation du compte'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class win_rate(APIView):
+class MatchListCreateView(ListCreateAPIView):
+    serializer_class = MatchSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
-        games_played = user.manageuser.games_played
-        games_won = user.manageuser.games_won
+    def get_queryset(self):
+        return Match.objects.filter(user=self.request.user)
 
-        if games_played == 0:
-            return Response({'win_rate': 0}, status=status.HTTP_200_OK)
-
-        win_rate = (games_won / games_played) * 100
-        return Response({'win_rate': win_rate}, status=status.HTTP_200_OK)
-
-
-# comment ne pas etre un pitbull quand la vie est une chienne
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

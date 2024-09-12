@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from .models import Match 
 
 User = get_user_model()
 
@@ -43,3 +44,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.username = validated_data.get('username', instance.username)
         instance.save()
         return instance
+
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = ['id', 'user', 'score', 'is_user_winner']
+        read_only_fields = ['user']

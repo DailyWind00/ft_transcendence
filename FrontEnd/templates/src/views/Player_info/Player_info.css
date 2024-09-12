@@ -9,7 +9,19 @@
   .large *{
 	font-size: 1.6em;
   }
+  table{
+	border: 1px solid white;
+	border-radius: 3px;
+	margin-bottom: 5vh;
+	margin-top: 5vh;
+}
 
+th, td{
+	border: 1px solid white;
+	padding: 10px;
+	border-radius: 3px;
+	margin-bottom: 1vh;
+}
   .button {
 	padding: 10px;
 	padding-left: 2vw;
@@ -66,7 +78,7 @@
 
 .history{
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.76);
 	border-radius: 20px;

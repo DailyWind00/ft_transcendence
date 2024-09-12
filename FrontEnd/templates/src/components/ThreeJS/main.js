@@ -64,6 +64,42 @@ function IsKeyPressed(key)
 	}
 	return false;
 }
+let player1Score = 0;
+let player2Score = 0;
+
+// Fonction qui met à jour les scores
+function updateScore(player) {
+	if(player === 1) {
+		player1Score++;
+	} else {
+		player2Score++;
+	}
+}
+
+// Exposer les scores globalement (pour que Vue.js puisse y accéder)
+export function getScores() {
+  return {
+    player1: player1Score,
+    player2: player2Score,
+  };
+}
+
+let winStatus = null;
+function updateWinStatus(status) {
+	winStatus = status;
+}
+
+export function get_win_status() {
+	if (winStatus == null) {
+		return 0;
+	}
+	if (winStatus === 1) {
+		return 1;
+	}
+	else {
+		return 2;
+	}
+}
 
 let lastResizeTime = 0;
 function onWindowResize() {
@@ -238,6 +274,7 @@ function startMsg(data)
 
 function endMsg(data)
 {
+	updateWinStatus(data.charCodeAt(1));
 	appState = "GAME";
 }
 
@@ -264,6 +301,7 @@ function scoreMsg(data)
 {
 	const	scoringPlayer = data.charCodeAt(1);
 
+	updateScore(scoringPlayer);
 	paddleMesh1.position.z = 125;
 	paddleMesh2.position.z = 125;
 	ballMesh.position.x = camera.position.x;
