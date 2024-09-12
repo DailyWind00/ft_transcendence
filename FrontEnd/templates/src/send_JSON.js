@@ -92,6 +92,11 @@ export default {
       // Check for token in localStorage
       if (!localStorage.getItem('token')) {
         console.error('No token found');
+        this.$toast.error('you are not logged in !', {
+          position: "top-center",
+          timeout: 2990
+        });
+        this.$router.push('/login');
         return;
       }
       
@@ -101,6 +106,11 @@ export default {
       
       if (!player) {
         console.error('No player found');
+        this.$toast.error('you are not logged in !', {
+          position: "top-center",
+          timeout: 2990
+        });
+        this.$router.push('/login');
         return;
       }
     
@@ -125,12 +135,31 @@ export default {
               const response = JSON.parse(xhr.responseText);
               if (response.status === 'waiting' || response.status === 'already_in_queue') {
                 console.log('Still waiting for a match...');
+                // this.$toast.error('you are not logged in !', {
+                //   position: "top-center",
+                //   timeout: 2990
+                // });
               } else {
                 console.log('Match found:', response);
                 clearInterval(waitingLoop);
               }
             } else {
               console.error('Error checking matchmaking:', xhr.statusText);
+              this.$toast.error("Error :", xhr.responseText, {
+                position: "top-center",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+              });
+              this.$router.push('/login');
               clearInterval(waitingLoop);
             }
           }
@@ -192,7 +221,7 @@ export default {
       let token = localStorage.getItem('token');
     
       if (!token) {
-        this.$toast.error('Token not found in localStorage', {
+        this.$toast.error('you are not logged in !', {
           position: "top-center",
           timeout: 2990
         });

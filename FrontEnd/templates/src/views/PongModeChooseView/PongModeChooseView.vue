@@ -23,7 +23,7 @@
   <script>
   import sendJSON from './../../send_JSON.js';
   import GlobalJS from './../../global.js';
-  import {initGame, playLocal} from './../../components/ThreeJS/main.js';
+  import {initGame, playDefault, playLocal} from './../../components/ThreeJS/main.js';
   
 
   export default {
@@ -38,16 +38,17 @@
 	methods: {
 
 		...sendJSON.methods,
-		search_game_online(){
-			// this.joinMatchmaking();
-			initGame();
-		},
 		async search_game_local(){
+			initGame();
+			await this.waitFor(5000);
+			playLocal();
+		},
+		async search_game_online(){
 			initGame();
 			this.joinMatchmaking();
 			this.$router.push('/empty');
 			await this.waitFor(5000);
-			playLocal();
+			// playDefault();
 		},
 		launchtournament() {
 		this.$router.push('/tournament');
