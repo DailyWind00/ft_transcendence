@@ -219,7 +219,7 @@ export default {
         
 
         // Send the GET request
-        xhr.send(data);
+        xhr.send();
 
       });
     },

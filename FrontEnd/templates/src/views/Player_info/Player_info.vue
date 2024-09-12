@@ -4,6 +4,7 @@
       <div id="settings">
         <b-button id="delete" class="button" @click="delete_confirm">{{ $t('delete_account') }}</b-button>
         <b-button id="anonimyse" class="button" @click="anonymise_confirm">{{ $t('anonymize_account') }}</b-button>
+        <b-button id="disconnect" class="button" @click="disconnect_confirm">{{ $t('disconnect') }}</b-button>
       </div>
       <div id="info">
         <h1>name : {{player_name}}</h1>
@@ -85,6 +86,13 @@ mounted() {
     anonymise_confirm() {
       if (confirm('Are you sure you want to anonymize your account?')) {
         this.anonymiseAccount();
+      }
+    },
+    disconnect_confirm() {
+      if (confirm('Are you sure you want to disconnect?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('ultra_secret_id')
+        this.$router.push('/login');
       }
     },
   },
