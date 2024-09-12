@@ -6,10 +6,10 @@
 		<div class="button-container d-flex justify-content-around">
 		  <div>
 			
-			<b-button class="button" @click="search_game_online()" ><h2>online</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button" @click="search_game_online()" ><h2>{{$t('online')}}</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
-			<b-button class="button" @click="search_game_local()" ><h2>local</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button" @click="search_game_local()" ><h2>{{$t('local')}}</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
 			

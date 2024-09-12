@@ -24,7 +24,8 @@
 	  </div>
 	  
 	</div>
-	<button id="button_hidden" @click="change_route()" hidden>test</button>
+	<button id="button_hidden" @click="change_route()" hidden>{{$t('game_choose')}}</button>
+	<button id="link_hidden" @click="route_history()" hidden>{{$t('game_history')}}</button>
 </div>
 	
   </template>
@@ -58,6 +59,9 @@ export default {
 	},
 	change_route() {
 		this.$router.push('/gameselect');
+	},
+	route_history() {
+		this.$router.push('/tictactoe/history');
 	}
 }
 }
