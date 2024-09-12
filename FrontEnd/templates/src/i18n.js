@@ -53,6 +53,8 @@ const messages = {
 	tournament: 'Tournament',
 	enter_a_name: 'Enter a name',
 	save_players: 'Save players',
+	online: 'Online',
+	local: 'Local',
   },
   fr: {
     welcome: 'FT_TRANSCENDENCE',
@@ -103,6 +105,8 @@ const messages = {
 	tournament: 'Tournoi',
 	enter_a_name: 'Entrez un nom',
 	save_players: 'Sauvegarder les joueurs',
+	online: 'En ligne',
+	local: 'Local',
 
   },
   es: {
@@ -154,6 +158,8 @@ const messages = {
 	tournament: 'Turniro',
 	enter_a_name: 'Enmetu nomon',
 	save_players: 'Konservi ludantojn',
+	online: 'Enrete',
+	local: 'Loka',
   }
 };
 

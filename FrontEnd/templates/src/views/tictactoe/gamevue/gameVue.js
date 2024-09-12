@@ -6,6 +6,7 @@ let scoreNul = document.getElementById("score3");
 let player = document.getElementById("player");
 let fdp = document.getElementById("button_hidden");
 let button_hidden = document.getElementById("button_hidden");
+let link_hidden = document.getElementById("link_hidden");
 
 
 let state = {
@@ -57,7 +58,7 @@ function show_winner() {
   newDiv.style.color = 'white';
 
   const winner_name = localStorage.getItem('winner_name');
-  const win_msg = "{{$t('winner')}}";
+  const win_msg = 'winner';
     // <h1>${win_msg} : ${winner_name}</h1>
     // <h2>oui</h2>
     // <h3>${state.scoreJ1} : ${state.scoreJ2}</h3>
@@ -71,7 +72,7 @@ function show_winner() {
     margin-right: 30vw;
     padding: 2vh 2vw;
     font-family: Crang;">
-    <h1 style="margin: 5vh 5vw;">winner : ${winner_name}</h1>
+    <h1 style="margin: 5vh 5vw;">${win_msg}: ${winner_name}</h1>
     <h2 style="margin: 4vh 5vw;">score :</h2>
     <h3 style="font-style: none;
 	font-size: 6em;">${state.scoreJ1} : ${state.scoreJ2}</h3>
@@ -107,7 +108,7 @@ function show (elements, specifiedDisplay) {
         state.scoreJ2++;
         score2.innerHTML = state.scoreJ2;
       }
-      if (state.scoreJ1 === 0 || state.scoreJ2 === 0) {
+      if (state.scoreJ1 === 3 || state.scoreJ2 === 3) {
         hide(document.querySelectorAll('.app'));
         localStorage.setItem('left_score', state.scoreJ1);
         localStorage.setItem('right_score', state.scoreJ2);
@@ -116,6 +117,7 @@ function show (elements, specifiedDisplay) {
         // fdp.hidden = false;
         show_winner();
         button_hidden.hidden = false;
+        link_hidden.hidden = false;
         let games = JSON.parse(localStorage.getItem('games')) || [];
         let newGame = {
           "players": [

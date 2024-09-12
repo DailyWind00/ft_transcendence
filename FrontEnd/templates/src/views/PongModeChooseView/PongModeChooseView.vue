@@ -6,10 +6,10 @@
 		<div class="button-container d-flex justify-content-around">
 		  <div>
 			
-			<b-button class="button" @click="search_game_online()" ><h2>online</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button" @click="search_game_online()" ><h2>{{$t('online')}}</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
-			<b-button class="button" @click="search_game_local()" ><h2>local</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
+			<b-button class="button" @click="search_game_local()" ><h2>{{$t('local')}}</h2><img src="./../../assets/pong.png" alt="pong logo"></b-button>
 		  </div>
 		  <div>
 			
@@ -23,7 +23,7 @@
   <script>
   import sendJSON from './../../send_JSON.js';
   import GlobalJS from './../../global.js';
-  import {initGame, playLocal} from './../../components/ThreeJS/main.js';
+  import {initGame, playDefault, playLocal} from './../../components/ThreeJS/main.js';
   
 
   export default {
@@ -38,16 +38,17 @@
 	methods: {
 
 		...sendJSON.methods,
-		search_game_online(){
-			// this.joinMatchmaking();
-			initGame();
-		},
 		async search_game_local(){
+			initGame();
+			await this.waitFor(5000);
+			playLocal();
+		},
+		async search_game_online(){
 			initGame();
 			this.joinMatchmaking();
 			this.$router.push('/empty');
 			await this.waitFor(5000);
-			playLocal();
+			// playDefault();
 		},
 		launchtournament() {
 		this.$router.push('/tournament');

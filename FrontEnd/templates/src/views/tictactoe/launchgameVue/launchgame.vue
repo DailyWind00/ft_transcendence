@@ -1,6 +1,6 @@
 <template>
 	<div class="app" :class="my_BG_color">
-		<h1>nom des joueurs ?</h1>
+		<h1>{{$t('player_names')}}</h1>
 		<b-form @submit.prevent="store_name">
 			<b-form-input
 				maxlength="10"

@@ -31,9 +31,6 @@
         <div class="btn_register">
           <router-link class="btn_register" to="/register">{{$t('create_account')}}</router-link>
         </div>
-        <div class="btn_register">
-          <router-link class="btn_register" to="/register">{{$t('forgot_password')}}</router-link>
-        </div>
       </b-form>
     </b-card>
   </b-container>
