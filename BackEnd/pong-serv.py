@@ -1,4 +1,5 @@
 from websockets.server import serve
+import websockets
 import asyncio
 import math
 import ssl
@@ -10,6 +11,8 @@ SERVER_TICK_PER_SECOND = 60
 
 SERVER_PORT = 2500
 SERVER_IP   = "0.0.0.0"
+
+LOCAL_MATCH_INDEX = 1024
 
 async def calcon(time):
 	await asyncio.sleep(time)
@@ -95,7 +98,10 @@ class Player:
 		self.hitbox.position.y = self.center.y - 1.75
 
 	async def send(self, message):
-		await self.webSocket.send(message)
+		try:
+			await self.webSocket.send(message)
+		except websockets.exceptions.ConnectionClosed:
+			return
 
 class Ball:
 	def __init__(self, x, y, radius = 0):
@@ -301,13 +307,16 @@ class Game:
 					print("removing match", self.matchs[i].ID);
 					del self.matchs[i]
 					break
-			
 
 	async def socketHandler(self, webSocket):
 		print("|--- connection caught")
 		
 		#Getting the client's match
 		matchID = await self.requestMatchID(webSocket)
+
+		if matchID == -128:
+			LOCAL_MATCH_INDEX += 1
+			matchID = LOCAL_MATCH_INDEX
 
 		match = self.getMatchFromID(matchID)
 		if match is None:
@@ -332,9 +341,13 @@ class Game:
 			asyncio.create_task(match.gameLoop())
 		
 		while True:
+			message = ""
+
 			#get info sent by the clients
-			message = await webSocket.recv()
-			
+			try:
+				message = await webSocket.recv()
+			except websockets.exceptions.ConnectionClosed:
+				break
 			#get player position
 			player = match.getPlayerFromSocket(webSocket)
 			if player is not None:
