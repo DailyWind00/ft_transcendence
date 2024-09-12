@@ -3,7 +3,8 @@ export default {
 
     sendRequestRegister(data) {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost/api/accounts/register/";
+      const words = document.URL.split('/');
+      let url = "https://" + words[2] + "/api/accounts/register/";
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -47,7 +48,8 @@ export default {
     },
     sendRequestLogin(data) {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost/api/accounts/login/";
+      const words = document.URL.split('/');
+      let url = "https://" + words[2] + "/api/accounts/login/";
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -125,7 +127,8 @@ export default {
       // Function to check matchmaking status
       function checkMatchmaking() {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://localhost/api/matchmaking/join_matchmaking/', true);
+        const words = document.URL.split('/');
+        xhr.open('POST', 'https://" + words[2] + "/api/matchmaking/join_matchmaking/', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader('Authorization', `Token ${token}`);
     
@@ -176,7 +179,8 @@ export default {
     getUserProfile() {
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        let url = "https://localhost/api/accounts/profile/";
+        const words = document.URL.split('/');
+        let url = "https://" + words[2] + "/api/accounts/profile/";
         // Retrieve the stored token from localStorage
         let token = localStorage.getItem('token');
         console.log('Token:', token);
@@ -217,7 +221,8 @@ export default {
     },
     deleteAccount() {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost/api/accounts/delete-account/";
+      const words = document.URL.split('/');
+      let url = "https://" + words[2] + "/api/accounts/delete-account/";
       let token = localStorage.getItem('token');
     
       if (!token) {
@@ -276,7 +281,8 @@ export default {
     },
     anonymiseAccount() {
       let xhr = new XMLHttpRequest();
-      let url = "https://localhost/api/accounts/anonymize-account/";
+      const words = document.URL.split('/');
+      let url = "https://" + words[2] + "/api/accounts/anonymize-account/";
       let token = localStorage.getItem('token');
     
       if (!token) {

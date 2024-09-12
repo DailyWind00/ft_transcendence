@@ -318,7 +318,7 @@ function playerInput()
 		for (let i = 0; i < words.length; i++)
 			console.log(words[i]);
 
-		webSocket = new WebSocket("wss://" + words[2] + ":2000/pong-serv/");
+		webSocket = new WebSocket("wss://" + words[2] + "/pong-serv/");
 		webSocket.addEventListener("message", recvFromServ);
 		webSocket.send(String.fromCharCode())
 	}
