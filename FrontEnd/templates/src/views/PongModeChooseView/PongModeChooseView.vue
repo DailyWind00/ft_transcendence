@@ -44,6 +44,7 @@
 		},
 		async search_game_local(){
 			initGame();
+			this.joinMatchmaking();
 			this.$router.push('/empty');
 			await this.waitFor(5000);
 			playLocal();

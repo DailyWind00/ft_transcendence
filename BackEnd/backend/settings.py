@@ -12,6 +12,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import hvac
+import json
+
+# Read the token from the JSON file
+try:
+    with open('/shared_data/vault_token.json') as f:
+        token_data = json.load(f)
+        vault_token = token_data['auth']['client_token']
+except Exception as e:
+    raise Exception(f"Error reading Vault token: {e}")
+
+# Set the token as an environment variable
+os.environ['VAULT_TOKEN'] = vault_token
+
+client = hvac.Client(
+    url=os.getenv('VAULT_ADDR'),
+    token=os.getenv('VAULT_TOKEN'),
+    cert=("/app/cert.crt", "/app/cert.key"),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,18 +43,20 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # ---
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET']
+secret = client.secrets.kv.read_secret_version(path='django')
+SECRET_KEY = secret['data']['DJANGO_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 
-ALLOWED_HOSTS = [os.environ['DJANGO_ALLOWED_HOSTS']]
+ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -52,8 +73,10 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'rest_framework.authtoken',
 	'manage_user',
-    'corsheaders',
     'matchmaking',
+    'corsheaders',
+    'django_celery_beat',
+    'backend',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +88,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'manage_user.middleware.AnonymizeUserMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -91,27 +115,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# BackEnd/backend/settings.py
-
-import os
+db_secret = client.secrets.kv.read_secret_version(path='postgres')
+# POSTGRES_USER = db_secret['data']['POSTGRES_USER']
+POSTGRES_PASSWORD = db_secret['data']['POSTGRES_PASSWORD']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ['POSTGRES_HOST'],
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'PORT': os.environ['POSTGRES_PORT'],
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Ajoute cette ligne
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -153,7 +179,27 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_HOSTS = [
+    '*',
+]
 
+# Celery configuration
+CELERY_BROKER_URL = 'amqp://localhost:5672'
+CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_BEAT_SCHEDULE = {
+    'anonymize_users_every_day': {
+        'task': 'your_app.tasks.anonymize_old_users',
+        'schedule': 86400.0, # 1 day
+    },
+}
+
+# Ajouter Celery Beat Scheduler
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

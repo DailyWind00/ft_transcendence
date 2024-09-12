@@ -25,7 +25,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('api/accounts/', include('manage_user.urls')),
-    path('api/matchmaking/', include('matchmaking.urls')),
+    path('accounts/', include('manage_user.urls')),
+    path('matchmaking/', include('matchmaking.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

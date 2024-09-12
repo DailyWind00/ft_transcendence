@@ -17,3 +17,9 @@ class Match(models.Model):
 
     def __str__(self):
         return f"{self.player1} vs {self.player2}"
+
+class first_joined(models.Model):
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.player.username
