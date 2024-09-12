@@ -375,7 +375,7 @@ export function initGame()
 	appState = "GAME";
 }
 
-var Game_Id = null;
+var Game_Id = 0;
 
 export function playDefault(game_id)
 {
@@ -406,8 +406,8 @@ function playerInput()
 		
 		webSocket.addEventListener("message", recvFromServ);
 		
-		webSocket.send(String.fromCharCode(255));
-		webSocket2.send(String.fromCharCode(255));
+		webSocket.send(String.fromCharCode(111));
+		webSocket2.send(String.fromCharCode(111));
 	}
 	
 	if (webSocket)
