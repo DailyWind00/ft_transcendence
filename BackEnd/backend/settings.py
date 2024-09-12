@@ -59,7 +59,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', default=0)
 ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',')
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:2000',
-    # 'https://10.12.12.2:6942',
+    'https://' + os.environ['DJANGO_CSRF_TRUSTED_ORIGINS'] + ':6942',
 ]
 
 STATIC_URL = '/static/'
