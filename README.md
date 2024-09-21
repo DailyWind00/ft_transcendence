@@ -11,14 +11,14 @@ I've done this project with these legends :
   - ![Berengere76](https://github.com/Berengere76)
 #
 ### Modules (need 7) :
-#### - Majors (= 1) :
+#### Majors (= 1) :
   - BackEnd framework
   - Remote players
   - Another game
   - CyberSecurity
   - 3D techniques
   - Server-side Pong
-#### - Minors (= 0.5) :
+#### Minors (= 0.5) :
   - FrontEnd framework
   - Database for the BackEnd
   - GDPR (RGPD)
